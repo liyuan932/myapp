@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="UserDO">
+	<resultMap id="BaseResultMap" type="UserDO">
+	</resultMap>
+
+	<sql id="base">
+	</sql>
+	
+	<sql id="queryParams">
+		<where>
+		</where>
+	</sql>
+	
+	<sql id="orderBy">
+	</sql>
+
+	<select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Long">
+		select <include refid="base" /> from user where id = #{id}
+	</select>
+
+	<delete id="deleteById" parameterType="java.lang.Long">
+		delete from user where id = #{id}
+	</delete>
+
+	<insert id="insert" parameterType="UserDO" useGeneratedKeys="true" keyProperty="id">
+	</insert>
+
+	<update id="update" parameterType="UserDO">
+	</update>
+
+	<select id="selectList" resultMap="BaseResultMap">
+		select
+		<include refid="base" />
+		from user
+		<include refid="queryParams" />
+		<include refid="orderBy"></include>
+	</select>
+</mapper>
