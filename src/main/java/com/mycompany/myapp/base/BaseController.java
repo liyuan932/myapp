@@ -1,11 +1,11 @@
 package com.mycompany.myapp.base;
 
+import com.google.common.base.Preconditions;
+import org.springframework.ui.Model;
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-
-import org.springframework.ui.Model;
-import com.google.common.base.Preconditions;
 
 public class BaseController {
 	@Resource
@@ -30,7 +30,7 @@ public class BaseController {
 			Preconditions.checkNotNull(o,"必要参数不在");
 		}
 	}
-	
+
 	public interface CallBack{
 		public <T> void success(Result<T> res);
 	}
