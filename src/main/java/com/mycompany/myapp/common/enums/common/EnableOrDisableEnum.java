@@ -1,7 +1,7 @@
 package com.mycompany.myapp.common.enums.common;
 
 public enum EnableOrDisableEnum {
-	enable(1,"启用"),disable(0,"禁用");
+	ENABLE(1,"启用"),DISABLE(0,"禁用");
 	
 	private int index;
 	private String text;

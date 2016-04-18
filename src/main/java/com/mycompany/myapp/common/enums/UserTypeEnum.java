@@ -1,7 +1,7 @@
 package com.mycompany.myapp.common.enums;
 
 public enum UserTypeEnum {
-	normal(1,"普通用户"),admin(2,"管理员");
+	NORMAL(1,"普通用户"),ADMIN(2,"管理员");
 	
 	private int index;
 	private String text;

@@ -5,16 +5,15 @@ import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.google.common.base.Preconditions;
 import com.mycompany.myapp.base.BaseResult;
 import com.mycompany.myapp.base.BaseService;
-import com.mycompany.myapp.common.enums.common.EnableOrDisableEnum;
 import com.mycompany.myapp.common.enums.UserMsgEnum;
 import com.mycompany.myapp.common.enums.UserTypeEnum;
+import com.mycompany.myapp.common.enums.common.EnableOrDisableEnum;
 import com.mycompany.myapp.common.exception.BizException;
-import com.mycompany.myapp.common.utils.CopyUtils;
-import com.mycompany.myapp.common.utils.CopyUtils.Callback;
 import com.mycompany.myapp.dao.UserDao;
 import com.mycompany.myapp.domain.UserDO;
 import com.mycompany.myapp.query.UserQuery;
 import com.mycompany.myapp.service.UserService;
+import com.mycompany.myapp.utils.CopyUtils;
 import com.mycompany.myapp.vo.LoginVO;
 import com.mycompany.myapp.vo.UserVO;
 import org.apache.commons.lang3.StringUtils;
@@ -30,7 +29,11 @@ public class UserServiceImpl extends BaseService implements UserService {
 	private UserDao userDao;
 
 	public BaseResult<Long> addUser(UserDO db) {
+
+		db.setType(UserTypeEnum.NORMAL.getIndex());
+		db.setStatus(EnableOrDisableEnum.ENABLE.getIndex());
 		userDao.insert(db);
+
 		return success(db.getId());
 	}
 
@@ -61,8 +64,7 @@ public class UserServiceImpl extends BaseService implements UserService {
 	public BaseResult<List<UserVO>> getUserList(UserQuery query) throws Exception {
 
 		List<UserDO> dbList = userDao.queryList(query);
-
-		List<UserVO> voList = CopyUtils.dbToVo(dbList, UserVO.class, new Callback<UserDO, UserVO>() {
+		List<UserVO> voList = CopyUtils.dbToVo(dbList, UserVO.class, new CopyUtils.Callback<UserDO, UserVO>() {
 
 			@Override
 			public void execute(UserDO db, UserVO vo) {
@@ -82,7 +84,7 @@ public class UserServiceImpl extends BaseService implements UserService {
 
 		PageList<UserDO> dbRes = userDao.queryPage(query, pb);
 
-		PageList<UserVO> voRes = CopyUtils.dbToVo(dbRes, UserVO.class, new Callback<UserDO, UserVO>() {
+		PageList<UserVO> voRes = CopyUtils.dbToVo(dbRes, UserVO.class, new CopyUtils.Callback<UserDO, UserVO>() {
 
 			@Override
 			public void execute(UserDO db, UserVO vo) {
@@ -109,7 +111,7 @@ public class UserServiceImpl extends BaseService implements UserService {
 
 		UserDO db = checkAccountPassword(account, password);
 
-		return success(CopyUtils.dbToVo(db, LoginVO.class));
+		return success(CopyUtils.dbToVo(db,LoginVO.class));
 	}
 
 	private UserDO checkAccountPassword(String account, String password) {
@@ -121,5 +123,4 @@ public class UserServiceImpl extends BaseService implements UserService {
 		}
 		return db;
 	}
-
 }
