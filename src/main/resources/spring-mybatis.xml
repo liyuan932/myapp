@@ -1,22 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-	xmlns:jee="http://www.springframework.org/schema/jee"
-	xmlns:tx="http://www.springframework.org/schema/tx" 
-	xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:aop="http://www.springframework.org/schema/aop"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:tx="http://www.springframework.org/schema/tx"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xmlns:aop="http://www.springframework.org/schema/aop"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans
       http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
       http://www.springframework.org/schema/aop
              http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
       http://www.springframework.org/schema/tx
       http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
-      http://www.springframework.org/schema/jee
-      http://www.springframework.org/schema/jee/spring-jee-4.0.xsd
       http://www.springframework.org/schema/context
       http://www.springframework.org/schema/context/spring-context-4.0.xsd">
-	<!-- 注解配置 -->
-	<context:component-scan base-package="com.mycompany.myapp" />
+	<!-- 组件扫描注解 -->
+	<context:component-scan base-package="com.mycompany.myapp">
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller" />
+	</context:component-scan>
 
 	<!-- JDBC属性 -->
 	<context:property-placeholder location="classpath:jdbc.properties" />
@@ -55,16 +54,22 @@
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="dataSource" />
 		<!-- 配置mybatis配置文件的位置 -->
-		<property name="configLocation" value="classpath:mybatis-config.xml" />
-		<property name="mapperLocations" value="classpath*:sqlmap/mapping-*.xml"></property>
+		<property name="mapperLocations" value="classpath*:sqlmap/mapping-*.xml"/>
 		<property name="typeAliasesPackage" value="com.mycompany.myapp.domain" />
+		<property name="plugins">
+			<array>
+				<bean class="com.github.miemiedev.mybatis.paginator.OffsetLimitInterceptor">
+					<property name="dialectClass" value="com.github.miemiedev.mybatis.paginator.dialect.MySQLDialect"/>
+				</bean>
+			</array>
+		</property>
 	</bean>
 
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
 		<property name="basePackage" value="com.mycompany.myapp.dao" />
-		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>
+		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
 	</bean>
- 	
+
 	<!-- 事务管理 -->
 	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="dataSource" />
@@ -76,16 +81,16 @@
 		<!--ISOLATION_DEFAULT 表示由使用的数据库决定  -->
 		<property name="isolationLevelName" value="ISOLATION_DEFAULT" />
 		<property name="propagationBehaviorName" value="PROPAGATION_REQUIRED" />
-		<!-- <property name="timeout" value="30"/> -->
+		<!-- <property property="timeout" value="30"/> -->
 	</bean>
 
 	<!-- 注册事务注解  -->
 	<tx:annotation-driven transaction-manager="transactionManager" />
-	
+
 	<!-- 切面注解配置 -->
-	<aop:aspectj-autoproxy proxy-target-class="true"/>  
-	
-	<!-- Freemarker配置 --> 
+	<aop:aspectj-autoproxy proxy-target-class="true"/>
+
+	<!-- Freemarker配置 -->
 	<bean id="freemarkerConfig" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
 		<property name="templateLoaderPath" value="/WEB-INF/view/" />
 		<property name="freemarkerSettings">
@@ -98,6 +103,6 @@
 				<prop key="template_exception_handler">ignore</prop>
 			</props>
 		</property>
-	</bean> 
-	
+	</bean>
+
 </beans>

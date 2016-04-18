@@ -7,5 +7,5 @@ import com.mycompany.myapp.domain.UserDO;
 
 public interface UserDao extends BaseDao<UserDO, Long> {
 	
-	UserDO checkAccountPassword(@Param("account")String account,@Param("password")String password);
+	UserDO checkAccountPassword(@Param("account")String account, @Param("password")String password);
 }

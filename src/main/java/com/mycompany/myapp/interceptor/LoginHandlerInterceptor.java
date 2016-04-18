@@ -1,17 +1,10 @@
 package com.mycompany.myapp.interceptor;
 
-import java.net.URL;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
-
-import com.mycompany.myapp.domain.UserDO;
 
 @Component
 public class LoginHandlerInterceptor extends HandlerInterceptorAdapter {

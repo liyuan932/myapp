@@ -1,14 +1,14 @@
 package com.mycompany.myapp.domain;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-
 import com.mycompany.myapp.base.BaseDO;
+
+import java.util.Date;
 
 public class UserDO extends BaseDO {
 
     private static final long serialVersionUID = -6335312216658046739L;
+
+    private Long id;
 
     private String account;
 
@@ -35,10 +35,20 @@ public class UserDO extends BaseDO {
     public UserDO() {
     }
 
-    public UserDO(String account, String password, String username) {
+    public UserDO(String account, String password, String username,Integer type,Integer status) {
         this.account = account;
         this.password = password;
         this.username = username;
+        this.type = type;
+        this.status = status;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getAccount() {

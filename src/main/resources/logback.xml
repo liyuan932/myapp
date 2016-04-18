@@ -1,46 +1,60 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration debug="false">
-	<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<target>System.out</target>
+		<encoder>
+			<pattern><![CDATA[
+%n%-4r [%d{yyyy-MM-dd HH:mm:ss}] %X{productionMode} - %X{method} %X{requestURIWithQueryString}[%file:%line][%method] [ip=%X{remoteAddr}, ref=%X{referrer}, ua=%X{userAgent}, sid=%X{cookie.JSESSIONID}]%n  %-5level %logger{35} - %m%n
+            ]]></pattern>
+			<charset>UTF-8</charset>
+		</encoder>
+	</appender>
+
+	<appender name="STDERR" class="ch.qos.logback.core.ConsoleAppender">
+		<target>System.err</target>
+		<encoder>
+			<pattern><![CDATA[
+%n%-4r [%d{yyyy-MM-dd HH:mm:ss}] %X{productionMode} - %X{method} %X{requestURIWithQueryString}[%file:%line][%method] [ip=%X{remoteAddr}, ref=%X{referrer}, ua=%X{userAgent}, sid=%X{cookie.JSESSIONID}]%n  %-5level %logger{35} - %m%n
+            ]]></pattern>
+			<charset>UTF-8</charset>
+		</encoder>
+	</appender>
+
+
+	<appender name="PROJECT" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>logs/myapp.log</file>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
 			<fileNamePattern>logs/myapp%d{yyyy-MM-dd}.log</fileNamePattern>
 			<maxHistory>30</maxHistory>
 		</rollingPolicy>
 		<encoder>
-			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-4relative [%thread] %-5level %logger{100} - %msg%n</pattern>
+			<pattern><![CDATA[
+%n%-4r [%d{yyyy-MM-dd HH:mm:ss}] %X{productionMode} - %X{method} %X{requestURIWithQueryString}[%file:%line][%method] [ip=%X{remoteAddr}, ref=%X{referrer}, ua=%X{userAgent}, sid=%X{cookie.JSESSIONID}]%n  %-5level %logger{35} - %m%n
+            ]]></pattern>
 		</encoder>
 	</appender>
-	
-	<!-- <root level="INFO">
-		<appender-ref ref="FILE" />
-	</root> -->
-	
-	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
-	    <target>System.out</target>
+
+	<appender name="OPERATION" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>logs/operation.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>logs/operation%d{yyyy-MM-dd}.log</fileNamePattern>
+			<maxHistory>30</maxHistory>
+		</rollingPolicy>
 		<encoder>
-			<pattern>%d{HH:mm:ss}  %-5level %logger{35} - %msg%n</pattern>
-			<charset>UTF-8</charset>
+			<pattern><![CDATA[
+%n%-4r [%d{yyyy-MM-dd HH:mm:ss}] %X{productionMode} - %X{method} %X{requestURIWithQueryString}[%file:%line][%method] [ip=%X{remoteAddr}, ref=%X{referrer}, ua=%X{userAgent}, sid=%X{cookie.JSESSIONID}]%n  %-5level %logger{35} - %m%n
+            ]]></pattern>
 		</encoder>
 	</appender>
-	
-	<appender name="STDERR" class="ch.qos.logback.core.ConsoleAppender">
-		<target>System.err</target>
-		<encoder>
-			<pattern>%d{HH:mm:ss}  %-5level %logger{35} - %msg%n</pattern>
-			<charset>UTF-8</charset>
-		</encoder>
-	</appender>
-	<logger name="org.apache" level="INFO" />
-  	<logger name="org.springframework" level="INFO" />
-    <logger name="org.mybatis.spring" level="INFO" />
-     <logger name="freemarker.cache" level="INFO" />
-    <logger name="com.mycompany.myapp.domain" level="DEBUG" additivity="false">
-    	<appender-ref ref="STDERR" />
-    </logger>
-    <logger name="org.springframework.jdbc.datasource" level="DEBUG" />
-    
-	<root level="INFO">
-		<appender-ref ref="STDOUT" />
-		<appender-ref ref="FILE" />
+
+	<logger name="operationLog" level="INFO" additivity="false">
+		<appender-ref ref="OPERATION" />
+	</logger>
+
+	<root level="WARN">
+		<appender-ref  ref="STDOUT" />
+		<appender-ref ref="STDERR" />
+		<appender-ref ref="PROJECT" />
 	</root>
 
 </configuration>

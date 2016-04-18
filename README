@@ -1,0 +1,5 @@
+1、mybatis映射生成器：
+mvn mybatis-generator:generate
+有用的包括两部分：
+1）POJO类；
+2）映射配置文件的insert、update语句；

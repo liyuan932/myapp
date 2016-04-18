@@ -13,7 +13,7 @@ public class BaseController {
 	@Resource
 	protected HttpSession session;
 	
-	protected <T> String getView(Result<T> res,Model model,String expectedViewName,CallBack cb){
+	protected <T> String getView(BaseResult<T> res,Model model,String expectedViewName,CallBack cb){
 		if(res.isSuccess()){
 			cb.success(res);
 		}else{
@@ -32,6 +32,6 @@ public class BaseController {
 	}
 
 	public interface CallBack{
-		public <T> void success(Result<T> res);
+		public <T> void success(BaseResult<T> res);
 	}
 }

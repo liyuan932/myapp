@@ -2,137 +2,128 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.mycompany.myapp.dao.UserDao">
 	<resultMap id="BaseResultMap" type="UserDO">
-		<id column="id" property="id" jdbcType="BIGINT" />
-		<result column="account" property="account" jdbcType="VARCHAR" />
-		<result column="password" property="password" jdbcType="VARCHAR" />
-		<result column="username" property="username" jdbcType="VARCHAR" />
-		<result column="sex" property="sex" jdbcType="INTEGER" />
-		<result column="age" property="age" jdbcType="INTEGER" />
-		<result column="mobile" property="mobile" jdbcType="VARCHAR" />
-		<result column="address" property="address" jdbcType="VARCHAR" />
-		<result column="type" property="type" jdbcType="INTEGER" />
-		<result column="status" property="status" jdbcType="INTEGER" />
-		<result column="gmt_create" property="gmtCreate" jdbcType="TIMESTAMP" />
-		<result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
+		<id column="id" property="id"/>
+		<result column="account" property="account"/>
+		<result column="password" property="password"/>
+		<result column="username" property="username"/>
+		<result column="sex" property="sex"/>
+		<result column="age" property="age"/>
+		<result column="mobile" property="mobile"/>
+		<result column="address" property="address"/>
+		<result column="type" property="type"/>
+		<result column="status" property="status"/>
+		<result column="gmt_create" property="gmtCreate"/>
+		<result column="gmt_modified" property="gmtModified"/>
 	</resultMap>
 
-	<sql id="base">
-		id, account, password, username, sex, age, mobile, address,type, status,gmt_create, gmt_modified
+	<sql id="baseColumn">
+		id,account,password,username,sex,age,mobile,address,type,status,gmt_create,gmt_modified
 	</sql>
 
 	<sql id="queryParams">
-		<where>
-			<if test="account!=null">
-				and account like concat(#{account},'%')
-			</if>
-			<if test="username!=null">
-				and username like concat(#{username},'%')
-			</if>
-		</where>
 	</sql>
 
 	<sql id="orderBy">
 		order by gmt_modified desc
 	</sql>
 
-	<select id="selectById" resultMap="BaseResultMap">
-		select
-		<include refid="base" />
-		from user where id = #{id}
-	</select>
-
-	<delete id="deleteById">
-		delete from user where id = #{id}
-	</delete>
-
 	<insert id="insert" useGeneratedKeys="true" keyProperty="id">
-		insert into user (account, password,
-		username, sex, age,
-		mobile, address, type,
-		status, gmt_create, gmt_modified
-		)
-		values
-		(#{account}, #{password},
-		#{username}, #{sex}, #{age},
-		#{mobile},#{address}, 
-		1,1, now(), now()
-		)
+		insert into user (account,password,username,sex,age,mobile,address,type,status,gmt_create,gmt_modified) values
+		(#{account},#{password},#{username},#{sex},#{age},#{mobile},#{address},#{type},#{status},now(),now())
+	</insert>
+
+	<insert id="batchInsert">
+		insert into user (account,password,username,sex,age,mobile,address,type,status,gmt_create,gmt_modified) values
+		<foreach collection="list" item="item" separator=",">
+			(#{item.account},#{item.password},#{item.username},#{item.sex},#{item.age},#{item.mobile},#{item.address},#{item.type},#{item.status},now(),now())
+		</foreach>
 	</insert>
 
 	<update id="update">
 		update user
-		set account = #{account},
-		password = #{password},
-		username = #{username},
-		sex = #{sex},
-		age = #{age},
-		mobile = #{mobile},
-		address = #{address},
-		type = #{type},
-		status = #{status},
-		gmt_create = #{gmtCreate},
-		gmt_modified = now()
+		set account=#{account},password=#{password},username=#{username},sex=#{sex},age=#{age},mobile=#{mobile},address=#{address},type=#{type},status=#{status},gmt_create=#{gmtCreate},gmt_modified=now()
 		where id = #{id}
 	</update>
-	
-	<insert id="batchInsert">
-		insert into user (account, password,
-		username, sex, age,
-		mobile, address, type,
-		status, gmt_create, gmt_modified
-		)
-		values
-		<foreach collection="list" item="user" separator=",">
-			(#{user.account}, #{user.password},
-			#{user.username}, #{user.sex}, #{user.age},
-			#{user.mobile},#{user.address}, 
-			1,1, now(), now()
-			)
-		</foreach>
-	</insert>
 
-	<delete id="batchDelete">
-		delete from user where id in 
-		<foreach collection="list" item="id" separator="," open="(" close=")">
-			#{id}
-		</foreach>
+	<delete id="delete">
+		delete from user where id = #{id}
 	</delete>
 
-	<select id="selectList" resultMap="BaseResultMap">
-		select
-		<include refid="base" />
-		from user
-		<include refid="queryParams" />
+	<delete id="batchDelete">
+		delete from user
+		<where>
+			<choose>
+				<when test="list != null and list.size()>0">
+					id in
+					<foreach collection="list" item="id" separator="," open="(" close=")">
+						#{id}
+					</foreach>
+				</when>
+				<otherwise>
+					1=0
+				</otherwise>
+			</choose>
+		</where>
+	</delete>
+
+	<select id="getById" resultMap="BaseResultMap">
+		select <include refid="baseColumn" /> from user
+		where id = #{id}
 	</select>
-	
+
+	<select id="queryByIds" resultMap="BaseResultMap">
+		select <include refid="baseColumn" /> from user
+		<where>
+			<choose>
+				<when test="list != null and list.size()>0">
+					id in
+					<foreach collection="list" item="id" separator="," open="(" close=")">
+						#{id}
+					</foreach>
+				</when>
+				<otherwise>
+					1=0
+				</otherwise>
+			</choose>
+		</where>
+	</select>
+
+	<select id="queryList" resultMap="BaseResultMap">
+		select <include refid="baseColumn" /> from user
+		<include refid="queryParams" />
+		<include refid="orderBy"/>
+	</select>
+
 	<select id="count" resultType="int">
 		select count(1) from user
 		<include refid="queryParams" />
 	</select>
-	
-	<select id="pageList" resultMap="BaseResultMap">
-		select
-		<include refid="base" />
-		from user
+
+	<select id="queryPage" resultMap="BaseResultMap">
+		select <include refid="baseColumn" /> from user
 		<include refid="queryParams" />
 	</select>
-	
+
 	<update id="updateStatus">
-		update user set status=#{status} where id=#{id}
+		update user set status=#{status}
+		where id=#{id}
 	</update>
 
 	<update id="batchUpdateStatus">
-		update user set status=#{status} where id in 
-		<foreach collection="list" item="id" separator="," open="(" close=")">
-			#{id}
-		</foreach>
+		update user set status=#{status}
+		<where>
+			<choose>
+				<when test="list != null and list.size()>0">
+					id in
+					<foreach collection="list" item="id" separator="," open="(" close=")">
+						#{id}
+					</foreach>
+				</when>
+				<otherwise>
+					1=0
+				</otherwise>
+			</choose>
+		</where>
 	</update>
 
-	<select id="checkAccountPassword"  resultMap="BaseResultMap">
-		select
-		<include refid="base" />
-		from user
-		where account = #{account}
-		and password = #{password}
-	</select>
 </mapper>

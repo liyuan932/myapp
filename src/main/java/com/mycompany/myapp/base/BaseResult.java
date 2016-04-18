@@ -2,26 +2,25 @@ package com.mycompany.myapp.base;
 
 public class BaseResult<T> {
 	private String msg;   //错误信息
-	private int code;	  //状态码
-	private T result;	  //返回结果
-	private boolean success = true;   //成功标志
-	
-	public BaseResult(int code,String msg){
+	private String code;	  //状态码
+	private T model;	  //返回结果
+	private Boolean flag = true;   //成功标志
+
+	public BaseResult(String code,String msg){
+		this.flag = false;
 		this.msg = msg;
 		this.code = code;
-		this.success = false;
 	}
-	
-	public BaseResult(T result){
-		this.code = 200;
-		this.result = result;
+
+	public BaseResult(){
 	}
-	
+
+	public BaseResult(T model){
+		this.model = model;
+	}
+
 	public boolean isSuccess() {
-		return success;
-	}
-	public void setSuccess(boolean success) {
-		this.success = success;
+		return flag;
 	}
 	public String getMsg() {
 		return msg;
@@ -29,18 +28,20 @@ public class BaseResult<T> {
 	public void setMsg(String msg) {
 		this.msg = msg;
 	}
-	public int getCode() {
-		return code;
+
+	public T getModel() {
+		return model;
 	}
-	public void setCode(int code) {
+
+	public void setModel(T model) {
+		this.model = model;
+	}
+
+	public void setCode(String code) {
 		this.code = code;
 	}
 
-	public T getResult() {
-		return result;
-	}
-
-	public void setResult(T result) {
-		this.result = result;
+	public String getCode() {
+		return code;
 	}
 }
