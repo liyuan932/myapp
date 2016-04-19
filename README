@@ -1,5 +1,10 @@
-1、mybatis映射生成器：
-mvn mybatis-generator:generate
-有用的包括两部分：
-1）POJO类；
-2）映射配置文件的insert、update语句；
+参考文章：
+spring事务传播机制实例讲解
+http://blog.csdn.net/seelye/article/details/40118089
+
+ Spring中@Transactional用法深度分析
+http://blog.csdn.net/blueheart20/article/details/44654007
+http://blog.csdn.net/blueheart20/article/details/44685161
+
+事务隔离机制：
+http://baike.baidu.com/view/2943500.htm

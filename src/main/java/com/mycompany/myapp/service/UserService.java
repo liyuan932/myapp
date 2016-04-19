@@ -1,37 +1,34 @@
 package com.mycompany.myapp.service;
 
-import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
-import com.github.miemiedev.mybatis.paginator.domain.PageList;
-import com.mycompany.myapp.base.BaseResult;
-import com.mycompany.myapp.common.enums.common.EnableOrDisableEnum;
-import com.mycompany.myapp.domain.UserDO;
-import com.mycompany.myapp.query.UserQuery;
-import com.mycompany.myapp.vo.LoginVO;
-import com.mycompany.myapp.vo.UserVO;
 
-import java.util.List;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
-public interface UserService{
-	
-	BaseResult<Long> addUser(UserDO db) throws Exception;
-	BaseResult<Integer> addUser(List<UserDO> uList);
+import javax.annotation.Resource;
 
-	BaseResult<Integer> updateUser(UserDO db);
-	BaseResult<Integer> updateUser(List<Long> idList);
-	
-	
-	BaseResult<Integer> removeUser(Long id);
-	BaseResult<Integer> removeUser(List<Long> idList);
-	
-	BaseResult<UserDO> getUserById(Long id);
-	
-	BaseResult<List<UserVO>> getUserList(UserQuery query) throws Exception;
-	BaseResult<Integer> getUserCount(UserQuery query);
-	
-	BaseResult<PageList<UserVO>> getUserList(UserQuery query, PageBounds pb) throws Exception;
-	 
-	BaseResult<Integer> updateStatus(Long id,EnableOrDisableEnum status);
-	BaseResult<Integer> updateStatus(List<Long> idList,EnableOrDisableEnum status);
-	
-	BaseResult<LoginVO> login(String account,String password);
+@Service("userService")
+public class UserService {
+    public static final String ADD_USER="insert into user(id,name) values(1,'duck')";
+
+    @Resource
+    private BookService bs;
+    @Resource
+    private JdbcTemplate jdbcTemplate;
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    public void addUser()throws Exception {
+        this.jdbcTemplate.execute(ADD_USER);
+        try {
+            //this.bs.addBook();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+       this.bs.addBook();
+
+        this.jdbcTemplate.execute(ADD_USER);
+        //throw new Exception("跳出执行");
+       // throw new BizException("跳出执行");
+    }
 }

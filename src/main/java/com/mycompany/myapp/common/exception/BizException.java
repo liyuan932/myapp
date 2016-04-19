@@ -7,6 +7,10 @@ public class BizException extends RuntimeException{
 
 	private String code;
 
+	public BizException(String msg){
+		super(msg);
+	}
+
 	public BizException(String msg, String code){
 		super(msg);
 		this.code = code;
