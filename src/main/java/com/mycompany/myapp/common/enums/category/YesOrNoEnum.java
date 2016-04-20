@@ -1,12 +1,12 @@
-package com.mycompany.myapp.common.enums.common;
+package com.mycompany.myapp.common.enums.category;
 
-public enum EnableOrDisableEnum {
-	ENABLE(1,"启用"),DISABLE(0,"禁用");
-	
+public enum YesOrNoEnum {
+	enable(1,"是"),disable(0,"否");
+
 	private int index;
 	private String text;
 
-	EnableOrDisableEnum(int index, String text){
+	YesOrNoEnum(int index, String text){
 		this.index = index;
 		this.text = text;
 	}
@@ -18,7 +18,7 @@ public enum EnableOrDisableEnum {
 	}
 
 	public static String getTextByIndex(int index){
-		for(EnableOrDisableEnum e : EnableOrDisableEnum.values()){
+		for(YesOrNoEnum e : YesOrNoEnum.values()){
 			if(e.getIndex() == index){
 				return e.getText();
 			}

@@ -1,17 +1,19 @@
 package com.mycompany.myapp.utils;
 
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
+import com.google.common.base.Function;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
+import com.mycompany.myapp.daoobject.BaseDO;
 import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class CopyUtils {
-	private static final Logger log = LoggerFactory.getLogger(CopyUtils.class);
+public class BeanUtils {
+	private static final Logger log = LoggerFactory.getLogger(BeanUtils.class);
 
 	public static <D, V> V dbToVo(D db, Class<V> clz) {
 		try {
@@ -19,7 +21,7 @@ public class CopyUtils {
 			Preconditions.checkNotNull(clz);
 
 			V vo = clz.newInstance();
-			BeanUtils.copyProperties(db, vo);
+			org.springframework.beans.BeanUtils.copyProperties(db, vo);
 
 			return vo;
 		} catch (Exception e) {
@@ -35,7 +37,7 @@ public class CopyUtils {
 			Preconditions.checkNotNull(callback);
 
 			V vo = clz.newInstance();
-			BeanUtils.copyProperties(db, vo);
+			org.springframework.beans.BeanUtils.copyProperties(db, vo);
 			callback.execute(db, vo);
 
 			return vo;
@@ -54,7 +56,7 @@ public class CopyUtils {
 			List<V> voList = Lists.newArrayList();
 			for (D db : dbList) {
 				V vo = clz.newInstance();
-				BeanUtils.copyProperties(db, vo);
+				org.springframework.beans.BeanUtils.copyProperties(db, vo);
 				voList.add(vo);
 			}
 			return voList;
@@ -73,7 +75,7 @@ public class CopyUtils {
 			List<V> voList = Lists.newArrayList();
 			for (D db : dbList) {
 				V vo = clz.newInstance();
-				BeanUtils.copyProperties(db, vo);
+				org.springframework.beans.BeanUtils.copyProperties(db, vo);
 				callback.execute(db, vo);
 				voList.add(vo);
 			}
@@ -94,7 +96,7 @@ public class CopyUtils {
 			PageList<V> voList = new PageList<V>(dbList.getPaginator());
 			for (D db : dbList) {
 				V vo = clz.newInstance();
-				BeanUtils.copyProperties(db, vo);
+				org.springframework.beans.BeanUtils.copyProperties(db, vo);
 				voList.add(vo);
 			}
 			return voList;
@@ -114,7 +116,7 @@ public class CopyUtils {
 			PageList<V> voList = new PageList<V>(dbList.getPaginator());
 			for (D db : dbList) {
 				V vo = clz.newInstance();
-				BeanUtils.copyProperties(db, vo);
+				org.springframework.beans.BeanUtils.copyProperties(db, vo);
 				callback.execute(db, vo);
 				voList.add(vo);
 			}
@@ -127,5 +129,14 @@ public class CopyUtils {
 
 	public interface Callback<D, V> {
 		void execute(D db, V vo);
+	}
+
+	public  static List<? extends Serializable> getIds(List<? extends BaseDO> list){
+		return Lists.transform(list, new Function<BaseDO, Serializable>() {
+			@Override
+			public Serializable apply(BaseDO input) {
+				return input.getId();
+			}
+		});
 	}
 }

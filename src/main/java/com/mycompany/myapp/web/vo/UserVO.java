@@ -1,6 +1,4 @@
-package com.mycompany.myapp.vo;
-
-import com.mycompany.myapp.base.BaseVO;
+package com.mycompany.myapp.web.vo;
 
 public class UserVO extends BaseVO{
 	private Long id;

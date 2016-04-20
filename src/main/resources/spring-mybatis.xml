@@ -55,7 +55,7 @@
 		<property name="dataSource" ref="dataSource" />
 		<!-- 配置mybatis配置文件的位置 -->
 		<property name="mapperLocations" value="classpath*:sqlmap/mapping-*.xml"/>
-		<property name="typeAliasesPackage" value="com.mycompany.myapp.domain" />
+		<property name="typeAliasesPackage" value="com.mycompany.myapp.daoobject" />
 		<property name="plugins">
 			<array>
 				<bean class="com.github.miemiedev.mybatis.paginator.OffsetLimitInterceptor">

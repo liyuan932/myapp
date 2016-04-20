@@ -1,4 +1,4 @@
-package com.mycompany.myapp.base;
+package com.mycompany.myapp.common.enums.msg;
 
 public interface BaseMsgEnum {
 	String getCode();

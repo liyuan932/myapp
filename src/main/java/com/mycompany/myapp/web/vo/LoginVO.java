@@ -1,4 +1,4 @@
-package com.mycompany.myapp.vo;
+package com.mycompany.myapp.web.vo;
 
 public class LoginVO {
 	private Long id;

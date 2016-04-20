@@ -1,47 +1,21 @@
-package com.mycompany.myapp.domain;
-
-import com.mycompany.myapp.base.BaseDO;
+package com.mycompany.myapp.daoobject;
 
 import java.util.Date;
 
 public class UserDO extends BaseDO {
 
-    private static final long serialVersionUID = -6335312216658046739L;
-
-    private Long id;
-
-    private String account;
-
-    private String password;
-
-    private String username;
-
-    private Integer sex;
-
-    private Integer age;
-
-    private String mobile;
-
-    private String address;
-
-    private Integer type;
-
-    private Integer status;
-
-    private Date gmtCreate;
-
-    private Date gmtModified;
-
-    public UserDO() {
-    }
-
-    public UserDO(String account, String password, String username,Integer type,Integer status) {
-        this.account = account;
-        this.password = password;
-        this.username = username;
-        this.type = type;
-        this.status = status;
-    }
+    private Long id; //主键
+    private String account; //账号
+    private String password; //密码
+    private String username; //用户名
+    private Integer sex; //性别
+    private Integer age; //年龄
+    private String mobile; //手机号
+    private String address; //地址
+    private Integer type; //类型  1管理员 2普通用户
+    private Integer status; //状态
+    private Date gmtCreate; //创建时间
+    private Date gmtModified; //修改时间
 
     public Long getId() {
         return id;
@@ -56,7 +30,7 @@ public class UserDO extends BaseDO {
     }
 
     public void setAccount(String account) {
-        this.account = account == null ? null : account.trim();
+        this.account = account;
     }
 
     public String getPassword() {
@@ -64,7 +38,7 @@ public class UserDO extends BaseDO {
     }
 
     public void setPassword(String password) {
-        this.password = password == null ? null : password.trim();
+        this.password = password;
     }
 
     public String getUsername() {
@@ -72,7 +46,7 @@ public class UserDO extends BaseDO {
     }
 
     public void setUsername(String username) {
-        this.username = username == null ? null : username.trim();
+        this.username = username;
     }
 
     public Integer getSex() {
@@ -96,7 +70,7 @@ public class UserDO extends BaseDO {
     }
 
     public void setMobile(String mobile) {
-        this.mobile = mobile == null ? null : mobile.trim();
+        this.mobile = mobile;
     }
 
     public String getAddress() {
@@ -104,7 +78,7 @@ public class UserDO extends BaseDO {
     }
 
     public void setAddress(String address) {
-        this.address = address == null ? null : address.trim();
+        this.address = address;
     }
 
     public Integer getType() {

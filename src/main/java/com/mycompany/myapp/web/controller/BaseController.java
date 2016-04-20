@@ -1,6 +1,6 @@
-package com.mycompany.myapp.base;
+package com.mycompany.myapp.web.controller;
 
-import com.google.common.base.Preconditions;
+import com.mycompany.myapp.service.common.Result;
 import org.springframework.ui.Model;
 
 import javax.annotation.Resource;
@@ -13,7 +13,7 @@ public class BaseController {
 	@Resource
 	protected HttpSession session;
 	
-	protected <T> String getView(BaseResult<T> res,Model model,String expectedViewName,CallBack cb){
+	protected <T> String getView(Result<T> res, Model model, String expectedViewName, CallBack cb){
 		if(res.isSuccess()){
 			cb.success(res);
 		}else{
@@ -23,15 +23,8 @@ public class BaseController {
 		}
 		return expectedViewName;
 	}
-	
-	protected void checkParams(Object... objs){
-		if(objs==null)return;
-		for(Object o : objs){
-			Preconditions.checkNotNull(o,"必要参数不在");
-		}
-	}
 
 	public interface CallBack{
-		public <T> void success(BaseResult<T> res);
+		public <T> void success(Result<T> res);
 	}
 }

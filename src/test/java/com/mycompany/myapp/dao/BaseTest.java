@@ -1,7 +1,6 @@
-package com.mycompany.myapp;
+package com.mycompany.myapp.dao;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.convert.converter.Converter;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTransactionalTestNGSpringContextTests;
 import org.springframework.test.context.transaction.TransactionConfiguration;
@@ -23,16 +22,9 @@ public class BaseTest extends AbstractTransactionalTestNGSpringContextTests {
 	@Autowired
 	private DataSource dataSource;
 	
-	@Test(enabled=true)
+	@Test(enabled=false)
 	public void testDataSource() throws SQLException {
 		assertNotNull(dataSource);
 		System.out.println(dataSource.getConnection());
 	}
-
-
-	@Test(enabled=true)
-	public void test() throws Exception {
-
-	}
-
 }

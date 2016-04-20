@@ -1,6 +1,4 @@
-package com.mycompany.myapp.common.enums.common;
-
-import com.mycompany.myapp.base.BaseMsgEnum;
+package com.mycompany.myapp.common.enums.msg;
 
 public enum CommonMsgEnum implements BaseMsgEnum {
 

@@ -8,12 +8,14 @@ import org.apache.commons.lang3.StringUtils;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 /**
  * Mybasis映射生成器
@@ -21,10 +23,22 @@ import java.util.Map;
 public class MybatisMappingUtils {
 
     private static Map<String,String> typeMap = Maps.newHashMap();
+    private static String[] tableNames = {"user"};
 
-    private static String[] tableNames = {"user","lesson"};
+    private static  String projectPackageName;
+    private static String driverClassName;
+    private static String url;
+    private static String username;
+    private static String password;
+
+    public static void main(String[] args) throws Exception {
+        new MybatisMappingUtils().mappingGenerator();
+    }
 
     public MybatisMappingUtils(){
+        String curPackageName = this.getClass().getPackage().getName();
+        projectPackageName = curPackageName.substring(0,curPackageName.lastIndexOf("."));
+
         typeMap.put("int","Integer");
         typeMap.put("bigint","Long");
         typeMap.put("decimal","Double");
@@ -36,15 +50,29 @@ public class MybatisMappingUtils {
         typeMap.put("datetime","Date");
         typeMap.put("date","Date");
         typeMap.put("timestamp","Date");
+
+        try {
+            Properties pro = new Properties();
+            InputStream in = this.getClass().getClassLoader().getResourceAsStream("jdbc.properties");
+            pro.load(in);
+            driverClassName = pro.getProperty("jdbc.driverClassName");
+            url = pro.getProperty("jdbc.url");
+            username = pro.getProperty("jdbc.username");
+            password = pro.getProperty("jdbc.password");
+            in.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
-    public static void main(String[] args) throws Exception {
-        new MybatisMappingUtils().mappingGenerator();
+    private String getProjectPathName(String projectPackageName){
+        return projectPackageName.replaceAll("\\.","/");
     }
 
     public void mappingGenerator() throws Exception{
-        Class.forName("com.mysql.jdbc.Driver");
-        Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/test", "root", "1234");
+        Class.forName(driverClassName);
+        Connection conn = DriverManager.getConnection(url, username, password);
 
         Statement statement = conn.createStatement();
 
@@ -63,9 +91,41 @@ public class MybatisMappingUtils {
 
             System.out.println(JSON.toJSONString(propertyInfos));
 
-            beanGenerator(className,propertyInfos);
+            daoobjectGenerator(className,propertyInfos);
+            daoGenerator(className,propertyInfos);
+            queryGenerator(className,propertyInfos);
             sqlmapGenerator(tableName, className,propertyInfos);
         }
+    }
+
+    private void queryGenerator(String className, List<PropertyInfo> propertyInfos) throws Exception {
+        File file = new File(System.getProperty("user.dir"),"src/main/java/"+getProjectPathName(projectPackageName)+"/query/" + className +"Query.java");
+        FileWriter writer = new FileWriter(file);
+        writer.write("package " + projectPackageName + ".query;\n");
+        writer.write("import " + projectPackageName + ".domain."+className+"DO;\n");
+        writer.write("public class "+className+"Query extends "+className+"DO{\n");
+        writer.write("}\n");
+        writer.close();
+    }
+
+    private void daoGenerator(String className,List<PropertyInfo> propertyInfos) throws Exception {
+        File file = new File(System.getProperty("user.dir"),"src/main/java/"+getProjectPathName(projectPackageName)+"/dao/" + className +"Dao.java");
+        FileWriter writer = new FileWriter(file);
+        writer.write("package " + projectPackageName + ".dao;\n");
+        writer.write("import " + projectPackageName + ".base.BaseDao;\n");
+        writer.write("import " + projectPackageName + ".domain."+className+"DO;\n");
+        writer.write("public interface "+className+"Dao extends BaseDao<"+className+"DO, "+getPropertyInfoMap(propertyInfos).get("id").getType()+"> {\n");
+        writer.write("}\n");
+        writer.close();
+    }
+
+    private Map<String,PropertyInfo> getPropertyInfoMap(List<PropertyInfo> propertyInfos){
+        Map<String,PropertyInfo> propertyInfoMap = Maps.newHashMap();
+
+        for(PropertyInfo info :propertyInfos){
+            propertyInfoMap.put(info.getProperty(),info);
+        }
+        return propertyInfoMap;
     }
 
     private void sqlmapGenerator(String tableName, String className, List<PropertyInfo> propertyInfos) throws IOException {
@@ -74,10 +134,10 @@ public class MybatisMappingUtils {
         FileWriter writer = new FileWriter(file);
         writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
         writer.write("<!DOCTYPE mapper PUBLIC \"-//mybatis.org//DTD Mapper 3.0//EN\" \"http://mybatis.org/dtd/mybatis-3-mapper.dtd\" >\n");
-        writer.write("<mapper namespace=\"com.mycompany.myapp.dao."+className+"Dao\">\n");
+        writer.write("<mapper namespace=\""+ projectPackageName +".dao."+className+"Dao\">\n");
         writer.write(resultMap(className,propertyInfos));
         writer.write(baseColumn(propertyInfos));
-        writer.write(queryParams());
+        writer.write(queryParams(propertyInfos));
         writer.write(orderBy());
         writer.write(insert(tableName,propertyInfos));
         writer.write(batchInsert(tableName,propertyInfos));
@@ -96,15 +156,15 @@ public class MybatisMappingUtils {
         writer.close();
     }
 
-    private void beanGenerator(String className,List<PropertyInfo> propertyInfos) throws IOException {
+    private void daoobjectGenerator(String className, List<PropertyInfo> propertyInfos) throws IOException {
 
-        File file = new File(System.getProperty("user.dir"),"src/main/java/com/mycompany/myapp/domain/" + className +".java");
+        File file = new File(System.getProperty("user.dir"),"src/main/java/"+getProjectPathName(projectPackageName)+"/domain/" + className +"DO.java");
         FileWriter writer = new FileWriter(file);
-        writer.write("package com.mycompany.myapp.domain;\n");
-        writer.write("import com.mycompany.myapp.base.BaseDO;\n");
+        writer.write("package " + projectPackageName + ".domain;\n");
+        writer.write("import " + projectPackageName + ".base.BaseDO;\n");
         writer.write("import java.util.Date;\n");
 
-        writer.write("public class "+className+" extends BaseDO {\n");
+        writer.write("public class "+className+"DO extends BaseDO {\n");
         writer.write("\n");
         for(PropertyInfo info : propertyInfos){
             writer.write("private " + info.getType() + " " + info.getProperty()+"; //"+ info.getComment()+" \n");
@@ -126,7 +186,7 @@ public class MybatisMappingUtils {
     private String resultMap(String className, List<PropertyInfo> propertyInfos){
 
         StringBuffer buff = new StringBuffer();
-        buff.append("\t<resultMap id=\"BaseResultMap\" type=\""+className+"\">\n");
+        buff.append("\t<resultMap id=\"BaseResultMap\" type=\""+className+"DO\">\n");
         for(PropertyInfo info : propertyInfos){
             String property = info.getProperty();
             String column = info.getColumn();
@@ -147,8 +207,19 @@ public class MybatisMappingUtils {
                 "\t</sql>\n\n";
     }
 
-    private String queryParams() {
+    private String queryParams(List<PropertyInfo> propertyInfos) {
+        StringBuffer buff = new StringBuffer();
+        for(PropertyInfo info : propertyInfos){
+            buff.append("\t\t\t<if test=\""+info.getProperty()+" !=null\">\n" +
+                    "\t\t\t\tand "+info.getColumn()+"=#{"+info.getProperty()+"}\n" +
+                    "\t\t\t</if>\n");
+        }
+
+
         return "\t<sql id=\"queryParams\">\n" +
+                "\t\t<where>\n"+
+                buff.toString() +
+                "\t\t</where>\n"+
                 "\t</sql>\n\n";
 
     }

@@ -13,20 +13,5 @@
 			<include name="all" />
 	    </run>
 	</groups>
-    <classes >
-      <class name="com.mycompany.myapp.dao.ActorMapperTest" />
-    </classes>
   </test>
-  
-  <test name="service">
-    <classes>
-      <class name="com.mycompany.myapp.service.ActorServiceTest"/>
-    </classes>
-  </test>  
-  
-  <test name="JUnitTests" junit="true">
-        <classes>
-            <class name="com.mycompany.myapp.dao.MyJunitTest" />
-        </classes>
-    </test>
 </suite>

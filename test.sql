@@ -1,3 +1,5 @@
+DROP TABLE IF EXISTS `user`;
+
 CREATE TABLE `user` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
   `account` varchar(32) NOT NULL COMMENT '账号',

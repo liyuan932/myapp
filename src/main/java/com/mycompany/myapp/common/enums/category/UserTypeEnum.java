@@ -1,4 +1,4 @@
-package com.mycompany.myapp.common.enums;
+package com.mycompany.myapp.common.enums.category;
 
 public enum UserTypeEnum {
 	NORMAL(1,"普通用户"),ADMIN(2,"管理员");

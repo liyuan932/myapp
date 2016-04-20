@@ -1,5 +1,42 @@
-1、mybatis映射生成器：
-mvn mybatis-generator:generate
-有用的包括两部分：
-1）POJO类；
-2）映射配置文件的insert、update语句；
+技术框架：
+spring + mybatis + springmvc
+
+Mybatis自动映射（两种方案）：
+1）mybatis-generator插件：生成的配置文件
+2）MybatisMappingUtils工具：推荐
+
+
+项目结构：分成4层
+1）公共层：
+common      //与业务有关公共数据
+    |-constant     //常量
+    |-enums        //枚举
+        |-msg      //错误信息枚举
+        |-category   //业务类别枚举
+
+utils      //与业务无关的工具类
+2）数据访问层：
+   |-dao            //数据库访问接口
+        |-BaseDAO   //基础DAO封装类
+   |-daoobject      //数据访问对象
+        |-BaseDO    //基础DO封装类
+   |-query          //查询封装对象，继承于daoobject
+
+3）业务层：
+   |-service        //业务接口层
+        |-impl      //业务实现层
+        |-common    //业务公共逻辑
+            |-BaseService       //公共业务逻辑
+            |-Result            //业务处理结果封装对象
+            |-ServiceException  //业务异常类，运行时异常
+            |-ServiceAspect     //业务切面类，用于处理异常，记录日志和处理时间
+   |-vo             //业务处理结果数据封装对象
+
+4）Web层：
+   |-controller    //控制层
+
+如果需要对外提供接口，还可增加API层：
+5）API层：
+    |-daoobject
+    |-query
+    |-Result

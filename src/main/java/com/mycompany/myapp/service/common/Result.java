@@ -1,21 +1,21 @@
-package com.mycompany.myapp.base;
+package com.mycompany.myapp.service.common;
 
-public class BaseResult<T> {
+public class Result<T> {
 	private String msg;   //错误信息
 	private String code;	  //状态码
 	private T model;	  //返回结果
 	private Boolean flag = true;   //成功标志
 
-	public BaseResult(String code,String msg){
+	public Result(String code, String msg){
 		this.flag = false;
 		this.msg = msg;
 		this.code = code;
 	}
 
-	public BaseResult(){
+	public Result(){
 	}
 
-	public BaseResult(T model){
+	public Result(T model){
 		this.model = model;
 	}
 

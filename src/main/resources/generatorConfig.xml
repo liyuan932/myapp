@@ -20,7 +20,7 @@
 		</javaTypeResolver>
 
 		<!-- 生成模型的包名和位置-->
-		<javaModelGenerator targetPackage="com.mycompany.myapp.domain"
+		<javaModelGenerator targetPackage="com.mycompany.myapp.daoobject"
 		targetProject="src/main/java">
 	        <property name="enableSubPackages" value="true"/>
             <property name="trimStrings" value="true"/>
