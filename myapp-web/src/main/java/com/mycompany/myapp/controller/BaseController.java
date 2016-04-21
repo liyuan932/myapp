@@ -21,15 +21,16 @@ public class BaseController {
 	private static final Logger log = LoggerFactory.getLogger(BaseController.class);
 
 	@ExceptionHandler
-	public Result<?> exception(HttpServletRequest request, Exception e) {
+	public String exception(HttpServletRequest request, Exception e  ) {
+		request.setAttribute("ex", e);
 		if (e instanceof ServiceException) {
-			return fail(((ServiceException) e).getCode(),e.getMessage());
+			return "error/error-business";
 		}if (e instanceof IllegalArgumentException) {
-			return fail(CommonMsgEnum.FAIL_BIZ_PARAM_ERROR, e);
+			return "error/error-parameter";
 		} else if (e instanceof DataAccessException) {
-			return fail(CommonMsgEnum.FAIL_BIZ_DB_ERROR, e);
+			return "error/error-db";
 		} else {
-			return fail( CommonMsgEnum.FAIL_BIZ_SYSTEM_ERROR, e);
+			return "error/error";
 		}
 	}
 

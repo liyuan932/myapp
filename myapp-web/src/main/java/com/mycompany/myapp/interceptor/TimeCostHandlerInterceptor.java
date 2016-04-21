@@ -3,7 +3,6 @@ package com.mycompany.myapp.interceptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.NamedThreadLocal;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,11 +20,6 @@ public class TimeCostHandlerInterceptor extends HandlerInterceptorAdapter {
 		long beginTime = System.currentTimeMillis();
 		startTimeThreadLocal.set(beginTime);
 		return true;
-	}
-
-	@Override
-	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
-
 	}
 
 	@Override
