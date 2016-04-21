@@ -1,4 +1,4 @@
-package com.mycompany.myapp.service.common;
+package com.mycompany.myapp.vo;
 
 public class Result<T> {
 	private String msg;   //错误信息

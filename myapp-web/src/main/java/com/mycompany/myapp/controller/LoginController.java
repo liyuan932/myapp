@@ -1,5 +1,6 @@
 package com.mycompany.myapp.controller;
 
+import com.mycompany.myapp.daoobject.UserDO;
 import com.mycompany.myapp.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -8,15 +9,24 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.annotation.Resource;
 
 @Controller  
-@RequestMapping("/")
+@RequestMapping("/user")
 public class LoginController extends BaseController {
 
 	@Resource
     private UserService userService;
     
-	@RequestMapping("/login")
+	@RequestMapping("/add")
     @ResponseBody
-    public Object login(String account,String password){
-		return null;
+    public Object addUser(){
+        UserDO user = new UserDO();
+        user.setAccount("test");
+        user.setPassword("1234");
+        user.setUsername("test");
+        user.setStatus(1);
+        user.setType(1);
+
+        userService.addUser(user);
+
+		return success();
     }
 }
