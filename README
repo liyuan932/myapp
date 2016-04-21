@@ -30,13 +30,15 @@ utils      //与业务无关的工具类
             |-Result            //业务处理结果封装对象
             |-ServiceException  //业务异常类，运行时异常
             |-ServiceAspect     //业务切面类，用于处理异常，记录日志和处理时间
-   |-vo             //业务处理结果数据封装对象
+   |-vo             //视图数据对象，用于在web页显示数据，分布式应用放在web层
 
 4）Web层：
    |-controller    //控制层
+   |-interceptor   //web拦截器
 
 如果需要对外提供接口，还可增加API层：
 5）API层：
     |-daoobject
     |-query
     |-Result
+    |-dto         //数据转换对象，用于远程调用

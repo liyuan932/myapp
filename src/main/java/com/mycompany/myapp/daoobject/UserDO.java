@@ -112,4 +112,5 @@ public class UserDO extends BaseDO {
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
     }
+
 }

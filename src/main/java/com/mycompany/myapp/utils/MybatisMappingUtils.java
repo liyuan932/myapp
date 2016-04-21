@@ -101,20 +101,19 @@ public class MybatisMappingUtils {
     private void queryGenerator(String className, List<PropertyInfo> propertyInfos) throws Exception {
         File file = new File(System.getProperty("user.dir"),"src/main/java/"+getProjectPathName(projectPackageName)+"/query/" + className +"Query.java");
         FileWriter writer = new FileWriter(file);
-        writer.write("package " + projectPackageName + ".query;\n");
-        writer.write("import " + projectPackageName + ".domain."+className+"DO;\n");
-        writer.write("public class "+className+"Query extends "+className+"DO{\n");
+        writer.write("package " + projectPackageName + ".query;\n\n");
+        writer.write("import " + projectPackageName + ".daoobject."+className+"DO;\n");
+        writer.write("\npublic class "+className+"Query extends "+className+"DO {\n");
         writer.write("}\n");
         writer.close();
     }
 
     private void daoGenerator(String className,List<PropertyInfo> propertyInfos) throws Exception {
-        File file = new File(System.getProperty("user.dir"),"src/main/java/"+getProjectPathName(projectPackageName)+"/dao/" + className +"Dao.java");
+        File file = new File(System.getProperty("user.dir"),"src/main/java/"+getProjectPathName(projectPackageName)+"/dao/" + className +"DAO.java");
         FileWriter writer = new FileWriter(file);
-        writer.write("package " + projectPackageName + ".dao;\n");
-        writer.write("import " + projectPackageName + ".base.BaseDao;\n");
-        writer.write("import " + projectPackageName + ".domain."+className+"DO;\n");
-        writer.write("public interface "+className+"Dao extends BaseDao<"+className+"DO, "+getPropertyInfoMap(propertyInfos).get("id").getType()+"> {\n");
+        writer.write("package " + projectPackageName + ".dao;\n\n");
+        writer.write("import " + projectPackageName + ".daoobject."+className+"DO;\n");
+        writer.write("\npublic interface "+className+"DAO extends BaseDAO<"+className+"DO, "+getPropertyInfoMap(propertyInfos).get("id").getType()+"> {\n");
         writer.write("}\n");
         writer.close();
     }
@@ -134,7 +133,7 @@ public class MybatisMappingUtils {
         FileWriter writer = new FileWriter(file);
         writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
         writer.write("<!DOCTYPE mapper PUBLIC \"-//mybatis.org//DTD Mapper 3.0//EN\" \"http://mybatis.org/dtd/mybatis-3-mapper.dtd\" >\n");
-        writer.write("<mapper namespace=\""+ projectPackageName +".dao."+className+"Dao\">\n");
+        writer.write("<mapper namespace=\""+ projectPackageName +".dao."+className+"DAO\">\n");
         writer.write(resultMap(className,propertyInfos));
         writer.write(baseColumn(propertyInfos));
         writer.write(queryParams(propertyInfos));
@@ -158,26 +157,26 @@ public class MybatisMappingUtils {
 
     private void daoobjectGenerator(String className, List<PropertyInfo> propertyInfos) throws IOException {
 
-        File file = new File(System.getProperty("user.dir"),"src/main/java/"+getProjectPathName(projectPackageName)+"/domain/" + className +"DO.java");
+        File file = new File(System.getProperty("user.dir"),"src/main/java/"+getProjectPathName(projectPackageName)+"/daoobject/" + className +"DO.java");
         FileWriter writer = new FileWriter(file);
-        writer.write("package " + projectPackageName + ".domain;\n");
-        writer.write("import " + projectPackageName + ".base.BaseDO;\n");
+        writer.write("package " + projectPackageName + ".daoobject;\n\n");
         writer.write("import java.util.Date;\n");
 
-        writer.write("public class "+className+"DO extends BaseDO {\n");
+        writer.write("\npublic class "+className+"DO extends BaseDO {\n");
         writer.write("\n");
         for(PropertyInfo info : propertyInfos){
-            writer.write("private " + info.getType() + " " + info.getProperty()+"; //"+ info.getComment()+" \n");
+            writer.write("\tprivate " + info.getType() + " " + info.getProperty()+"; //"+ info.getComment()+" \n");
         }
+        writer.write("\n");
         for(PropertyInfo info : propertyInfos){
             String type = info.getType();
             String property = info.getProperty();
-            writer.write("public " + type + " get" + StringUtils.capitalize(property)+"(){\n");
-            writer.write("return " + property +";\n");
-            writer.write("}\n");
-            writer.write("public void set" + StringUtils.capitalize(property) +"("+ type + " " + property +"){\n");
-            writer.write("this." + property + " = " + property +";\n");
-            writer.write("}\n");
+            writer.write("\tpublic " + type + " get" + StringUtils.capitalize(property)+"() {\n");
+            writer.write("\t\treturn " + property +";\n");
+            writer.write("\t}\n\n");
+            writer.write("\tpublic void set" + StringUtils.capitalize(property) +"("+ type + " " + property +") {\n");
+            writer.write("\t\tthis." + property + " = " + property +";\n");
+            writer.write("\t}\n\n");
         }
         writer.write("}\n");
         writer.close();
