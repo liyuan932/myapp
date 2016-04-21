@@ -12,7 +12,6 @@
 		<module>myapp-biz</module>
 		<module>myapp-web</module>
 	</modules>
-	<name>myapp</name>
 
 	<properties>
 		<myapp.version>1.0.0-SNAPSHOT</myapp.version>
@@ -365,6 +364,6 @@
 			</plugin>
 		</plugins>
 
-		<finalName>myapp</finalName>
+		<finalName>myapp-all</finalName>
 	</build>
 </project>

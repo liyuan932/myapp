@@ -97,4 +97,9 @@
             <artifactId>fastjson</artifactId>
         </dependency>
     </dependencies>
+
+
+    <build>
+        <finalName>myapp-dal</finalName>
+    </build>
 </project>
