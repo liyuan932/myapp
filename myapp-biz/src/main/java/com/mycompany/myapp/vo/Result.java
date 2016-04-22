@@ -1,5 +1,8 @@
 package com.mycompany.myapp.vo;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
+@JsonSerialize(include=JsonSerialize.Inclusion.NON_NULL)
 public class Result<T> {
 	private String msg;   //错误信息
 	private String code;	  //状态码
@@ -19,9 +22,6 @@ public class Result<T> {
 		this.model = model;
 	}
 
-	public boolean isSuccess() {
-		return flag;
-	}
 	public String getMsg() {
 		return msg;
 	}
@@ -43,5 +43,13 @@ public class Result<T> {
 
 	public String getCode() {
 		return code;
+	}
+
+	public Boolean getFlag() {
+		return flag;
+	}
+
+	public void setFlag(Boolean flag) {
+		this.flag = flag;
 	}
 }

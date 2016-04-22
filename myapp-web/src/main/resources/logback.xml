@@ -2,21 +2,35 @@
 <configuration debug="false">
 	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
 		<target>System.out</target>
+		<filter class="ch.qos.logback.core.filter.EvaluatorFilter">
+			<evaluator>
+				<expression>return level&lt;=INFO;</expression>
+			</evaluator>
+			<OnMatch>ACCEPT</OnMatch>
+			<OnMismatch>DENY</OnMismatch>
+		</filter>
 		<encoder>
 			<pattern><![CDATA[
 %n%-4r [%d{yyyy-MM-dd HH:mm:ss}] %X{productionMode} - %X{method} %X{requestURIWithQueryString}[%file:%line][%method] [ip=%X{remoteAddr}, ref=%X{referrer}, ua=%X{userAgent}, sid=%X{cookie.JSESSIONID}]%n  %-5level %logger{35} - %m%n
             ]]></pattern>
-			<charset>UTF-8</charset>
+			<charset>GBK</charset>
 		</encoder>
 	</appender>
 
 	<appender name="STDERR" class="ch.qos.logback.core.ConsoleAppender">
 		<target>System.err</target>
+		<filter class="ch.qos.logback.core.filter.EvaluatorFilter">
+			<evaluator>
+				<expression>return level&gt;INFO;</expression>
+			</evaluator>
+			<OnMatch>ACCEPT</OnMatch>
+			<OnMismatch>DENY</OnMismatch>
+		</filter>
 		<encoder>
 			<pattern><![CDATA[
 %n%-4r [%d{yyyy-MM-dd HH:mm:ss}] %X{productionMode} - %X{method} %X{requestURIWithQueryString}[%file:%line][%method] [ip=%X{remoteAddr}, ref=%X{referrer}, ua=%X{userAgent}, sid=%X{cookie.JSESSIONID}]%n  %-5level %logger{35} - %m%n
             ]]></pattern>
-			<charset>UTF-8</charset>
+			<charset>GBK</charset>
 		</encoder>
 	</appender>
 
@@ -42,7 +56,7 @@
 		</rollingPolicy>
 		<encoder>
 			<pattern><![CDATA[
-%n%-4r [%d{yyyy-MM-dd HH:mm:ss}] %X{productionMode} - %X{method} %X{requestURIWithQueryString}[%file:%line][%method] [ip=%X{remoteAddr}, ref=%X{referrer}, ua=%X{userAgent}, sid=%X{cookie.JSESSIONID}]%n  %-5level %logger{35} - %m%n
+			%n%-4r->%d{yyyy-MM-dd HH:mm:ss}->%-5level->%m%n
             ]]></pattern>
 		</encoder>
 	</appender>
@@ -51,9 +65,9 @@
 		<appender-ref ref="OPERATION" />
 	</logger>
 
-	<root level="DEBUG">
+	<root level="INFO">
 		<appender-ref  ref="STDOUT" />
-		<!--<appender-ref ref="STDERR" />-->
+		<appender-ref ref="STDERR" />
 		<appender-ref ref="PROJECT" />
 	</root>
 

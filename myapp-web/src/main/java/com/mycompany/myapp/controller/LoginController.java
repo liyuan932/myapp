@@ -18,15 +18,19 @@ public class LoginController extends BaseController {
 	@RequestMapping("/add")
     @ResponseBody
     public Object addUser(){
-        UserDO user = new UserDO();
-        user.setAccount("test");
-        user.setPassword("1234");
-        user.setUsername("test");
-        user.setStatus(1);
-        user.setType(1);
+        try {
+            UserDO user = new UserDO();
+            user.setAccount("test");
+            user.setPassword("1234");
+            user.setUsername("test");
+            user.setStatus(1);
+            user.setType(1);
+            userService.addUser(user);
 
-        userService.addUser(user);
+            return success();
+        }catch (Exception e){
+            return fail(e);
+        }
 
-		return success();
     }
 }

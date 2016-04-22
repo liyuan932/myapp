@@ -28,8 +28,8 @@ public class TimeCostHandlerInterceptor extends HandlerInterceptorAdapter {
 		long endTime = System.currentTimeMillis();
 		long beginTime = startTimeThreadLocal.get();
 		long consumeTime = endTime - beginTime;
-		if (consumeTime < 500) {// 此处认为处理时间超过500毫秒的请求为慢请求
-			log.warn(String.format("%s consume %d ms", request.getRequestURI(), consumeTime));  //记录到日志文件
+		if (consumeTime > 500) {
+			log.warn(String.format("%s consume %d ms", request.getRequestURI(), consumeTime));
 		}
 	}
 }

@@ -21,15 +21,18 @@ public class BaseController {
 	private static final Logger log = LoggerFactory.getLogger(BaseController.class);
 
 	@ExceptionHandler
-	public String exception(HttpServletRequest request, Exception e  ) {
+	public String exception(HttpServletRequest request, Exception e ) {
 		request.setAttribute("ex", e);
 		if (e instanceof ServiceException) {
 			return "error/error-business";
 		}if (e instanceof IllegalArgumentException) {
+			log.error(CommonMsgEnum.FAIL_BIZ_PARAM_ERROR.getMsg(),e);
 			return "error/error-parameter";
 		} else if (e instanceof DataAccessException) {
+			log.error(CommonMsgEnum.FAIL_BIZ_DB_ERROR.getMsg(),e);
 			return "error/error-db";
 		} else {
+			log.error(CommonMsgEnum.FAIL_BIZ_SYSTEM_ERROR.getMsg(),e);
 			return "error/error";
 		}
 	}
@@ -42,13 +45,24 @@ public class BaseController {
 		return  new Result<>();
 	}
 
-	protected <T> Result<T> fail(CommonMsgEnum commonMsgEnum, Exception e) {
-		log.error(commonMsgEnum.getCode(),e);
+	protected Result<?> fail(CommonMsgEnum commonMsgEnum, Exception e) {
+		log.error(commonMsgEnum.getMsg(),e);
 		return new Result<>(commonMsgEnum.getCode(),commonMsgEnum.getMsg());
 	}
 
-	private Result<?> fail(String code, String msg) {
+	protected Result<?> fail(String code, String msg) {
 		return new Result<>(code, msg);
 	}
 
+	protected Result<?> fail(Exception e) {
+		if (e instanceof ServiceException) {
+			return fail(((ServiceException)e).getCode(),e.getMessage());
+		}if (e instanceof IllegalArgumentException) {
+			return fail(CommonMsgEnum.FAIL_BIZ_PARAM_ERROR,e);
+		} else if (e instanceof DataAccessException) {
+			return fail(CommonMsgEnum.FAIL_BIZ_DB_ERROR,e);
+		} else {
+			return fail(CommonMsgEnum.FAIL_BIZ_SYSTEM_ERROR,e);
+		}
+	}
 }
