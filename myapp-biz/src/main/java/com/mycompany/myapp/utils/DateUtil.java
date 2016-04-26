@@ -8,7 +8,7 @@ import java.util.Date;
 /**
  * 日期工具类
  */
-public class DateUtils {
+public class DateUtil {
 
     /**
      * 日期转换成字段串，按照格式：yyyy-MM-dd HH:mm:ss

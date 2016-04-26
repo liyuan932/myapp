@@ -2,7 +2,7 @@ package com.mycompany.myapp.utils;
 
 import java.math.BigDecimal;
 
-public class NumberUtils {
+public class NumberUtil {
 
     /**
      * 2个double值相减

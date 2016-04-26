@@ -12,8 +12,8 @@ import org.slf4j.LoggerFactory;
 import java.io.Serializable;
 import java.util.List;
 
-public class BeanUtils {
-	private static final Logger log = LoggerFactory.getLogger(BeanUtils.class);
+public class BeanUtil {
+	private static final Logger log = LoggerFactory.getLogger(BeanUtil.class);
 
 	public static <D, V> V dbToVo(D db, Class<V> clz) {
 		try {
