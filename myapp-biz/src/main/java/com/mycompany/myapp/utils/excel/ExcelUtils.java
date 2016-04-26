@@ -74,6 +74,11 @@ public class ExcelUtils {
     }
 
 
+    /**
+     * 生成文件名
+     * @param clz
+     * @return
+     */
     private static String generateFileName(Class clz) {
         FileName fileName = (FileName) clz.getAnnotation(FileName.class);
         return fileName.value() + "_" + DateUtil.parseDate2Str(new Date(), DatePatternEnum.DATE_JOIN_TIME_JOIN) + ".xlsx";
