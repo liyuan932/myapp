@@ -7,6 +7,15 @@
 
   <display-name>Myapp</display-name>
 
+  <!--添加Web根目录到系统属性，默认为"webapp.root"-->
+  <listener>
+    <listener-class>org.springframework.web.util.WebAppRootListener</listener-class>
+  </listener>
+  <context-param>
+    <param-name>webAppRootKey</param-name>
+    <param-value>webapp.root</param-value>
+  </context-param>
+
   <!-- 防止Spring内存溢出监听器 -->
   <listener>
     <listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>
@@ -35,6 +44,7 @@
     <param-name>contextConfigLocation</param-name>
     <param-value>classpath*:spring-bean.xml</param-value>
   </context-param>
+
 
   <!--Spring mvc配置-->
   <servlet>

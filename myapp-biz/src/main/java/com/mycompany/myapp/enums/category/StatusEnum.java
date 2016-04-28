@@ -17,6 +17,15 @@ public enum StatusEnum {
 		return text;
 	}
 
+	public static StatusEnum getByIndex(int index){
+		for(StatusEnum e : StatusEnum.values()){
+			if(e.getIndex() == index){
+				return e;
+			}
+		}
+		return null;
+	}
+
 	public static String getTextByIndex(int index){
 		for(StatusEnum e : StatusEnum.values()){
 			if(e.getIndex() == index){

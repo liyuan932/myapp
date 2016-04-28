@@ -8,6 +8,7 @@ import com.mycompany.myapp.daoobject.BaseDO;
 import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 
 import java.io.Serializable;
 import java.util.List;
@@ -21,7 +22,7 @@ public class BeanUtil {
 			Preconditions.checkNotNull(clz);
 
 			V vo = clz.newInstance();
-			org.springframework.beans.BeanUtils.copyProperties(db, vo);
+			BeanUtils.copyProperties(db, vo);
 
 			return vo;
 		} catch (Exception e) {
@@ -37,7 +38,7 @@ public class BeanUtil {
 			Preconditions.checkNotNull(callback);
 
 			V vo = clz.newInstance();
-			org.springframework.beans.BeanUtils.copyProperties(db, vo);
+			BeanUtils.copyProperties(db, vo);
 			callback.execute(db, vo);
 
 			return vo;
@@ -50,13 +51,13 @@ public class BeanUtil {
 	public static <D, V> List<V> dbToVo(List<D> dbList, Class<V> clz) {
 
 		try {
-			Preconditions.checkArgument(CollectionUtils.isEmpty(dbList));
+			Preconditions.checkArgument(CollectionUtils.isNotEmpty(dbList));
 			Preconditions.checkNotNull(clz);
 
 			List<V> voList = Lists.newArrayList();
 			for (D db : dbList) {
 				V vo = clz.newInstance();
-				org.springframework.beans.BeanUtils.copyProperties(db, vo);
+				BeanUtils.copyProperties(db, vo);
 				voList.add(vo);
 			}
 			return voList;
@@ -68,14 +69,14 @@ public class BeanUtil {
 
 	public static <D, V> List<V> dbToVo(List<D> dbList, Class<V> clz, Callback<D, V> callback) {
 		try {
-			Preconditions.checkArgument(CollectionUtils.isEmpty(dbList));
+			Preconditions.checkArgument(CollectionUtils.isNotEmpty(dbList));
 			Preconditions.checkNotNull(clz);
 			Preconditions.checkNotNull(callback);
 
 			List<V> voList = Lists.newArrayList();
 			for (D db : dbList) {
 				V vo = clz.newInstance();
-				org.springframework.beans.BeanUtils.copyProperties(db, vo);
+				BeanUtils.copyProperties(db, vo);
 				callback.execute(db, vo);
 				voList.add(vo);
 			}
@@ -90,13 +91,13 @@ public class BeanUtil {
 	public static <D, V> PageList<V> dbToVo(PageList<D> dbList, Class<V> clz) {
 
 		try {
-			Preconditions.checkArgument(CollectionUtils.isEmpty(dbList));
+			Preconditions.checkArgument(CollectionUtils.isNotEmpty(dbList));
 			Preconditions.checkNotNull(clz);
 
 			PageList<V> voList = new PageList<V>(dbList.getPaginator());
 			for (D db : dbList) {
 				V vo = clz.newInstance();
-				org.springframework.beans.BeanUtils.copyProperties(db, vo);
+				BeanUtils.copyProperties(db, vo);
 				voList.add(vo);
 			}
 			return voList;
@@ -109,14 +110,14 @@ public class BeanUtil {
 	public static <D, V> PageList<V> dbToVo(PageList<D> dbList, Class<V> clz, Callback<D, V> callback) {
 
 		try {
-			Preconditions.checkArgument(CollectionUtils.isEmpty(dbList));
+			Preconditions.checkArgument(CollectionUtils.isNotEmpty(dbList));
 			Preconditions.checkNotNull(clz);
 			Preconditions.checkNotNull(callback);
 
 			PageList<V> voList = new PageList<V>(dbList.getPaginator());
 			for (D db : dbList) {
 				V vo = clz.newInstance();
-				org.springframework.beans.BeanUtils.copyProperties(db, vo);
+				BeanUtils.copyProperties(db, vo);
 				callback.execute(db, vo);
 				voList.add(vo);
 			}

@@ -61,13 +61,14 @@
 		</encoder>
 	</appender>
 
+	<logger name="com.mycompany.myapp.dao" level="DEBUG" additivity="false">
+		<appender-ref ref="STDOUT" />
+	</logger>
 	<logger name="operationLog" level="INFO" additivity="false">
 		<appender-ref ref="OPERATION" />
 	</logger>
 
-	<root level="INFO">
-		<appender-ref  ref="STDOUT" />
-		<appender-ref ref="STDERR" />
+	<root level="WARN">
 		<appender-ref ref="PROJECT" />
 	</root>
 

@@ -1,12 +1,12 @@
 package com.mycompany.myapp.vo;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.mycompany.myapp.utils.excel.FileName;
 import com.mycompany.myapp.utils.excel.Title;
-import org.apache.poi.ss.usermodel.Cell;
 
-import java.util.Date;
 
-@FileName("user")
+@FileName("用户")
+@JsonSerialize(include=JsonSerialize.Inclusion.NON_NULL)
 public class UserVO extends BaseVO{
 	private Long id;
 
@@ -16,31 +16,32 @@ public class UserVO extends BaseVO{
 	@Title("用户名")
     private String username;
 
-	@Title("性别")
     private Integer sex;
 
-	@Title(value = "年龄",cellType = Cell.CELL_TYPE_NUMERIC)
     private Integer age;
 
+	@Title("手机号码")
     private String mobile;
 
     private Integer type;
 
-    private String typeText;
-
     private Integer status;
 
+	@Title("用户类型")
+	private String typeText;
+
+	@Title("状态")
     private String statusText;
 
 	@Title("创建时间")
-	private Date gmtCreate;
+	private String gmtCreateText;
 
-	public Date getGmtCreate() {
-		return gmtCreate;
+	public String getGmtCreateText() {
+		return gmtCreateText;
 	}
 
-	public void setGmtCreate(Date gmtCreate) {
-		this.gmtCreate = gmtCreate;
+	public void setGmtCreateText(String gmtCreateText) {
+		this.gmtCreateText = gmtCreateText;
 	}
 
 	public Long getId() {

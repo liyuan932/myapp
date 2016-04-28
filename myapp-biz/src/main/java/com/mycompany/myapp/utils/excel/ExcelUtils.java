@@ -12,6 +12,7 @@ import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.stereotype.Component;
 
 import java.beans.PropertyDescriptor;
 import java.io.File;
@@ -22,6 +23,7 @@ import java.util.*;
 /**
  * Excel文件生成工具
  */
+@Component
 public class ExcelUtils {
 
     /**
@@ -73,7 +75,6 @@ public class ExcelUtils {
         }
     }
 
-
     /**
      * 生成文件名
      * @param clz
@@ -84,19 +85,34 @@ public class ExcelUtils {
         return fileName.value() + "_" + DateUtil.parseDate2Str(new Date(), DatePatternEnum.DATE_JOIN_TIME_JOIN) + ".xlsx";
     }
 
-    public static void generateExcelFile(List<? extends Object> dataList) throws Exception {
+    /**
+     * 创建Excel工作簿
+     * @param dataList
+     * @return
+     * @throws Exception
+     */
+    private static <T> XSSFWorkbook createWorkbook(List<T> dataList) throws Exception {
 
-        Preconditions.checkArgument(CollectionUtils.isNotEmpty(dataList));
-
-        Class clz = dataList.get(0).getClass();
-        File file = new File(generateFileName(clz));
-        Map<String, Title> titles = titles(clz);
+         Map<String, Title> titles = titles(dataList.get(0).getClass());
 
         XSSFWorkbook workbook = new XSSFWorkbook();
         XSSFSheet sheet = workbook.createSheet("sheet");
         generateExcelTitle(sheet, titles);
         generateExcelDataContent(sheet, titles, dataList);
-        workbook.write(new FileOutputStream(file));
+
+        return workbook;
+    }
+
+
+
+    public static <T> File generatorFile(List<T> dataList) throws Exception {
+
+        Preconditions.checkArgument(CollectionUtils.isNotEmpty(dataList));
+
+        File file = new File(System.getProperty("webapp.root"),generateFileName(dataList.get(0).getClass()));
+        createWorkbook(dataList).write(new FileOutputStream(file));
+
+        return file;
     }
 
     private static Map<String, Title> titles(Class<?> clz) {
@@ -113,16 +129,19 @@ public class ExcelUtils {
     }
 
     public static void main(String[] args) throws Exception {
-        List<UserVO> list = Lists.newArrayList();
+
+
+       List<UserVO> list = Lists.newArrayList();
         for (int i = 0; i < 10; i++) {
             UserVO user = new UserVO();
             user.setAccount(DateUtil.parseDate2Str(new Date()));
             user.setUsername("1111");
             user.setAge(19);
-            user.setGmtCreate(new Date());
+            user.setGmtCreateText(DateUtil.parseDate2Str(new Date()));
             list.add(user);
         }
 
-        ExcelUtils.generateExcelFile(list);
+       ExcelUtils.generatorFile(list);
     }
+
 }

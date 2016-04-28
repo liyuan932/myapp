@@ -21,7 +21,16 @@ public enum UserTypeEnum {
 	public void setText(String text) {
 		this.text = text;
 	}
-	
+
+	public static UserTypeEnum getByIndex(int index){
+		for(UserTypeEnum e : UserTypeEnum.values()){
+			if(e.getIndex() == index){
+				return e;
+			}
+		}
+		return null;
+	}
+
 	public static String getTextByIndex(int index){
 		for(UserTypeEnum e : UserTypeEnum.values()){
 			if(e.getIndex() == index){

@@ -14,22 +14,26 @@
         <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
     </context:component-scan>
 
-    <mvc:annotation-driven/>
+    <mvc:annotation-driven>
+        <mvc:message-converters>
+            <bean class="org.springframework.http.converter.ByteArrayHttpMessageConverter"/>
+            <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+                <property name="supportedMediaTypes">
+                    <list>
+                        <value>text/html;charset=UTF-8</value>
+                        <value>text/json;charset=UTF-8</value>
+                        <value>application/json;charset=UTF-8</value>
+                    </list>
+                </property>
+                <property name="objectMapper">
+                    <bean class="com.github.miemiedev.mybatis.paginator.jackson2.PageListJsonMapper"/>
+                </property>
+            </bean>
+        </mvc:message-converters>
+    </mvc:annotation-driven>
 
     <!--避免IE执行AJAX时，返回JSON出现下载文件 -->
-    <bean id="mappingJackson2HttpMessageConverter"
-          class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
-        <property name="supportedMediaTypes">
-            <list>
-                <value>text/html;charset=UTF-8</value>
-                <value>text/json;charset=UTF-8</value>
-                <value>application/json;charset=UTF-8</value>
-            </list>
-        </property>
-        <property name="objectMapper">
-            <bean class="com.github.miemiedev.mybatis.paginator.jackson2.PageListJsonMapper"/>
-        </property>
-    </bean>
+
 
     <!-- 配置文件上传 -->
     <bean id="multipartResolver"
