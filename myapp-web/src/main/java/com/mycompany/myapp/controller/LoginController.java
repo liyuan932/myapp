@@ -1,6 +1,6 @@
 package com.mycompany.myapp.controller;
 
-import com.mycompany.myapp.daoobject.UserDO;
+import com.mycompany.myapp.daoobject.User;
 import com.mycompany.myapp.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,7 +19,7 @@ public class LoginController extends BaseController {
     @ResponseBody
     public Object addUser(){
         try {
-            UserDO user = new UserDO();
+            User user = new User();
             user.setAccount("test");
             user.setPassword("1234");
             user.setUsername("test");

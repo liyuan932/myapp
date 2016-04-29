@@ -32,8 +32,10 @@
         </mvc:message-converters>
     </mvc:annotation-driven>
 
-    <!--避免IE执行AJAX时，返回JSON出现下载文件 -->
-
+    <!--拦截器 -->
+    <mvc:interceptors>
+        <bean class="com.mycompany.myapp.interceptor.TimeCostHandlerInterceptor"/>
+    </mvc:interceptors>
 
     <!-- 配置文件上传 -->
     <bean id="multipartResolver"
@@ -55,8 +57,5 @@
     <!-- 对静态资源文件的处理方案-->
     <mvc:default-servlet-handler/>
 
-    <!--拦截器 -->
-    <mvc:interceptors>
-        <bean class="com.mycompany.myapp.interceptor.TimeCostHandlerInterceptor"/>
-    </mvc:interceptors>
+
 </beans>

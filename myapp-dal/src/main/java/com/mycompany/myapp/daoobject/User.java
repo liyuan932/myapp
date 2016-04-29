@@ -2,7 +2,7 @@ package com.mycompany.myapp.daoobject;
 
 import java.util.Date;
 
-public class UserDO extends BaseDO {
+public class User extends BaseDO {
 
     private Long id; //主键
     private String account; //账号

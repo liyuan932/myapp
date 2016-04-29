@@ -1,6 +1,6 @@
 package com.mycompany.myapp.service.impl;
 
-import com.mycompany.myapp.daoobject.UserDO;
+import com.mycompany.myapp.daoobject.User;
 import com.mycompany.myapp.dao.UserDAO;
 import com.mycompany.myapp.enums.category.StatusEnum;
 import com.mycompany.myapp.enums.category.UserTypeEnum;
@@ -26,11 +26,11 @@ public class UserServiceImpl extends BaseService implements UserService {
     @Override
     public List<UserVO> queryUser(UserQuery query) {
 
-        List<UserDO> userDOs = userDAO.queryList(query);
+        List<User> users = userDAO.queryList(query);
 
-        List<UserVO> userVOs = BeanUtil.dbToVo(userDOs, UserVO.class, new BeanUtil.Callback<UserDO, UserVO>() {
+        List<UserVO> userVOs = BeanUtil.dbToVo(users, UserVO.class, new BeanUtil.Callback<User, UserVO>() {
             @Override
-            public void execute(UserDO db, UserVO vo) {
+            public void execute(User db, UserVO vo) {
                 vo.setStatusText(StatusEnum.getTextByIndex(db.getStatus()));
                 vo.setTypeText(UserTypeEnum.getTextByIndex(db.getType()));
                 vo.setGmtCreateText(DateUtil.parseDate2Str(db.getGmtCreate()));
@@ -41,12 +41,12 @@ public class UserServiceImpl extends BaseService implements UserService {
     }
 
     @Override
-    public UserDO getUserById(Long id) {
+    public User getUserById(Long id) {
         return userDAO.getById(id);
     }
 
     @Override
-    public void addUser(UserDO user) {
+    public void addUser(User user) {
         userDAO.insert(user);
     }
 }

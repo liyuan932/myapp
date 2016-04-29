@@ -4,5 +4,7 @@
     <title>Title</title>
 </head>
 <body>
+error-param
+${ex}
 </body>
 </html>

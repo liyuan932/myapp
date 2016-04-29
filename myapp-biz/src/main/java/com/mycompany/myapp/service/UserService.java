@@ -1,6 +1,6 @@
 package com.mycompany.myapp.service;
 
-import com.mycompany.myapp.daoobject.UserDO;
+import com.mycompany.myapp.daoobject.User;
 import com.mycompany.myapp.query.UserQuery;
 import com.mycompany.myapp.vo.UserVO;
 
@@ -10,7 +10,7 @@ public interface UserService{
 
 	List<UserVO> queryUser(UserQuery query);
 
-	UserDO getUserById(Long id);		
+	User getUserById(Long id);
 
-	 void addUser(UserDO user);
+	 void addUser(User user);
 }

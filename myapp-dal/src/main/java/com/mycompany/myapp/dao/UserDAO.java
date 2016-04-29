@@ -1,6 +1,6 @@
 package com.mycompany.myapp.dao;
 
-import com.mycompany.myapp.daoobject.UserDO;
+import com.mycompany.myapp.daoobject.User;
 
-public interface UserDAO extends BaseDAO<UserDO, Long> {
+public interface UserDAO extends BaseDAO<User, Long> {
 }

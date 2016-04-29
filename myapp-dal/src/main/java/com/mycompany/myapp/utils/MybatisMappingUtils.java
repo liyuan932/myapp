@@ -102,8 +102,8 @@ public class MybatisMappingUtils {
         File file = new File(System.getProperty("user.dir"),"src/main/java/"+getProjectPathName(projectPackageName)+"/query/" + className +"Query.java");
         FileWriter writer = new FileWriter(file);
         writer.write("package " + projectPackageName + ".query;\n\n");
-        writer.write("import " + projectPackageName + ".daoobject."+className+"DO;\n");
-        writer.write("\npublic class "+className+"Query extends "+className+"DO {\n");
+        writer.write("import " + projectPackageName + ".daoobject."+className+";\n");
+        writer.write("\npublic class "+className+"Query extends "+className+" {\n");
         writer.write("}\n");
         writer.close();
     }
@@ -112,8 +112,8 @@ public class MybatisMappingUtils {
         File file = new File(System.getProperty("user.dir"),"src/main/java/"+getProjectPathName(projectPackageName)+"/dao/" + className +"DAO.java");
         FileWriter writer = new FileWriter(file);
         writer.write("package " + projectPackageName + ".dao;\n\n");
-        writer.write("import " + projectPackageName + ".daoobject."+className+"DO;\n");
-        writer.write("\npublic interface "+className+"DAO extends BaseDAO<"+className+"DO, "+getPropertyInfoMap(propertyInfos).get("id").getType()+"> {\n");
+        writer.write("import " + projectPackageName + ".daoobject."+className+";\n");
+        writer.write("\npublic interface "+className+"DAO extends BaseDAO<"+className+", "+getPropertyInfoMap(propertyInfos).get("id").getType()+"> {\n");
         writer.write("}\n");
         writer.close();
     }
@@ -162,7 +162,7 @@ public class MybatisMappingUtils {
         writer.write("package " + projectPackageName + ".daoobject;\n\n");
         writer.write("import java.util.Date;\n");
 
-        writer.write("\npublic class "+className+"DO extends BaseDO {\n");
+        writer.write("\npublic class "+className+" extends BaseDO {\n");
         writer.write("\n");
         for(PropertyInfo info : propertyInfos){
             writer.write("\tprivate " + info.getType() + " " + info.getProperty()+"; //"+ info.getComment()+" \n");
@@ -185,7 +185,7 @@ public class MybatisMappingUtils {
     private String resultMap(String className, List<PropertyInfo> propertyInfos){
 
         StringBuffer buff = new StringBuffer();
-        buff.append("\t<resultMap id=\"BaseResultMap\" type=\""+className+"DO\">\n");
+        buff.append("\t<resultMap id=\"BaseResultMap\" type=\""+className+"\">\n");
         for(PropertyInfo info : propertyInfos){
             String property = info.getProperty();
             String column = info.getColumn();

@@ -1,6 +1,6 @@
 package com.mycompany.myapp.service;
 
-import com.mycompany.myapp.daoobject.UserDO;
+import com.mycompany.myapp.daoobject.User;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -12,7 +12,7 @@ public class UserServiceTest extends BaseTest {
 
     @Test
     public void addUser(){
-        UserDO user = new UserDO();
+        User user = new User();
         user.setAccount("test");
         user.setPassword("1234");
         user.setUsername("test");
