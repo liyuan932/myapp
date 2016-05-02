@@ -21,5 +21,6 @@ public class BaseTest extends AbstractTransactionalTestNGSpringContextTests {
 	public void testDataSource() throws SQLException {
 		Assert.assertNotNull(dataSource);
 		System.out.println(dataSource.getConnection());
+
 	}
 }
