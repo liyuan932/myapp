@@ -50,7 +50,7 @@ public class ExcelUtils {
      * @param data   数据列表
      * @throws Exception
      */
-    private static void generateExcelDataContent(XSSFSheet sheet, Map<String, Title> titles, List<? extends Object> data) throws Exception {
+    private static void generateExcelDataContent(XSSFSheet sheet, Map<String, Title> titles, List<?> data) throws Exception {
 
         Class clz = data.get(0).getClass();
 
