@@ -5,7 +5,7 @@ public enum UserTypeEnum {
 	
 	private int index;
 	private String text;
-	private UserTypeEnum(int index,String text){
+	UserTypeEnum(int index,String text){
 		this.index = index;
 		this.text = text;
 	}
