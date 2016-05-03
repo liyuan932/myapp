@@ -23,6 +23,8 @@ public class UserVO extends BaseVO{
 	@Title("手机号码")
     private String mobile;
 
+	private String address;
+
     private Integer type;
 
     private Integer status;
@@ -35,6 +37,14 @@ public class UserVO extends BaseVO{
 
 	@Title("创建时间")
 	private String gmtCreateText;
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
 
 	public String getGmtCreateText() {
 		return gmtCreateText;

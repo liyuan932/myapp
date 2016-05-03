@@ -1,6 +1,7 @@
 package com.mycompany.myapp.controller;
 
 import com.mycompany.myapp.daoobject.User;
+import com.mycompany.myapp.query.UserQuery;
 import com.mycompany.myapp.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,6 +32,15 @@ public class LoginController extends BaseController {
         }catch (Exception e){
             return fail(e);
         }
+    }
 
+    @RequestMapping("/list")
+    @ResponseBody
+    public Object listUser(UserQuery query){
+        try {
+            return success(userService.queryUser(query));
+        }catch (Exception e){
+            return fail(e);
+        }
     }
 }

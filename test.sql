@@ -19,3 +19,9 @@ CREATE TABLE `user` (
   KEY `index_gmt_modified` (`gmt_modified`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户信息表';
 
+INSERT INTO test.user (account, password, username, sex, age, mobile, address, type, status, gmt_create, gmt_modified)
+VALUES ('liyuan', '1234', '李远', 1, 27, '18758595684', '浙江杭州', 1, 1, '2016-05-02 14:11:19', '2016-05-02 14:11:41');
+INSERT INTO test.user (account, password, username, sex, age, mobile, address, type, status, gmt_create, gmt_modified)
+VALUES ('zhangsan', '1234', '张三', 1, 28, null, null, 1, 1, '2016-05-02 14:14:08', null);
+INSERT INTO test.user (account, password, username, sex, age, mobile, address, type, status, gmt_create, gmt_modified)
+VALUES ('xiaohua', '1234', '小花', 2, 25, null, null, 1, 1, '2016-05-02 14:17:32', null);

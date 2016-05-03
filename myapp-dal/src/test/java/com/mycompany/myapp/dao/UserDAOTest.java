@@ -1,8 +1,7 @@
-package com.mycompany.myapp.service;
+package com.mycompany.myapp.dao;
 
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.google.common.collect.Lists;
-import com.mycompany.myapp.dao.UserDAO;
 import com.mycompany.myapp.daoobject.User;
 import com.mycompany.myapp.query.UserQuery;
 import org.springframework.beans.factory.annotation.Autowired;

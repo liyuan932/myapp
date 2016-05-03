@@ -1,4 +1,4 @@
-package com.mycompany.myapp.service;
+package com.mycompany.myapp.dao;
 
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTransactionalTestNGSpringContextTests;

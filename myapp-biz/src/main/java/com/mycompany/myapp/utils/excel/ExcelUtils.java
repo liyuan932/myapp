@@ -1,10 +1,8 @@
 package com.mycompany.myapp.utils.excel;
 
 import com.google.common.base.Preconditions;
-import com.google.common.collect.Lists;
 import com.mycompany.myapp.utils.DateUtil;
 import com.mycompany.myapp.utils.DateUtil.DatePatternEnum;
-import com.mycompany.myapp.vo.UserVO;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.poi.ss.usermodel.Cell;
@@ -127,21 +125,4 @@ public class ExcelUtils {
 
         return map;
     }
-
-    public static void main(String[] args) throws Exception {
-
-
-       List<UserVO> list = Lists.newArrayList();
-        for (int i = 0; i < 10; i++) {
-            UserVO user = new UserVO();
-            user.setAccount(DateUtil.parseDate2Str(new Date()));
-            user.setUsername("1111");
-            user.setAge(19);
-            user.setGmtCreateText(DateUtil.parseDate2Str(new Date()));
-            list.add(user);
-        }
-
-       ExcelUtils.generatorFile(list);
-    }
-
 }

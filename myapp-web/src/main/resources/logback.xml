@@ -11,8 +11,8 @@
 		</filter>
 		<encoder>
 			<pattern><![CDATA[
-%n%-4r [%d{yyyy-MM-dd HH:mm:ss}] %X{productionMode} - %X{method} %X{requestURIWithQueryString}[%file:%line][%method] [ip=%X{remoteAddr}, ref=%X{referrer}, ua=%X{userAgent}, sid=%X{cookie.JSESSIONID}]%n  %-5level %logger{35} - %m%n
-            ]]></pattern>
+				%d{HH:mm:ss}  %-5level %logger{35} - %msg%n
+			]]></pattern>
 			<charset>GBK</charset>
 		</encoder>
 	</appender>
@@ -28,8 +28,8 @@
 		</filter>
 		<encoder>
 			<pattern><![CDATA[
-%n%-4r [%d{yyyy-MM-dd HH:mm:ss}] %X{productionMode} - %X{method} %X{requestURIWithQueryString}[%file:%line][%method] [ip=%X{remoteAddr}, ref=%X{referrer}, ua=%X{userAgent}, sid=%X{cookie.JSESSIONID}]%n  %-5level %logger{35} - %m%n
-            ]]></pattern>
+				%d{HH:mm:ss}  %-5level %logger{35} - %msg%n
+			]]></pattern>
 			<charset>GBK</charset>
 		</encoder>
 	</appender>
