@@ -33,10 +33,10 @@ public class ExcelUtils {
     private static void generateExcelTitle(XSSFSheet sheet, Map<String, Title> titles) {
         XSSFRow row = sheet.createRow(0);
         int j = 0;
-        for (String key : titles.keySet()) {
-            Title title = titles.get(key);
+        for (Map.Entry<String, Title> entry : titles.entrySet()) {
+            Title title = entry.getValue();
             row.createCell(j, title.cellType()).setCellValue(title.value());
-            j++;
+            j++; 
         }
     }
 

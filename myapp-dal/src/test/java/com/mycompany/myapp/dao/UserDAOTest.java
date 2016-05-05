@@ -4,17 +4,17 @@ import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.google.common.collect.Lists;
 import com.mycompany.myapp.daoobject.User;
 import com.mycompany.myapp.query.UserQuery;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
 
 public class UserDAOTest extends BaseTest {
 
-	@SuppressWarnings("SpringJavaAutowiringInspection")
-	@Autowired
+
+	@Resource
 	private UserDAO userDAO;
 
 	@Test

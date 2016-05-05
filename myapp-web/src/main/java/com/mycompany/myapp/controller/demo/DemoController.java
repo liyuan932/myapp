@@ -4,6 +4,7 @@ import com.mycompany.myapp.controller.BaseController;
 import com.mycompany.myapp.query.UserQuery;
 import com.mycompany.myapp.service.UserService;
 import com.mycompany.myapp.utils.excel.ExcelUtils;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.apache.commons.io.FileUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -43,6 +44,7 @@ public class DemoController extends BaseController {
         return mv;
     }
 
+    @SuppressFBWarnings("EC_UNRELATED_TYPES_USING_POINTER_EQUALITY")
     @RequestMapping("/view2.do")
     public String view2(UserQuery query,Model model, ModelMap mm,Map<String,Object> map){
         model.addAttribute("users",userService.queryUser(query));

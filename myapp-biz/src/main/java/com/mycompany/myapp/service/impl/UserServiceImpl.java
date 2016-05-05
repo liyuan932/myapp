@@ -1,7 +1,7 @@
 package com.mycompany.myapp.service.impl;
 
-import com.mycompany.myapp.daoobject.User;
 import com.mycompany.myapp.dao.UserDAO;
+import com.mycompany.myapp.daoobject.User;
 import com.mycompany.myapp.enums.category.StatusEnum;
 import com.mycompany.myapp.enums.category.UserTypeEnum;
 import com.mycompany.myapp.query.UserQuery;
@@ -20,7 +20,8 @@ import java.util.List;
 @Service("userService")
 public class UserServiceImpl extends BaseService implements UserService {
 
-	@Resource
+	@SuppressWarnings("SpringJavaAutowiringInspection")
+    @Resource
 	private UserDAO userDAO;
 
     @Override

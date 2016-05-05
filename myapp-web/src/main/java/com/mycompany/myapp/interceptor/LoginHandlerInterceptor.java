@@ -1,5 +1,6 @@
 package com.mycompany.myapp.interceptor;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;
@@ -27,7 +28,7 @@ public class LoginHandlerInterceptor extends HandlerInterceptorAdapter {
   
   private boolean excludeUrl(String uri,String excludes){
 	  
-	  for(String suffix : excludes.split("|")){
+	  for(String suffix : StringUtils.split(excludes,"\\|")){
 		  if(uri.endsWith(suffix)){
 			  return true;
 		  }
