@@ -1,30 +1,37 @@
 package com.mycompany.myapp.dao;
 
+import org.apache.ibatis.annotations.Param;
+
+import com.mycompany.myapp.daoobject.BaseDO;
+
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
-import com.mycompany.myapp.daoobject.BaseDO;
-import org.apache.ibatis.annotations.Param;
 
 import java.io.Serializable;
 import java.util.List;
 
-public interface BaseDAO<T,PK extends Serializable> {
-    void insert(T db);
-    int batchInsert(List<T> list);
+public interface BaseDao<T, K extends Serializable> {
+  void insert(T db);
 
-    int update(T db);
+  int batchInsert(List<T> list);
 
-    int delete(PK id);
-    int batchDelete(List<PK> list);
+  int update(T db);
 
-    T getById(PK id);
-    List<T> queryByIds(List<PK> list);
+  int delete(K id);
 
-    List<T> queryList(BaseDO query);
-    int count(BaseDO query);
+  int batchDelete(List<K> list);
 
-    PageList<T> queryPage(BaseDO query, PageBounds pb);
+  T getById(K id);
 
-    int updateStatus(@Param("id")PK id,@Param("status")int status);
-    int batchUpdateStatus(@Param("list")List<PK> list,@Param("status")int status);
+  List<T> queryByIds(List<K> list);
+
+  List<T> queryList(BaseDO query);
+
+  int count(BaseDO query);
+
+  PageList<T> queryPage(BaseDO query, PageBounds pb);
+
+  int updateStatus(@Param("id") K id, @Param("status") int status);
+
+  int batchUpdateStatus(@Param("list") List<K> list, @Param("status") int status);
 }
