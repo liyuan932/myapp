@@ -1,7 +1,7 @@
 package com.mycompany.myapp.enums.category;
 
 /**
- * 状态枚举.
+ * 状态枚举
  */
 public enum StatusEnum {
   ENABLE(1, "启用"), DISABLE(0, "禁用");
@@ -22,7 +22,7 @@ public enum StatusEnum {
   }
 
   /**
-   * 根据索引获取状态文本.
+   * 根据索引获取状态文本
    */
   public static String getTextByIndex(int index) {
     for (StatusEnum e : StatusEnum.values()) {

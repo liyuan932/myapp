@@ -15,7 +15,7 @@ public class BeanUtil {
   private static final Logger log = LoggerFactory.getLogger(BeanUtil.class);
 
   /**
-   * db转vo.
+   *db转vo
    */
   public static <D, V> V dbToVo(D db, Class<V> clz) {
     try {
@@ -33,7 +33,7 @@ public class BeanUtil {
   }
 
   /**
-   * db转vo.
+   *db转vo
    */
   public static <D, V> V dbToVo(D db, Class<V> clz, Callback<D, V> callback) {
     try {
@@ -53,7 +53,7 @@ public class BeanUtil {
   }
 
   /**
-   * dbList转voList.
+   *dbList转voList
    */
   public static <D, V> List<V> dbToVo(List<D> dbList, Class<V> clz) {
 
@@ -75,7 +75,7 @@ public class BeanUtil {
   }
 
   /**
-   * dbList转voList.
+   *dbList转voList
    */
   public static <D, V> List<V> dbToVo(List<D> dbList, Class<V> clz, Callback<D, V> callback) {
     try {
@@ -99,7 +99,7 @@ public class BeanUtil {
   }
 
   /**
-   * dbPageList转voPageList.
+   *dbPageList转voPageList
    */
   public static <D, V> PageList<V> dbToVo(PageList<D> dbList, Class<V> clz) {
 
@@ -121,7 +121,7 @@ public class BeanUtil {
   }
 
   /**
-   * dbPageList转voPageList.
+   *dbPageList转voPageList
    */
   public static <D, V> PageList<V> dbToVo(PageList<D> dbList, Class<V> clz, Callback<D, V> callback) {
 

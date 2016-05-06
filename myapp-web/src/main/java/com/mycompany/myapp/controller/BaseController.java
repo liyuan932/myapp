@@ -22,7 +22,7 @@ public class BaseController {
   private static final Logger log = LoggerFactory.getLogger(BaseController.class);
 
   /**
-   * 异常处理.
+   *异常处理
    */
   @ExceptionHandler
   public String exception(HttpServletRequest request, Exception ex) {

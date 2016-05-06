@@ -39,7 +39,7 @@ public class DemoController extends BaseController {
   }
 
   /**
-   * 返回JSP视图方式1.
+   *返回JSP视图方式1
    */
   @RequestMapping("/view1.do")
   public ModelAndView view1(UserQuery query) {
@@ -49,7 +49,7 @@ public class DemoController extends BaseController {
   }
 
   /**
-   * 返回JSP视图方式2.
+   *返回JSP视图方式2
    */
   @SuppressFBWarnings("EC_UNRELATED_TYPES_USING_POINTER_EQUALITY")
   @RequestMapping("/view2.do")
@@ -60,7 +60,7 @@ public class DemoController extends BaseController {
   }
 
   /**
-   * 下载文件.
+   *下载文件
    */
   @RequestMapping("/stream.do")
   public ResponseEntity<byte[]> stream(UserQuery query) throws Exception {
@@ -74,7 +74,7 @@ public class DemoController extends BaseController {
   }
 
   /**
-   * 下载图片.
+   *下载图片
    */
   @RequestMapping("/image.do")
   public ResponseEntity<byte[]> image() throws Exception {

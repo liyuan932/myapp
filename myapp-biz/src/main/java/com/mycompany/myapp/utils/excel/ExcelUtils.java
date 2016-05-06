@@ -21,13 +21,13 @@ import java.lang.reflect.Field;
 import java.util.*;
 
 /**
- * Excel文件生成工具.
+ * Excel文件生成工具
  */
 @Component
 public class ExcelUtils {
 
   /**
-   * 生成标题行.
+   * 生成标题行
    *
    * @param sheet  表单对象
    * @param titles LinkedHashMap，顺序与数据对象字段顺序一致,key为字段,value为Title注解
@@ -43,7 +43,7 @@ public class ExcelUtils {
   }
 
   /**
-   * 生成数据行.
+   * 生成数据行
    *
    * @param sheet 表单对象
    * @param data  数据列表
@@ -75,7 +75,7 @@ public class ExcelUtils {
   }
 
   /**
-   * 生成文件名.
+   * 生成文件名
    */
   private static String generateFileName(Class clz) {
     FileName fileName = (FileName) clz.getAnnotation(FileName.class);
@@ -83,7 +83,7 @@ public class ExcelUtils {
   }
 
   /**
-   * 创建Excel工作簿.
+   * 创建Excel工作簿
    */
   private static <T> XSSFWorkbook createWorkbook(List<T> dataList) throws Exception {
 
@@ -99,7 +99,7 @@ public class ExcelUtils {
 
 
   /**
-   * 生成Excel文件.
+   *生成Excel文件
    *
    * @param dataList 数据列表
    * @param <T>      数据对象
@@ -116,7 +116,7 @@ public class ExcelUtils {
   }
 
   /**
-   * 获取所有需要导出的字段信息，key为字段，value为字段信息.
+   *获取所有需要导出的字段信息，key为字段，value为字段信息
    */
   private static Map<String, Title> titles(Class<?> clz) {
 

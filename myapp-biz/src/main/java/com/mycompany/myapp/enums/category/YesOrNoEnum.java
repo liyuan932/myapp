@@ -1,7 +1,7 @@
 package com.mycompany.myapp.enums.category;
 
 /**
- * 状态枚举.
+ * 状态枚举
  */
 public enum YesOrNoEnum {
   enable(1, "是"), disable(0, "否");
@@ -23,7 +23,7 @@ public enum YesOrNoEnum {
   }
 
   /**
-   * 根据索引获取状态文本.
+   * 根据索引获取状态文本
    */
   public static String getTextByIndex(int index) {
     for (YesOrNoEnum e : YesOrNoEnum.values()) {

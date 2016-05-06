@@ -18,7 +18,7 @@ public class LoginController extends BaseController {
   private UserService userService;
 
   /**
-   * 添加用户.
+   *添加用户
    */
   @RequestMapping("/add")
   @ResponseBody
@@ -39,7 +39,7 @@ public class LoginController extends BaseController {
   }
 
   /**
-   * 用户列表.
+   *用户列表
    */
   @RequestMapping("/list")
   @ResponseBody

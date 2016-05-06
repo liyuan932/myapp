@@ -1,7 +1,7 @@
 package com.mycompany.myapp.enums.category;
 
 /**
- * 用户类型枚举.
+ * 用户类型枚举
  */
 public enum UserTypeEnum {
   NORMAL(1, "普通用户"), ADMIN(2, "管理员");
@@ -23,7 +23,7 @@ public enum UserTypeEnum {
   }
 
   /**
-   * 根据索引获取用户类型文本.
+   * 根据索引获取用户类型文本
    */
   public static String getTextByIndex(int index) {
     for (UserTypeEnum e : UserTypeEnum.values()) {

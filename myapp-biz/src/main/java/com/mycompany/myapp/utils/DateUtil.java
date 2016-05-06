@@ -6,12 +6,12 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * 日期工具类.
+ *日期工具类
  */
 public class DateUtil {
 
   /**
-   * 日期转换成字段串，按照格式：yyyy-MM-dd HH:mm:ss.
+   *日期转换成字段串，按照格式：yyyy-MM-dd HH:mm:ss
    *
    * @param date Date对象
    */
@@ -21,7 +21,7 @@ public class DateUtil {
   }
 
   /**
-   * 日期转换成字段串，按照指定的格式.
+   *日期转换成字段串，按照指定的格式
    *
    * @param date               Date对象
    * @param datePatternEnum 日期格式枚举
@@ -32,7 +32,7 @@ public class DateUtil {
   }
 
   /**
-   * 字段串转换成日期，按照格式：yyyy-MM-dd HH:mm:ss.
+   *字段串转换成日期，按照格式：yyyy-MM-dd HH:mm:ss
    *
    * @param ds 日期字段串
    */
@@ -42,7 +42,7 @@ public class DateUtil {
   }
 
   /**
-   * 字段串转换成日期，按照指定的格式.
+   *字段串转换成日期，按照指定的格式
    *
    * @param ds              日期字段串
    * @param datePatternEnum 日期格式枚举
