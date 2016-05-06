@@ -13,11 +13,10 @@ import java.util.Date;
 import java.util.List;
 import javax.annotation.Resource;
 
-public class UserDaoTest extends BaseTest {
-
+public class UserDAOTest extends BaseTest {
 
 	@Resource
-	private UserDao userDao;
+	private UserDAO userDAO;
 
 	@Test
 	public void testCURD() {
@@ -27,18 +26,18 @@ public class UserDaoTest extends BaseTest {
 		db.setUsername("test");
 		db.setStatus(1);
 		db.setType(1);
-		userDao.insert(db);
+		userDAO.insert(db);
 
 		Long id = db.getId();
 		Assert.assertNotNull(id);
 
-		db = userDao.getById(id);
+		db = userDAO.getById(id);
 		Assert.assertNotNull(db);
 
 		db.setGmtModified(new Date());
-		Assert.assertEquals(userDao.update(db),1);
-		Assert.assertEquals(userDao.updateStatus(db.getId(), 0),1);
-		Assert.assertEquals(userDao.delete(id),1);
+		Assert.assertEquals(userDAO.update(db),1);
+		Assert.assertEquals(userDAO.updateStatus(db.getId(), 0),1);
+		Assert.assertEquals(userDAO.delete(id),1);
 	}
 
 	@Test
@@ -53,17 +52,17 @@ public class UserDaoTest extends BaseTest {
 			db.setType(1);
 			uList.add(db);
 		}
-		Assert.assertEquals(userDao.batchInsert(uList),10);
+		Assert.assertEquals(userDAO.batchInsert(uList),10);
 
-		List<User> users = userDao.queryList(new UserQuery());
+		List<User> users = userDAO.queryList(new UserQuery());
 		Assert.assertEquals(users.size(),10);
-		Assert.assertEquals(userDao.count(new UserQuery()),10);
-		Assert.assertEquals(userDao.queryPage(new UserQuery(),new PageBounds(2,3)).getPaginator().getTotalCount(),10);
+		Assert.assertEquals(userDAO.count(new UserQuery()),10);
+		Assert.assertEquals(userDAO.queryPage(new UserQuery(),new PageBounds(2,3)).getPaginator().getTotalCount(),10);
 
 		List<Long> ids = getIds(users);
-		Assert.assertEquals(userDao.queryByIds(ids).size(),10);
-		Assert.assertEquals(userDao.batchUpdateStatus(ids, 0),10);
-		Assert.assertEquals(userDao.batchDelete(ids),10);
+		Assert.assertEquals(userDAO.queryByIds(ids).size(),10);
+		Assert.assertEquals(userDAO.batchUpdateStatus(ids, 0),10);
+		Assert.assertEquals(userDAO.batchDelete(ids),10);
 	}
 
 

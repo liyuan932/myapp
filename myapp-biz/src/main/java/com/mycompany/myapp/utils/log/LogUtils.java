@@ -3,6 +3,10 @@ package com.mycompany.myapp.utils.log;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.mycompany.myapp.enums.msg.MainFunctionEnum;
+import com.mycompany.myapp.enums.msg.SecondaryFunctionEnum;
+import com.mycompany.myapp.enums.msg.UserFunctionEnum;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -10,13 +14,13 @@ public class LogUtils {
 
   private static final Logger log = LoggerFactory.getLogger("operationLog");
 
-  public static LogBean newLogBean(String mainFunction, String specificFunction) {
-    LogBean logBean = new LogBean(mainFunction, specificFunction);
+  public static LogBean newLogBean(MainFunctionEnum mainFunctionEnum, SecondaryFunctionEnum secondaryFunctionEnum) {
+    LogBean logBean = new LogBean(mainFunctionEnum, secondaryFunctionEnum);
     return logBean;
   }
 
-  public static LogBean newLogBean(String mainFunction, String specificFunction, String msg) {
-    LogBean logBean = new LogBean(mainFunction, specificFunction, msg);
+  public static LogBean newLogBean(MainFunctionEnum mainFunctionEnum, SecondaryFunctionEnum secondaryFunctionEnum, String msg) {
+    LogBean logBean = new LogBean(mainFunctionEnum, secondaryFunctionEnum, msg);
     return logBean;
   }
 
@@ -70,5 +74,10 @@ public class LogUtils {
       }
       logBean.setStackTrace(trackTrace.toString());
     }
+  }
+
+  public static void main(String[] args) {
+    System.out.println(new LogBean(MainFunctionEnum.USER_ADMIN, UserFunctionEnum.ADD_USER).addParameters("aa", "aa")
+        .toString());
   }
 }

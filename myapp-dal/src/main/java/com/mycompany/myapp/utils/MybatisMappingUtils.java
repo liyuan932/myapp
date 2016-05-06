@@ -119,12 +119,12 @@ public class MybatisMappingUtils {
 
   private void daoGenerator(String className, List<PropertyInfo> propertyInfos) throws Exception {
     File file = new File(System.getProperty("user.dir"), "src/main/java/" + getProjectPathName
-        (projectPackageName) + "/dao/" + className + "Dao" +
+        (projectPackageName) + "/dao/" + className + "DAO" +
         ".java");
     FileWriter writer = new FileWriter(file);
     writer.write("package " + projectPackageName + ".dao;\n\n");
     writer.write("import " + projectPackageName + ".daoobject." + className + ";\n");
-    writer.write("\npublic interface " + className + "Dao extends BaseDao<" + className + ", " +
+    writer.write("\npublic interface " + className + "DAO extends BaseDAO<" + className + ", " +
         getPropertyInfoMap(propertyInfos).get("id")
             .getType() + "> {\n");
     writer.write("}\n");
@@ -148,7 +148,7 @@ public class MybatisMappingUtils {
     writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
     writer.write("<!DOCTYPE mapper PUBLIC \"-//mybatis.org//DTD Mapper 3.0//EN\" \"http://mybatis.org/dtd/mybatis" +
         "-3-mapper.dtd\" >\n");
-    writer.write("<mapper namespace=\"" + projectPackageName + ".dao." + className + "Dao\">\n");
+    writer.write("<mapper namespace=\"" + projectPackageName + ".dao." + className + "DAO\">\n");
     writer.write(resultMap(className, propertyInfos));
     writer.write(baseColumn(propertyInfos));
     writer.write(queryParams(propertyInfos));

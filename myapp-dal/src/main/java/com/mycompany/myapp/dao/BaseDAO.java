@@ -10,7 +10,7 @@ import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import java.io.Serializable;
 import java.util.List;
 
-public interface BaseDao<T, K extends Serializable> {
+public interface BaseDAO<T, K extends Serializable> {
   void insert(T db);
 
   int batchInsert(List<T> list);

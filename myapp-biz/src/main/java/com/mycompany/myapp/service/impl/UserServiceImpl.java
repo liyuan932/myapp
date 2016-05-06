@@ -1,6 +1,6 @@
 package com.mycompany.myapp.service.impl;
 
-import com.mycompany.myapp.dao.UserDao;
+import com.mycompany.myapp.dao.UserDAO;
 import com.mycompany.myapp.daoobject.User;
 import com.mycompany.myapp.enums.category.StatusEnum;
 import com.mycompany.myapp.enums.category.UserTypeEnum;
@@ -23,12 +23,12 @@ public class UserServiceImpl extends BaseService implements UserService {
 
   @SuppressWarnings("SpringJavaAutowiringInspection")
   @Resource
-  private UserDao userDao;
+  private UserDAO userDAO;
 
   @Override
   public List<UserVO> queryUser(UserQuery query) {
 
-    List<User> users = userDao.queryList(query);
+    List<User> users = userDAO.queryList(query);
 
     return BeanUtil.dbToVo(users, UserVO.class, new BeanUtil.Callback<User, UserVO>() {
       @Override
@@ -42,11 +42,11 @@ public class UserServiceImpl extends BaseService implements UserService {
 
   @Override
   public User getUserById(Long id) {
-    return userDao.getById(id);
+    return userDAO.getById(id);
   }
 
   @Override
   public void addUser(User user) {
-    userDao.insert(user);
+    userDAO.insert(user);
   }
 }
