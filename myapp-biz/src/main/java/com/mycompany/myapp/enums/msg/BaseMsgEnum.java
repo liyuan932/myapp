@@ -1,6 +1,17 @@
 package com.mycompany.myapp.enums.msg;
 
+/**
+ * 所有错误信息枚举的超类.
+ */
 public interface BaseMsgEnum {
-	String getCode();
-	String getMsg();
+
+  /**
+   * 获取错误代码.
+   */
+  String getCode();
+
+  /**
+   * 获取错误信息.
+   */
+  String getMsg();
 }

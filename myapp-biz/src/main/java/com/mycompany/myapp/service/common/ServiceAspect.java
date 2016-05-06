@@ -2,6 +2,7 @@ package com.mycompany.myapp.service.common;
 
 import com.mycompany.myapp.enums.msg.CommonMsgEnum;
 import com.mycompany.myapp.vo.Result;
+
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Pointcut;
@@ -24,26 +25,26 @@ public class ServiceAspect {
     long start = System.currentTimeMillis();
 
     try {
-      Object o = pjp.proceed();
+      Object result = pjp.proceed();
       long end = System.currentTimeMillis();
       log.info(pjp + "\ttake time : " + (end - start) + " ms");
-      return o;
-    } catch (Throwable e) {
-      if (e instanceof ServiceException) {
-        return fail(((ServiceException) e).getCode(), e.getMessage());
+      return result;
+    } catch (Throwable ex) {
+      if (ex instanceof ServiceException) {
+        return fail(((ServiceException) ex).getCode(), ex.getMessage());
       }
-      if (e instanceof IllegalArgumentException) {
-        return fail(pjp, CommonMsgEnum.FAIL_BIZ_PARAM_ERROR, e);
-      } else if (e instanceof DataAccessException) {
-        return fail(pjp, CommonMsgEnum.FAIL_BIZ_DB_ERROR, e);
+      if (ex instanceof IllegalArgumentException) {
+        return fail(pjp, CommonMsgEnum.FAIL_BIZ_PARAM_ERROR, ex);
+      } else if (ex instanceof DataAccessException) {
+        return fail(pjp, CommonMsgEnum.FAIL_BIZ_DB_ERROR, ex);
       } else {
-        return fail(pjp, CommonMsgEnum.FAIL_BIZ_SYSTEM_ERROR, e);
+        return fail(pjp, CommonMsgEnum.FAIL_BIZ_SYSTEM_ERROR, ex);
       }
     }
   }
 
-  private Result<?> fail(ProceedingJoinPoint pjp, CommonMsgEnum commonMsgEnum, Throwable e) {
-    log.error(pjp + " " + commonMsgEnum.getMsg(), e);
+  private Result<?> fail(ProceedingJoinPoint pjp, CommonMsgEnum commonMsgEnum, Throwable ex) {
+    log.error(pjp + " " + commonMsgEnum.getMsg(), ex);
     return new Result<>(commonMsgEnum.getCode(), commonMsgEnum.getMsg());
   }
 

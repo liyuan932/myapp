@@ -1,5 +1,8 @@
 package com.mycompany.myapp.enums.category;
 
+/**
+ * 状态枚举.
+ */
 public enum StatusEnum {
   ENABLE(1, "启用"), DISABLE(0, "禁用");
   private int index;
@@ -19,20 +22,7 @@ public enum StatusEnum {
   }
 
   /**
-   * 根据index获取enum.
-   */
-  public static StatusEnum getByIndex(int index) {
-    for (StatusEnum e : StatusEnum.values()) {
-      if (e.getIndex() == index) {
-        return e;
-      }
-    }
-    return null;
-  }
-
-  /**
-   * 根据index获取text 阿斯蒂芬as  ads fas a sd asd sda asdf sdaf sadf sdf sdfsda fasd fasd fasd fsd fda fsda asdf asdfassadsada
-   * dsfsdaf asdfsdaf asdfsdaf asda a asdf  asd sd asd asd a aa sd
+   * 根据索引获取状态文本.
    */
   public static String getTextByIndex(int index) {
     for (StatusEnum e : StatusEnum.values()) {

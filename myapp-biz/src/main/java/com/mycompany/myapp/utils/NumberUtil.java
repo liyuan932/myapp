@@ -2,63 +2,42 @@ package com.mycompany.myapp.utils;
 
 import java.math.BigDecimal;
 
-public class NumberUtil {
+/**
+ * 数字工具类.
+ */
+public final class NumberUtil {
 
-    /**
-     * 2个double值相减
-     *
-     * @param minuend    被减数
-     * @param subtractor 减数
-     * @return
-     */
-    public static double subtract(double minuend, double subtractor) {
+  /**
+   * 默认构造器.
+   */
+  private NumberUtil() {
+  }
 
-        BigDecimal result = new BigDecimal(minuend + "").subtract(new BigDecimal(subtractor + ""));
+  /**
+   * 2个double值相减.
+   */
+  public static double subtract(final double a, final double b) {
+    return new BigDecimal(a + "").subtract(new BigDecimal(b + "")).doubleValue();
+  }
 
-        return result.doubleValue();
-    }
+  /**
+   * 2个double值相加.
+   */
+  public static double add(final double a, final double b) {
+    return new BigDecimal(a + "").add(new BigDecimal(b + "")).doubleValue();
+  }
 
-    /**
-     * 2个double值相加
-     *
-     * @return
-     */
-    public static double add(double a, double b) {
+  /**
+   * 2个double值相除.
+   */
+  public static double divide(final double a, final double b) {
+    return new BigDecimal(a + "").divide(new BigDecimal(b + "")).doubleValue();
+  }
 
-        BigDecimal result = new BigDecimal(a + "").add(new BigDecimal(b + ""));
-
-        return result.doubleValue();
-    }
-
-    /**
-     * 2个double值相除
-     *
-     * @param dividend 被除数
-     * @param divisor  除数
-     * @return
-     */
-    public static double divide(double dividend, double divisor) {
-
-        BigDecimal result = new BigDecimal(dividend + "").divide(new BigDecimal(divisor + ""));
-
-        return result.doubleValue();
-    }
-
-    /**
-     * 2个double值相乘
-     *
-     * @param multiplier   被乘数
-     * @param multiplicand 乘数
-     * @return
-     */
-    public static double multiply(double multiplier, double multiplicand) {
-
-        BigDecimal result = new BigDecimal(multiplier + "").multiply(new BigDecimal(multiplicand + ""));
-
-        return result.doubleValue();
-    }
-
-    public static void main(String[] args) {
-        System.out.println(multiply(0.23, 0.51));
-    }
+  /**
+   * 2个double值相乘.
+   */
+  public static double multiply(final double a, final double b) {
+    return new BigDecimal(a + "").multiply(new BigDecimal(b + "")).doubleValue();
+  }
 }

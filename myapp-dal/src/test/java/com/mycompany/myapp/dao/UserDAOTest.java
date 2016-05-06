@@ -1,21 +1,23 @@
 package com.mycompany.myapp.dao;
 
-import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.google.common.collect.Lists;
+
 import com.mycompany.myapp.daoobject.User;
 import com.mycompany.myapp.query.UserQuery;
+
+import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
+import javax.annotation.Resource;
 
-public class UserDAOTest extends BaseTest {
+public class UserDaoTest extends BaseTest {
 
 
 	@Resource
-	private UserDAO userDAO;
+	private UserDao userDao;
 
 	@Test
 	public void testCURD() {
@@ -25,18 +27,18 @@ public class UserDAOTest extends BaseTest {
 		db.setUsername("test");
 		db.setStatus(1);
 		db.setType(1);
-		userDAO.insert(db);
+		userDao.insert(db);
 
 		Long id = db.getId();
 		Assert.assertNotNull(id);
 
-		db = userDAO.getById(id);
+		db = userDao.getById(id);
 		Assert.assertNotNull(db);
 
 		db.setGmtModified(new Date());
-		Assert.assertEquals(userDAO.update(db),1);
-		Assert.assertEquals(userDAO.updateStatus(db.getId(), 0),1);
-		Assert.assertEquals(userDAO.delete(id),1);
+		Assert.assertEquals(userDao.update(db),1);
+		Assert.assertEquals(userDao.updateStatus(db.getId(), 0),1);
+		Assert.assertEquals(userDao.delete(id),1);
 	}
 
 	@Test
@@ -51,17 +53,17 @@ public class UserDAOTest extends BaseTest {
 			db.setType(1);
 			uList.add(db);
 		}
-		Assert.assertEquals(userDAO.batchInsert(uList),10);
+		Assert.assertEquals(userDao.batchInsert(uList),10);
 
-		List<User> users = userDAO.queryList(new UserQuery());
+		List<User> users = userDao.queryList(new UserQuery());
 		Assert.assertEquals(users.size(),10);
-		Assert.assertEquals(userDAO.count(new UserQuery()),10);
-		Assert.assertEquals(userDAO.queryPage(new UserQuery(),new PageBounds(2,3)).getPaginator().getTotalCount(),10);
+		Assert.assertEquals(userDao.count(new UserQuery()),10);
+		Assert.assertEquals(userDao.queryPage(new UserQuery(),new PageBounds(2,3)).getPaginator().getTotalCount(),10);
 
 		List<Long> ids = getIds(users);
-		Assert.assertEquals(userDAO.queryByIds(ids).size(),10);
-		Assert.assertEquals(userDAO.batchUpdateStatus(ids, 0),10);
-		Assert.assertEquals(userDAO.batchDelete(ids),10);
+		Assert.assertEquals(userDao.queryByIds(ids).size(),10);
+		Assert.assertEquals(userDao.batchUpdateStatus(ids, 0),10);
+		Assert.assertEquals(userDao.batchDelete(ids),10);
 	}
 
 
