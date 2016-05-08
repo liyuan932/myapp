@@ -11,7 +11,6 @@ import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.springframework.stereotype.Component;
 
 import java.beans.PropertyDescriptor;
 import java.io.File;
@@ -28,7 +27,6 @@ import java.util.Objects;
 /**
  * Excel文件生成工具
  */
-@Component
 public class ExcelUtils {
 
   /**
@@ -109,7 +107,7 @@ public class ExcelUtils {
    * @param <T>      数据对象
    * @return File对象
    */
-  public static <T> File generatorFile(List<T> dataList) {
+  public static <T> File generateFile(List<T> dataList) {
 
     Preconditions.checkArgument(CollectionUtils.isNotEmpty(dataList));
 

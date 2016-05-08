@@ -66,7 +66,7 @@ public class DemoController extends BaseController {
   @RequestMapping("/stream.do")
   public ResponseEntity<byte[]> stream(UserQuery query) throws Exception {
 
-    File file = ExcelUtils.generatorFile(userService.queryUser(query));
+    File file = ExcelUtils.generateFile(userService.queryUser(query));
 
     HttpHeaders headers = new HttpHeaders();
     headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
