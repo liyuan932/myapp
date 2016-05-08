@@ -1,13 +1,15 @@
 package com.mycompany.myapp.utils;
 
+import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStreamWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -32,10 +34,12 @@ public class MybatisMappingUtils {
   private static String baseJavaDir;
   private static String baseResourcesDir;
 
-
+  /**
+   * main方法
+   */
   public static void main(String[] args) throws Exception {
-    MybatisMappingUtils.generate(new String[]{"role"});
-
+    //MybatisMappingUtils.generate(new String[]{"role"});
+    MybatisMappingUtils.clear(new String[]{"role"});
   }
 
   /**
@@ -73,7 +77,6 @@ public class MybatisMappingUtils {
       ex.printStackTrace();
     }
   }
-
 
   private static String getProjectPathName(String projectPackageName) {
     return projectPackageName.replaceAll("\\.", "/");
@@ -117,7 +120,7 @@ public class MybatisMappingUtils {
 
   private static void queryGenerator(String className, List<PropertyInfo> propertyInfos) throws Exception {
     File file = new File(baseJavaDir + getProjectPathName(projectPackageName) + "/query/" + className + "Query.java");
-    FileWriter writer = new FileWriter(file);
+    OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(file), "utf-8");
     writer.write("package " + projectPackageName + ".query;\n\n");
     writer.write("import " + projectPackageName + ".daoobject." + className + ";\n");
     writer.write("\npublic class " + className + "Query extends " + className + " {\n");
@@ -127,7 +130,7 @@ public class MybatisMappingUtils {
 
   private static void daoGenerator(String className, List<PropertyInfo> propertyInfos) throws Exception {
     File file = new File(baseJavaDir + getProjectPathName(projectPackageName) + "/dao/" + className + "DAO.java");
-    FileWriter writer = new FileWriter(file);
+    OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(file), "utf-8");
     writer.write("package " + projectPackageName + ".dao;\n\n");
     writer.write("import " + projectPackageName + ".daoobject." + className + ";\n");
     writer.write("\npublic interface " + className + "DAO extends BaseDAO<" + className + "> {\n");
@@ -144,14 +147,14 @@ public class MybatisMappingUtils {
     return propertyInfoMap;
   }
 
-  private static void sqlmapGenerator(String tableName, String className, List<PropertyInfo> propertyInfos) throws
-      IOException {
+  private static void sqlmapGenerator(String tableName, String className, List<PropertyInfo> propertyInfos)
+      throws IOException {
 
     File file = new File(baseResourcesDir + "/sqlmap/mapping-" + tableName + ".xml");
-    FileWriter writer = new FileWriter(file);
+    OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(file), "utf-8");
     writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
     writer.write("<!DOCTYPE mapper PUBLIC \"-//mybatis.org//DTD Mapper 3.0//EN\" \"http://mybatis"
-        + ".org/dtd/mybatis-3-mapper.dtd\" >\n");
+                     + ".org/dtd/mybatis-3-mapper.dtd\" >\n");
     writer.write("<mapper namespace=\"" + projectPackageName + ".dao." + className + "DAO\">\n");
     writer.write(resultMap(className, propertyInfos));
     writer.write(baseColumn(propertyInfos));
@@ -176,9 +179,8 @@ public class MybatisMappingUtils {
 
   private static void daoobjectGenerator(String className, List<PropertyInfo> propertyInfos) throws IOException {
 
-    File file = new File(baseJavaDir + getProjectPathName(projectPackageName)
-        + "/daoobject/" + className + ".java");
-    FileWriter writer = new FileWriter(file);
+    File file = new File(baseJavaDir + getProjectPathName(projectPackageName) + "/daoobject/" + className + ".java");
+    OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(file), "utf-8");
     writer.write("package " + projectPackageName + ".daoobject;\n\n");
     writer.write("import java.util.Date;\n");
 
@@ -221,49 +223,35 @@ public class MybatisMappingUtils {
   }
 
   private static String baseColumn(List<PropertyInfo> propertyInfos) {
-    return "\t<sql id=\"baseColumn\">\n"
-        + "\t\t" + getBaseColumn(propertyInfos) + "\n"
-        + "\t</sql>\n\n";
+    return "\t<sql id=\"baseColumn\">\n" + "\t\t" + getBaseColumn(propertyInfos) + "\n" + "\t</sql>\n\n";
   }
 
   private static String queryParams(List<PropertyInfo> propertyInfos) {
     StringBuffer buff = new StringBuffer();
     for (PropertyInfo info : propertyInfos) {
-      buff.append("\t\t\t<if test=\"" + info.getProperty() + " !=null\">\n"
-          + "\t\t\t\tand " + info.getColumn() + "=#{" + info.getProperty() + "}\n"
-          + "\t\t\t</if>\n");
+      buff.append(
+          "\t\t\t<if test=\"" + info.getProperty() + " !=null\">\n" + "\t\t\t\tand " + info.getColumn() + "=#{" + info
+              .getProperty() + "}\n" + "\t\t\t</if>\n");
     }
 
-
-    return "\t<sql id=\"queryParams\">\n"
-        + "\t\t<where>\n"
-        + buff.toString()
-        + "\t\t</where>\n"
-        + "\t</sql>\n\n";
-
+    return "\t<sql id=\"queryParams\">\n" + "\t\t<where>\n" + buff.toString() + "\t\t</where>\n" + "\t</sql>\n\n";
   }
 
   private static String orderBy() {
-    return "\t<sql id=\"orderBy\">\n"
-        + "\t</sql>\n\n";
+    return "\t<sql id=\"orderBy\">\n" + "\t</sql>\n\n";
   }
 
-
   private static String insert(String tableName, List<PropertyInfo> propertyInfos) {
-    return "\t<insert id=\"insert\" useGeneratedKeys=\"true\" keyProperty=\"id\">\n"
-        + "\t\tinsert into " + tableName + " (" + getInsertColumn(propertyInfos) + ") values\n"
-        + "\t\t(" + getInsertProperty(propertyInfos) + ")\n"
+    return "\t<insert id=\"insert\" useGeneratedKeys=\"true\" keyProperty=\"id\">\n" + "\t\tinsert into " + tableName
+        + " (" + getInsertColumn(propertyInfos) + ") values\n" + "\t\t(" + getInsertProperty(propertyInfos) + ")\n"
         + "\t</insert>\n\n";
   }
 
   private static String batchInsert(String tableName, List<PropertyInfo> propertyInfos) {
 
-    return "\t<insert id=\"batchInsert\">\n"
-        + "\t\tinsert into " + tableName + " (" + getInsertColumn(propertyInfos) + ") values\n"
-        + "\t\t<foreach collection=\"list\" item=\"item\" separator=\",\">\n"
-        + "\t\t\t(" + getBatchInsertProperty(propertyInfos) + ")\n"
-        + "\t\t</foreach>\n"
-        + "\t</insert>\n\n";
+    return "\t<insert id=\"batchInsert\">\n" + "\t\tinsert into " + tableName + " (" + getInsertColumn(propertyInfos)
+        + ") values\n" + "\t\t<foreach collection=\"list\" item=\"item\" separator=\",\">\n" + "\t\t\t("
+        + getBatchInsertProperty(propertyInfos) + ")\n" + "\t\t</foreach>\n" + "\t</insert>\n\n";
   }
 
   private static String update(String tableName, List<PropertyInfo> propertyInfos) {
@@ -292,105 +280,63 @@ public class MybatisMappingUtils {
 
   private static String delete(String tableName) {
 
-    return "\t<delete id=\"delete\">\n"
-        + "\t\tdelete from " + tableName + " where id = #{id}\n"
-        + "\t</delete>\n\n";
+    return "\t<delete id=\"delete\">\n" + "\t\tdelete from " + tableName + " where id = #{id}\n" + "\t</delete>\n\n";
   }
 
   private static String batchDelete(String tableName) {
 
-    return "\t<delete id=\"batchDelete\">\n"
-        + "\t\tdelete from " + tableName + "\n"
-        + "\t\t<where>\n"
-        + "\t\t\t<choose>\n"
-        + "\t\t\t\t<when test=\"list != null and list.size()>0\">\n"
-        + "\t\t\t\t\tid in\n"
+    return "\t<delete id=\"batchDelete\">\n" + "\t\tdelete from " + tableName + "\n" + "\t\t<where>\n"
+        + "\t\t\t<choose>\n" + "\t\t\t\t<when test=\"list != null and list.size()>0\">\n" + "\t\t\t\t\tid in\n"
         + "\t\t\t\t\t<foreach collection=\"list\" item=\"id\" separator=\",\" open=\"(\" close=\")\">\n"
-        + "\t\t\t\t\t\t#{id}\n"
-        + "\t\t\t\t\t</foreach>\n"
-        + "\t\t\t\t</when>\n"
-        + "\t\t\t\t<otherwise>\n"
-        + "\t\t\t\t\t1=0\n"
-        + "\t\t\t\t</otherwise>\n"
-        + "\t\t\t</choose>\n"
-        + "\t\t</where>\n"
-        + "\t</delete>\n\n";
+        + "\t\t\t\t\t\t#{id}\n" + "\t\t\t\t\t</foreach>\n" + "\t\t\t\t</when>\n" + "\t\t\t\t<otherwise>\n"
+        + "\t\t\t\t\t1=0\n" + "\t\t\t\t</otherwise>\n" + "\t\t\t</choose>\n" + "\t\t</where>\n" + "\t</delete>\n\n";
   }
 
   private static String getById(String tableName) {
     return "\t<select id=\"getById\" resultMap=\"BaseResultMap\">\n"
-        + "\t\tselect <include refid=\"baseColumn\" /> from " + tableName + "\n"
-        + "where id = #{id}\n"
+        + "\t\tselect <include refid=\"baseColumn\" /> from " + tableName + "\n" + "where id = #{id}\n"
         + "\t</select>\n\n";
   }
 
   private static String queryByIds(String tableName) {
     return "\t<select id=\"queryByIds\" resultMap=\"BaseResultMap\">\n"
-        + "\t\tselect <include refid=\"baseColumn\" /> from " + tableName + "\n"
-        + "\t\t<where>\n"
-        + "\t\t\t<choose>\n"
-        + "\t\t\t\t<when test=\"list != null and list.size()>0\">\n"
-        + "\t\t\t\t\tid in\n"
+        + "\t\tselect <include refid=\"baseColumn\" /> from " + tableName + "\n" + "\t\t<where>\n" + "\t\t\t<choose>\n"
+        + "\t\t\t\t<when test=\"list != null and list.size()>0\">\n" + "\t\t\t\t\tid in\n"
         + "\t\t\t\t\t<foreach collection=\"list\" item=\"id\" separator=\",\" open=\"(\" close=\")\">\n"
-        + "\t\t\t\t\t\t#{id}\n"
-        + "\t\t\t\t\t</foreach>\n"
-        + "\t\t\t\t</when>\n"
-        + "\t\t\t\t<otherwise>\n"
-        + "\t\t\t\t\t1=0\n"
-        + "\t\t\t\t</otherwise>\n"
-        + "\t\t\t</choose>\n"
-        + "\t\t</where>\n"
-        + "\t</select>\n\n";
+        + "\t\t\t\t\t\t#{id}\n" + "\t\t\t\t\t</foreach>\n" + "\t\t\t\t</when>\n" + "\t\t\t\t<otherwise>\n"
+        + "\t\t\t\t\t1=0\n" + "\t\t\t\t</otherwise>\n" + "\t\t\t</choose>\n" + "\t\t</where>\n" + "\t</select>\n\n";
   }
 
   private static String queryList(String tableName) {
     return "<select id=\"queryList\" resultMap=\"BaseResultMap\">\n"
         + "\t\tselect <include refid=\"baseColumn\" /> from " + tableName + "\n"
-        + "\t\t<include refid=\"queryParams\" />\n"
-        + "\t\t<include refid=\"orderBy\"/>\n"
-        + "\t</select>\n\n";
+        + "\t\t<include refid=\"queryParams\" />\n" + "\t\t<include refid=\"orderBy\"/>\n" + "\t</select>\n\n";
   }
 
   private static String count(String tableName) {
-    return "\t<select id=\"count\" resultType=\"int\">\n"
-        + "\t\tselect count(1) from " + tableName + "\n"
-        + "\t\t<include refid=\"queryParams\" />\n"
-        + "\t</select>\n\n";
+    return "\t<select id=\"count\" resultType=\"int\">\n" + "\t\tselect count(1) from " + tableName + "\n"
+        + "\t\t<include refid=\"queryParams\" />\n" + "\t</select>\n\n";
   }
 
   private static String queryPage(String tableName) {
     return "\t<select id=\"queryPage\" resultMap=\"BaseResultMap\">\n"
         + "\t\tselect <include refid=\"baseColumn\" /> from " + tableName + "\n"
-        + "\t\t<include refid=\"queryParams\" />\n"
-        + "\t</select>\n\n";
+        + "\t\t<include refid=\"queryParams\" />\n" + "\t</select>\n\n";
   }
 
   private static String updateStatus(String tableName) {
-    return "\t<update id=\"updateStatus\">\n"
-        + "\t\tupdate " + tableName + " set status=#{status}\n"
-        + "\t\twhere id=#{id}\n"
-        + "\t</update>\n\n";
+    return "\t<update id=\"updateStatus\">\n" + "\t\tupdate " + tableName + " set status=#{status}\n"
+        + "\t\twhere id=#{id}\n" + "\t</update>\n\n";
   }
 
   private static String batchUpdateStatus(String tableName) {
-    return "\t<update id=\"batchUpdateStatus\">\n"
-        + "\t\tupdate " + tableName + " set status=#{status}\n"
-        + "\t\t<where>\n"
-        + "\t\t\t<choose>\n"
-        + "\t\t\t\t<when test=\"list != null and list.size()>0\">\n"
+    return "\t<update id=\"batchUpdateStatus\">\n" + "\t\tupdate " + tableName + " set status=#{status}\n"
+        + "\t\t<where>\n" + "\t\t\t<choose>\n" + "\t\t\t\t<when test=\"list != null and list.size()>0\">\n"
         + "\t\t\t\t\tid in\n"
         + "\t\t\t\t\t<foreach collection=\"list\" item=\"id\" separator=\",\" open=\"(\" close=\")\">\n"
-        + "\t\t\t\t\t\t#{id}\n"
-        + "\t\t\t\t\t</foreach>\n"
-        + "\t\t\t\t</when>\n"
-        + "\t\t\t\t<otherwise>\n"
-        + "\t\t\t\t\t1=0\n"
-        + "\t\t\t\t</otherwise>\n"
-        + "\t\t\t</choose>\n"
-        + "\t\t</where>\n"
-        + "\t</update>\n\n";
+        + "\t\t\t\t\t\t#{id}\n" + "\t\t\t\t\t</foreach>\n" + "\t\t\t\t</when>\n" + "\t\t\t\t<otherwise>\n"
+        + "\t\t\t\t\t1=0\n" + "\t\t\t\t</otherwise>\n" + "\t\t\t</choose>\n" + "\t\t</where>\n" + "\t</update>\n\n";
   }
-
 
   private static String getInsertColumn(List<PropertyInfo> propertyInfos) {
 
@@ -433,7 +379,6 @@ public class MybatisMappingUtils {
     }
     return batchInsertProperty.substring(0, batchInsertProperty.length() - 1);
   }
-
 
   private static String getBaseColumn(List<PropertyInfo> propertyInfos) {
 
@@ -481,7 +426,6 @@ public class MybatisMappingUtils {
     return buff.toString();
   }
 
-
   private static class PropertyInfo {
     private String column;
     private String property;
@@ -499,44 +443,35 @@ public class MybatisMappingUtils {
       return column;
     }
 
-    public void setColumn(String column) {
-      this.column = column;
-    }
-
     public String getProperty() {
       return property;
-    }
-
-    public void setProperty(String property) {
-      this.property = property;
     }
 
     public String getType() {
       return type;
     }
 
-    public void setType(String type) {
-      this.type = type;
-    }
-
     public String getComment() {
       return comment;
     }
-
-    public void setComment(String comment) {
-      this.comment = comment;
-    }
   }
 
+  /**
+   * 清除映射文件
+   */
   public static void clear(String[] tableNames) {
     for (String tableName : tableNames) {
       String className = tableNameToClassName(tableName);
-      new File(baseJavaDir + getProjectPathName(projectPackageName) + "/daoobject/" + className + ".java").delete();
-      new File(baseJavaDir + getProjectPathName(projectPackageName) + "/dao/" + className + "DAO.java").delete();
-      new File(baseJavaDir + getProjectPathName(projectPackageName) + "/query/" + className + "Query.java").delete();
-      new File(baseResourcesDir + "/sqlmap/mapping-" + tableName + ".xml").delete();
+      Preconditions.checkState(
+          new File(baseJavaDir + getProjectPathName(projectPackageName) + "/daoobject/" + className + ".java")
+              .delete());
+      Preconditions.checkState(
+          new File(baseJavaDir + getProjectPathName(projectPackageName) + "/dao/" + className + "DAO.java").delete());
+      Preconditions.checkState(
+          new File(baseJavaDir + getProjectPathName(projectPackageName) + "/query/" + className + "Query.java")
+              .delete());
+      Preconditions.checkState(new File(baseResourcesDir + "/sqlmap/mapping-" + tableName + ".xml").delete());
     }
-
   }
 }
 

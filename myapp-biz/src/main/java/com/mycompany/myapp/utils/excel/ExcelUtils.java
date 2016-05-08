@@ -16,11 +16,13 @@ import org.springframework.stereotype.Component;
 import java.beans.PropertyDescriptor;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Objects;
 
 /**
@@ -51,18 +53,18 @@ public class ExcelUtils {
    * @param sheet 表单对象
    * @param data  数据列表
    */
-  private static void generateExcelDataContent(XSSFSheet sheet, Map<String, Title> titles, List<?> data) throws
-      Exception {
+  private static void generateExcelDataContent(XSSFSheet sheet, Map<String, Title> titles, List<?> data)
+      throws Exception {
 
     Class clz = data.get(0).getClass();
 
     for (int i = 0; i < data.size(); i++) {
       XSSFRow row = sheet.createRow(i + 1);
       int col = 0;
-      for (String key : titles.keySet()) {
-        Object value = new PropertyDescriptor(key, clz).getReadMethod().invoke(data.get(i));
+      for (Entry<String, Title> entry : titles.entrySet()) {
+        Object value = new PropertyDescriptor(entry.getKey(), clz).getReadMethod().invoke(data.get(i));
         if (value != null) {
-          int cellType = titles.get(key).cellType();
+          int cellType = entry.getValue().cellType();
           XSSFCell cell = row.createCell(col, cellType);
           switch (cellType) {
             case Cell.CELL_TYPE_NUMERIC:
@@ -100,7 +102,6 @@ public class ExcelUtils {
     return workbook;
   }
 
-
   /**
    * 生成Excel文件
    *
@@ -108,12 +109,26 @@ public class ExcelUtils {
    * @param <T>      数据对象
    * @return File对象
    */
-  public static <T> File generatorFile(List<T> dataList) throws Exception {
+  public static <T> File generatorFile(List<T> dataList) {
 
     Preconditions.checkArgument(CollectionUtils.isNotEmpty(dataList));
 
     File file = new File(System.getProperty("webapp.root"), generateFileName(dataList.get(0).getClass()));
-    createWorkbook(dataList).write(new FileOutputStream(file));
+    FileOutputStream fos = null;
+
+    try {
+      fos = new FileOutputStream(file);
+      createWorkbook(dataList).write(fos);
+    } catch (Exception ex) {
+      ex.printStackTrace();
+    } finally {
+      if (fos != null) {
+        try {
+          fos.close();
+        } catch (IOException ex) {
+        }
+      }
+    }
 
     return file;
   }
