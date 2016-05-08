@@ -1,10 +1,9 @@
 package com.mycompany.myapp.utils;
 
+import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections4.CollectionUtils;
-
-import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;

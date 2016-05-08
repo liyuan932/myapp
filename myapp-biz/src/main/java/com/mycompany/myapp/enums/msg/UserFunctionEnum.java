@@ -6,10 +6,11 @@ package com.mycompany.myapp.enums.msg;
  * @author Administrator
  * @date 2016-05-07
  */
-public enum UserFunctionEnum implements SecondaryFunctionEnum{
-  ADD_USER("add user"),UPDATE_USER("update user"),DELETE_USER("delete user");
+public enum UserFunctionEnum implements SecondaryFunctionEnum {
+  ADD_USER("add user"), UPDATE_USER("update user"), DELETE_USER("delete user");
 
   private String msg;
+
   UserFunctionEnum(String msg) {
     this.msg = msg;
   }

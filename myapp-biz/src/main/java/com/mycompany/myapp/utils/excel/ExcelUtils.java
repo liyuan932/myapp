@@ -1,5 +1,8 @@
 package com.mycompany.myapp.utils.excel;
 
+import com.mycompany.myapp.utils.DateUtil;
+import com.mycompany.myapp.utils.DateUtil.DatePatternEnum;
+
 import com.google.common.base.Preconditions;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -8,17 +11,17 @@ import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-
-import com.mycompany.myapp.utils.DateUtil;
-import com.mycompany.myapp.utils.DateUtil.DatePatternEnum;
-
 import org.springframework.stereotype.Component;
 
 import java.beans.PropertyDescriptor;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.lang.reflect.Field;
-import java.util.*;
+import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * Excel文件生成工具
@@ -99,7 +102,7 @@ public class ExcelUtils {
 
 
   /**
-   *生成Excel文件
+   * 生成Excel文件
    *
    * @param dataList 数据列表
    * @param <T>      数据对象
@@ -116,7 +119,7 @@ public class ExcelUtils {
   }
 
   /**
-   *获取所有需要导出的字段信息，key为字段，value为字段信息
+   * 获取所有需要导出的字段信息，key为字段，value为字段信息
    */
   private static Map<String, Title> titles(Class<?> clz) {
 

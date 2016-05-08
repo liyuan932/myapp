@@ -1,11 +1,10 @@
 package com.mycompany.myapp.utils.log;
 
 
-import org.apache.commons.lang3.StringUtils;
-
 import com.mycompany.myapp.enums.msg.MainFunctionEnum;
 import com.mycompany.myapp.enums.msg.SecondaryFunctionEnum;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

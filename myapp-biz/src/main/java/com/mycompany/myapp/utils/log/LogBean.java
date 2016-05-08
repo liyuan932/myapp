@@ -1,14 +1,13 @@
 package com.mycompany.myapp.utils.log;
 
-import com.google.common.base.MoreObjects;
-import com.google.common.base.Preconditions;
-import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.StringUtils;
-
 import com.mycompany.myapp.enums.msg.MainFunctionEnum;
 import com.mycompany.myapp.enums.msg.SecondaryFunctionEnum;
 
 import com.alibaba.fastjson.JSON;
+import com.google.common.base.MoreObjects;
+import com.google.common.base.Preconditions;
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -46,11 +45,13 @@ public class LogBean {
   private String stackTrace;
 
   public LogBean() {
+
   }
 
   /**
    * 构造方法
-   * @param mainFunctionEnum 主要功能
+   *
+   * @param mainFunctionEnum      主要功能
    * @param secondaryFunctionEnum 次级功能
    */
   public LogBean(MainFunctionEnum mainFunctionEnum, SecondaryFunctionEnum secondaryFunctionEnum) {
@@ -58,14 +59,16 @@ public class LogBean {
     this.secondaryFunction = secondaryFunctionEnum.getMsg();
   }
 
+
   /**
    * 构造方法
-   * @param mainFunctionEnum 主要功能
+   *
+   * @param mainFunctionEnum      主要功能
    * @param secondaryFunctionEnum 次级功能
-   * @param msg 错误信息
+   * @param msg                   错误信息
    */
   public LogBean(MainFunctionEnum mainFunctionEnum, SecondaryFunctionEnum secondaryFunctionEnum, String msg) {
-    this(mainFunctionEnum,secondaryFunctionEnum);
+    this(mainFunctionEnum, secondaryFunctionEnum);
     this.msg = msg;
   }
 
@@ -117,6 +120,11 @@ public class LogBean {
     this.msg = msg;
   }
 
+  /**
+   * 添加参数
+   *
+   * @param pairs 必须以key-value对出现，key为String类型
+   */
   public LogBean addParameters(Object... pairs) {
 
     Preconditions.checkArgument(ArrayUtils.isNotEmpty(pairs));
@@ -132,7 +140,6 @@ public class LogBean {
     this.parameters.putAll(map);
     return this;
   }
-
 
   @Override
   public String toString() {

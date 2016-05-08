@@ -1,76 +1,107 @@
 package com.mycompany.myapp.dao;
 
-import com.google.common.collect.Lists;
-
+import com.mycompany.myapp.daoobject.BaseDO;
+import com.mycompany.myapp.daoobject.Role;
 import com.mycompany.myapp.daoobject.User;
-import com.mycompany.myapp.query.UserQuery;
 
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
+import com.google.common.collect.Lists;
+import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.RandomUtils;
+import org.springframework.test.annotation.Rollback;
 import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import java.beans.PropertyDescriptor;
+import java.lang.reflect.Field;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.Resource;
 
+@SuppressWarnings("SpringJavaAutowiringInspection")
 public class UserDAOTest extends BaseTest {
+
 
 	@Resource
 	private UserDAO userDAO;
+	@Resource
+	private RoleDAO roleDAO;
 
-	@Test
-	public void testCURD() {
-		User db = new User();
-		db.setAccount("test");
-		db.setPassword("1234");
-		db.setUsername("test");
-		db.setStatus(1);
-		db.setType(1);
-		userDAO.insert(db);
+	@DataProvider(name = "data")
+	public Object[][] data(){
+		return new Object[][]{
+				{roleDAO,Role.class}
+		};
+	}
+
+	@Rollback
+	@Test(dataProvider = "data")
+	public void testCURD(BaseDAO dao, Class<?> clz) throws Exception {
+		BaseDO db =  initDB(clz);
+		dao.insert(db);
 
 		Long id = db.getId();
 		Assert.assertNotNull(id);
 
-		db = userDAO.getById(id);
+		db = (BaseDO) dao.getById(id);
 		Assert.assertNotNull(db);
 
-		db.setGmtModified(new Date());
-		Assert.assertEquals(userDAO.update(db),1);
-		Assert.assertEquals(userDAO.updateStatus(db.getId(), 0),1);
-		Assert.assertEquals(userDAO.delete(id),1);
-	}
+		db.setGmtCreate(new Date());
+		Assert.assertEquals(dao.update(db),1);
+		Assert.assertEquals(dao.delete(id),1);
 
-	@Test
-	public void testBatch(){
-		List<User> uList = Lists.newArrayList();
-		for(int i=11;i<=20;i++){
-			User db = new User();
-			db.setAccount("test"+i);
-			db.setPassword("1234");
-			db.setUsername("test"+i);
-			db.setStatus(1);
-			db.setType(1);
-			uList.add(db);
+
+		List<BaseDO> list = Lists.newArrayList();
+		for(int i=0;i<10;i++){
+			BaseDO db2 =  initDB(clz);
+			list.add(db2);
 		}
-		Assert.assertEquals(userDAO.batchInsert(uList),10);
+		Assert.assertEquals(dao.batchInsert(list),10);
 
-		List<User> users = userDAO.queryList(new UserQuery());
-		Assert.assertEquals(users.size(),10);
-		Assert.assertEquals(userDAO.count(new UserQuery()),10);
-		Assert.assertEquals(userDAO.queryPage(new UserQuery(),new PageBounds(2,3)).getPaginator().getTotalCount(),10);
+		BaseDO query = (BaseDO) clz.newInstance();
+		List<BaseDO> dbs = dao.queryList(query);
+		Assert.assertEquals(dbs.size(),10);
+		Assert.assertEquals(dao.count(query),10);
+		Assert.assertEquals(dao.queryPage(query,new PageBounds(2,3)).getPaginator().getTotalCount(),10);
 
-		List<Long> ids = getIds(users);
-		Assert.assertEquals(userDAO.queryByIds(ids).size(),10);
-		Assert.assertEquals(userDAO.batchUpdateStatus(ids, 0),10);
-		Assert.assertEquals(userDAO.batchDelete(ids),10);
+		List<Long> ids = getIds(dbs);
+		Assert.assertEquals(dao.queryByIds(ids).size(),10);
+		Assert.assertEquals(dao.batchDelete(ids),10);
 	}
 
+	private BaseDO initDB(Class<?> clz) throws Exception {
+		BaseDO db =  (BaseDO) clz.newInstance();
+		for(Field f : clz.getDeclaredFields()){
 
-	private List<Long> getIds(List<User> users){
+			Object arg = null;
+			Class<?> type = f.getType();
+			if(String.class == type){
+				arg = RandomStringUtils.random(5,"abcdefghijklmnopqrstuvwxyz");
+			}else if(Date.class == type){
+				arg = new Date();
+			}else if(Integer.class == type){
+				arg = RandomUtils.nextInt(0,100);
+			}else if(Double.class == type){
+				arg = RandomUtils.nextDouble(0,100);
+			}else if(Long.class == type){
+				arg = RandomUtils.nextLong(0,100);
+			}
+
+			new PropertyDescriptor(f.getName(),clz).getWriteMethod().invoke(db,arg);
+		}
+		return db;
+	}
+
+	public static void main(String[] args) throws Exception {
+		System.out.println(new UserDAOTest().initDB(User.class));
+	}
+
+	private List<Long> getIds(List<BaseDO> users){
 
 		List<Long> ids = Lists.newArrayList();
-		for(User u : users){
-			ids.add(u.getId());
+		for(BaseDO db : users){
+			ids.add(db.getId());
 		}
 		return ids;
 	}
