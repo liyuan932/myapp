@@ -36,9 +36,9 @@
 
 
 	<appender name="PROJECT" class="ch.qos.logback.core.rolling.RollingFileAppender">
-		<file>logs/myapp.log</file>
+		<file>${user.dir}/logs/myapp.log</file>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-			<fileNamePattern>logs/myapp%d{yyyy-MM-dd}.log</fileNamePattern>
+			<fileNamePattern>${user.dir}/logs/myapp%d{yyyy-MM-dd}.log</fileNamePattern>
 			<maxHistory>30</maxHistory>
 		</rollingPolicy>
 		<encoder>
@@ -49,9 +49,9 @@
 	</appender>
 
 	<appender name="OPERATION" class="ch.qos.logback.core.rolling.RollingFileAppender">
-		<file>logs/operation.log</file>
+		<file>${user.dir}/logs/operation.log</file>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-			<fileNamePattern>logs/operation%d{yyyy-MM-dd}.log</fileNamePattern>
+			<fileNamePattern>${user.dir}/logs/operation%d{yyyy-MM-dd}.log</fileNamePattern>
 			<maxHistory>30</maxHistory>
 		</rollingPolicy>
 		<encoder>

@@ -1,10 +1,7 @@
 package com.mycompany.myapp.daoobject;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-
 import java.util.Date;
 
-@SuppressFBWarnings({"EI_EXPOSE_REP2", "EI_EXPOSE_REP"})
 public class User extends BaseDO {
 
   private Long id; //主键
@@ -100,12 +97,10 @@ public class User extends BaseDO {
     this.status = status;
   }
 
-  @Override
   public Date getGmtCreate() {
     return gmtCreate;
   }
 
-  @Override
   public void setGmtCreate(Date gmtCreate) {
     this.gmtCreate = gmtCreate;
   }

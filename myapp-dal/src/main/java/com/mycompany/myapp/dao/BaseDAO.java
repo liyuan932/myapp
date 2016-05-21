@@ -9,6 +9,7 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 public interface BaseDAO<T> {
+
   void insert(T db);
 
   int batchInsert(List<T> list);

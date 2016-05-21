@@ -13,4 +13,6 @@ public interface UserService {
   User getUserById(Long id);
 
   void addUser(User user);
+
+  User login(String username,String password);
 }

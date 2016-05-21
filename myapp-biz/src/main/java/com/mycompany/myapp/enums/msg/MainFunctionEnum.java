@@ -7,7 +7,9 @@ package com.mycompany.myapp.enums.msg;
  * @date 2016-05-07
  */
 public enum MainFunctionEnum {
-  USER_ADMIN("user admin");
+
+  USER_ADMIN("user admin"), //
+  LOGIN("user login");
 
   private String msg;
   MainFunctionEnum(String msg) {

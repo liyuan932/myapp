@@ -106,7 +106,7 @@
 
 	<select id="getById" resultMap="BaseResultMap">
 		select <include refid="baseColumn" /> from user
-where id = #{id}
+		where id = #{id}
 	</select>
 
 	<select id="queryByIds" resultMap="BaseResultMap">
@@ -163,5 +163,10 @@ where id = #{id}
 			</choose>
 		</where>
 	</update>
+
+	<select id="getByAccountAndPassword" resultMap="BaseResultMap">
+		select <include refid="baseColumn" /> from user
+		where account=#{account} and password=#{password}
+	</select>
 
 </mapper>

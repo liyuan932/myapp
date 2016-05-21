@@ -14,6 +14,7 @@ import java.util.Map;
 import java.util.Objects;
 
 public class LogBean {
+
   /**
    * 主流程功能点
    */
@@ -141,6 +142,10 @@ public class LogBean {
     return this;
   }
 
+  public void info(){
+    LogUtils.info();
+  }
+
   @Override
   public String toString() {
     StringBuffer sb = new StringBuffer();
@@ -157,4 +162,5 @@ public class LogBean {
     sb.append(this.stackTrace);
     return sb.toString();
   }
+
 }

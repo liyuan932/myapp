@@ -1,7 +1,5 @@
 package com.mycompany.myapp.controller;
 
-import com.mycompany.myapp.daoobject.User;
-import com.mycompany.myapp.query.UserQuery;
 import com.mycompany.myapp.service.UserService;
 
 import org.springframework.stereotype.Controller;
@@ -11,41 +9,22 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.annotation.Resource;
 
 @Controller
-@RequestMapping("/user")
+@RequestMapping("/")
 public class LoginController extends BaseController {
 
   @Resource
   private UserService userService;
 
-  /**
-   *添加用户
-   */
-  @RequestMapping("/add")
-  @ResponseBody
-  public Object addUser() {
-    try {
-      User user = new User();
-      user.setAccount("test");
-      user.setPassword("1234");
-      user.setUsername("test");
-      user.setStatus(1);
-      user.setType(1);
-      userService.addUser(user);
 
-      return success();
-    } catch (Exception ex) {
-      return fail(ex);
-    }
-  }
 
   /**
-   *用户列表
+   *用户登录
    */
-  @RequestMapping("/list")
+  @RequestMapping("/login")
   @ResponseBody
-  public Object listUser(UserQuery query) {
+  public Object login(String account, String password) {
     try {
-      return success(userService.queryUser(query));
+      return success(userService.login(account,password));
     } catch (Exception ex) {
       return fail(ex);
     }

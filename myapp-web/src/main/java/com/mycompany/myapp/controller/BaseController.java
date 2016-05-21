@@ -2,6 +2,7 @@ package com.mycompany.myapp.controller;
 
 import com.mycompany.myapp.enums.msg.CommonMsgEnum;
 import com.mycompany.myapp.service.common.ServiceException;
+import com.mycompany.myapp.utils.log.LogUtils;
 import com.mycompany.myapp.vo.Result;
 
 import org.slf4j.Logger;
@@ -26,6 +27,9 @@ public class BaseController {
    */
   @ExceptionHandler
   public String exception(HttpServletRequest request, Exception ex) {
+
+    LogUtils.error(ex);
+
     request.setAttribute("ex", ex);
     if (ex instanceof ServiceException) {
       return "error/error-business";
@@ -60,6 +64,9 @@ public class BaseController {
   }
 
   protected Result<?> fail(Exception ex) {
+
+    LogUtils.error(ex);
+
     if (ex instanceof ServiceException) {
       return fail(((ServiceException) ex).getCode(), ex.getMessage());
     }
