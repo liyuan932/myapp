@@ -57,6 +57,8 @@ public class BaseController {
   }
 
   protected Result<?> fail(Exception ex) {
+
+
     if (ex instanceof ServiceException) {
       return fail(((ServiceException) ex).getCode(), ex.getMessage());
     } else if (ex instanceof DataAccessException) {
