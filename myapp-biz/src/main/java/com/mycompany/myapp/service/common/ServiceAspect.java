@@ -1,25 +1,64 @@
 package com.mycompany.myapp.service.common;
 
-import com.mycompany.myapp.enums.msg.CommonMsgEnum;
-import com.mycompany.myapp.vo.Result;
+import com.mycompany.myapp.utils.log.LogBean;
+import com.mycompany.myapp.utils.log.LogUtils;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.dao.DataAccessException;
+import org.springframework.stereotype.Component;
 
-//@Aspect
-//@Component
+@Aspect
+@Component
 public class ServiceAspect {
 
-  private static final Logger log = LoggerFactory.getLogger(ServiceAspect.class);
+  private final static long LONG_BUSINESS_WARN = 3000;
 
   @Pointcut("execution(public *  com.mycompany.myapp.service.impl.*.*(..))")
   public void aspect() {
   }
 
+  @Around("aspect()")
+  public Object around(ProceedingJoinPoint pjp) throws Throwable {
+
+    long start = System.currentTimeMillis();
+    try {
+      Object result = pjp.proceed();
+      long end = System.currentTimeMillis();
+
+      long cost = end - start;
+      LogBean logBean = LogUtils.getLogBean();
+      if (logBean != null) {
+        LogUtils.getLogBean().setCost(cost + "ms");
+        if (cost > LONG_BUSINESS_WARN) {
+          LogUtils.warn(logBean);
+        } else {
+          LogUtils.info(logBean);
+        }
+      }
+
+      return result;
+    } catch (Exception ex) {
+      LogBean logBean = LogUtils.getLogBean();
+      if (logBean != null) {
+        long end = System.currentTimeMillis();
+        long cost = end - start;
+        logBean.setCost(cost + "ms");
+        logBean.setMsg(ex.getMessage());
+        if (ex instanceof ServiceException) {
+          LogUtils.warn(logBean);
+        } else{
+          LogUtils.error(logBean,ex);
+        }
+      }
+
+
+      throw ex;
+    }
+  }
+
+  /*
   @Around("aspect()")
   public Object around(ProceedingJoinPoint pjp) {
     long start = System.currentTimeMillis();
@@ -51,4 +90,5 @@ public class ServiceAspect {
   private Result<?> fail(String code, String msg) {
     return new Result<>(code, msg);
   }
+  */
 }

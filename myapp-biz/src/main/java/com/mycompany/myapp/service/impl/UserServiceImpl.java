@@ -53,7 +53,7 @@ public class UserServiceImpl extends BaseService implements UserService {
 
   @Override
   public void addUser(User user) {
-    LogUtils.newLogBean(MainFunctionEnum.USER_ADMIN, UserFunctionEnum.ADD_USER).addParameters("user", user).info();
+    LogUtils.newLogBean(MainFunctionEnum.USER_ADMIN, UserFunctionEnum.ADD_USER).addParameters("user", user);
 
     userDAO.insert(user);
     ServicePreconditions.checkArgument(user.getId() != null, UserMsgEnum.FAIL_BIZ_ADD_USER);
@@ -62,13 +62,14 @@ public class UserServiceImpl extends BaseService implements UserService {
   @Override
   public User login(String account, String password) {
     LogUtils.newLogBean(MainFunctionEnum.USER_ADMIN, UserFunctionEnum.LOGIN).addParameters(
-        "account", account, "password", password).info();
+        "account", account, "password", password);
 
     ServicePreconditions.checkArgument(StringUtils.isNotBlank(account));
     ServicePreconditions.checkArgument(StringUtils.isNotBlank(password));
 
-    User user = userDAO.getByAccountAndPassword(account, password);
+    User user = userDAO.getByAccount(account);
     ServicePreconditions.checkArgument(user != null,UserMsgEnum.FAIL_BIZ_NO_USER);
+    ServicePreconditions.checkArgument(password.equals(user.getPassword()),UserMsgEnum.FAIL_BIZ_LOGIN);
 
     return user;
   }

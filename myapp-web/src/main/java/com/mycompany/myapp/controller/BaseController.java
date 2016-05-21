@@ -2,7 +2,6 @@ package com.mycompany.myapp.controller;
 
 import com.mycompany.myapp.enums.msg.CommonMsgEnum;
 import com.mycompany.myapp.service.common.ServiceException;
-import com.mycompany.myapp.utils.log.LogUtils;
 import com.mycompany.myapp.vo.Result;
 
 import org.slf4j.Logger;
@@ -28,15 +27,9 @@ public class BaseController {
   @ExceptionHandler
   public String exception(HttpServletRequest request, Exception ex) {
 
-    LogUtils.error(ex);
-
     request.setAttribute("ex", ex);
     if (ex instanceof ServiceException) {
       return "error/error-business";
-    }
-    if (ex instanceof IllegalArgumentException) {
-      log.error(CommonMsgEnum.FAIL_BIZ_PARAM_ERROR.getMsg(), ex);
-      return "error/error-parameter";
     } else if (ex instanceof DataAccessException) {
       log.error(CommonMsgEnum.FAIL_BIZ_DB_ERROR.getMsg(), ex);
       return "error/error-db";
@@ -64,14 +57,8 @@ public class BaseController {
   }
 
   protected Result<?> fail(Exception ex) {
-
-    LogUtils.error(ex);
-
     if (ex instanceof ServiceException) {
       return fail(((ServiceException) ex).getCode(), ex.getMessage());
-    }
-    if (ex instanceof IllegalArgumentException) {
-      return fail(CommonMsgEnum.FAIL_BIZ_PARAM_ERROR, ex);
     } else if (ex instanceof DataAccessException) {
       return fail(CommonMsgEnum.FAIL_BIZ_DB_ERROR, ex);
     } else {

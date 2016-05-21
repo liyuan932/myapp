@@ -3,7 +3,7 @@ package com.mycompany.myapp.enums.msg;
 public enum UserMsgEnum implements BaseMsgEnum {
 
   FAIL_BIZ_NO_USER("用户不存在"),   //
-  FAIL_BIZ_LOGIN_ERROR("账号或者密码错误"), //
+  FAIL_BIZ_LOGIN("账号或者密码错误"), //
   FAIL_BIZ_ADD_USER("添加用户失败");
 
   private String msg;

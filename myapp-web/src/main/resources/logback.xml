@@ -1,75 +1,77 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration debug="false">
-	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
-		<target>System.out</target>
-		<filter class="ch.qos.logback.core.filter.EvaluatorFilter">
-			<evaluator>
-				<expression>return level&lt;=INFO;</expression>
-			</evaluator>
-			<OnMatch>ACCEPT</OnMatch>
-			<OnMismatch>DENY</OnMismatch>
-		</filter>
-		<encoder>
-			<pattern><![CDATA[
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <target>System.out</target>
+        <filter class="ch.qos.logback.core.filter.EvaluatorFilter">
+            <evaluator>
+                <expression>return level&lt;=INFO;</expression>
+            </evaluator>
+            <OnMatch>ACCEPT</OnMatch>
+            <OnMismatch>DENY</OnMismatch>
+        </filter>
+        <encoder>
+            <pattern><![CDATA[
 				%d{HH:mm:ss}  %-5level %logger{35} - %msg%n
 			]]></pattern>
-			<charset>GBK</charset>
-		</encoder>
-	</appender>
+            <charset>GBK</charset>
+        </encoder>
+    </appender>
 
-	<appender name="STDERR" class="ch.qos.logback.core.ConsoleAppender">
-		<target>System.err</target>
-		<filter class="ch.qos.logback.core.filter.EvaluatorFilter">
-			<evaluator>
-				<expression>return level&gt;INFO;</expression>
-			</evaluator>
-			<OnMatch>ACCEPT</OnMatch>
-			<OnMismatch>DENY</OnMismatch>
-		</filter>
-		<encoder>
-			<pattern><![CDATA[
+    <appender name="STDERR" class="ch.qos.logback.core.ConsoleAppender">
+        <target>System.err</target>
+        <filter class="ch.qos.logback.core.filter.EvaluatorFilter">
+            <evaluator>
+                <expression>return level&gt;INFO;</expression>
+            </evaluator>
+            <OnMatch>ACCEPT</OnMatch>
+            <OnMismatch>DENY</OnMismatch>
+        </filter>
+        <encoder>
+            <pattern><![CDATA[
 				%d{HH:mm:ss}  %-5level %logger{35} - %msg%n
 			]]></pattern>
-			<charset>GBK</charset>
-		</encoder>
-	</appender>
+            <charset>GBK</charset>
+        </encoder>
+    </appender>
 
 
-	<appender name="PROJECT" class="ch.qos.logback.core.rolling.RollingFileAppender">
-		<file>${user.dir}/logs/myapp.log</file>
-		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-			<fileNamePattern>${user.dir}/logs/myapp%d{yyyy-MM-dd}.log</fileNamePattern>
-			<maxHistory>30</maxHistory>
-		</rollingPolicy>
-		<encoder>
-			<pattern><![CDATA[
+    <appender name="PROJECT" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${user.dir}/logs/myapp.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${user.dir}/logs/myapp%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern><![CDATA[
 %n%-4r [%d{yyyy-MM-dd HH:mm:ss}] %X{productionMode} - %X{method} %X{requestURIWithQueryString}[%file:%line][%method] [ip=%X{remoteAddr}, ref=%X{referrer}, ua=%X{userAgent}, sid=%X{cookie.JSESSIONID}]%n  %-5level %logger{35} - %m%n
             ]]></pattern>
-		</encoder>
-	</appender>
+        </encoder>
+    </appender>
 
-	<appender name="OPERATION" class="ch.qos.logback.core.rolling.RollingFileAppender">
-		<file>${user.dir}/logs/operation.log</file>
-		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-			<fileNamePattern>${user.dir}/logs/operation%d{yyyy-MM-dd}.log</fileNamePattern>
-			<maxHistory>30</maxHistory>
-		</rollingPolicy>
-		<encoder>
-			<pattern><![CDATA[
+    <appender name="OPERATION" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${user.dir}/logs/operation.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${user.dir}/logs/operation%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern><![CDATA[
 			%n%-4r->%d{yyyy-MM-dd HH:mm:ss}->%-5level->%m%n
             ]]></pattern>
-		</encoder>
-	</appender>
+        </encoder>
+    </appender>
 
-	<logger name="com.mycompany.myapp.dao" level="DEBUG" additivity="false">
-		<appender-ref ref="STDOUT" />
-	</logger>
-	<logger name="operationLog" level="INFO" additivity="false">
-		<appender-ref ref="OPERATION" />
-	</logger>
+    <logger name="com.mycompany.myapp.dao" level="DEBUG" additivity="false">
+        <appender-ref ref="STDOUT"/>
+    </logger>
+    <logger name="operationLog" level="INFO" additivity="false">
+        <appender-ref ref="OPERATION"/>
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="STDERR"/>
+    </logger>
 
-	<root level="WARN">
-		<appender-ref ref="PROJECT" />
-	</root>
+    <root level="WARN">
+        <appender-ref ref="PROJECT"/>
+    </root>
 
 </configuration>
