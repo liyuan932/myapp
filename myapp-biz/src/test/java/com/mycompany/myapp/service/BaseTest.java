@@ -13,6 +13,8 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
+import org.htmlparser.Parser;
+import org.htmlparser.visitors.TextExtractingVisitor;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 
@@ -43,7 +45,8 @@ public class BaseTest extends AbstractTestNGSpringContextTests {
 			};
 			String responseBody = httpclient.execute(httpget, responseHandler);
 			System.out.println("----------------------------------------");
-			System.out.println(responseBody);
+			System.out.println(html2Text(responseBody));
+			// System.out.println(responseBody);
 
 			Matcher requstMatcher = Pattern.compile("<dd><a href=\"(.*)\">(.*)</a></dd>").matcher(responseBody);
 			while (requstMatcher.find()) {
@@ -58,6 +61,17 @@ public class BaseTest extends AbstractTestNGSpringContextTests {
 
 		} finally {
 			httpclient.close();
+		}
+	}
+
+	public static String html2Text(String html) {
+		try {
+			Parser parser = Parser.createParser(html, "utf-8");
+			TextExtractingVisitor visitor = new TextExtractingVisitor();
+			parser.visitAllNodesWith(visitor);
+			return visitor.getExtractedText();
+		} catch (Exception ex) {
+			return null;
 		}
 	}
 }
