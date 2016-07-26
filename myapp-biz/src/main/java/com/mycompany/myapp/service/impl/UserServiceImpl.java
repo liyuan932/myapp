@@ -1,8 +1,16 @@
 package com.mycompany.myapp.service.impl;
 
+import java.util.List;
+
+import javax.annotation.Resource;
+
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.mycompany.myapp.dao.UserDAO;
 import com.mycompany.myapp.daoobject.User;
-import com.mycompany.myapp.enums.category.StatusEnum;
+import com.mycompany.myapp.enums.category.EnableOrDisableEnum;
 import com.mycompany.myapp.enums.category.UserTypeEnum;
 import com.mycompany.myapp.enums.msg.MainFunctionEnum;
 import com.mycompany.myapp.enums.msg.UserFunctionEnum;
@@ -13,64 +21,58 @@ import com.mycompany.myapp.service.common.BaseService;
 import com.mycompany.myapp.service.common.ServicePreconditions;
 import com.mycompany.myapp.utils.BeanUtil;
 import com.mycompany.myapp.utils.DateUtil;
+import com.mycompany.myapp.utils.log.LogBean;
 import com.mycompany.myapp.utils.log.LogUtils;
 import com.mycompany.myapp.vo.UserVO;
-
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import javax.annotation.Resource;
 
 @Transactional
 @Service("userService")
 public class UserServiceImpl extends BaseService implements UserService {
 
-  @SuppressWarnings("SpringJavaAutowiringInspection")
-  @Resource
-  private UserDAO userDAO;
+	@SuppressWarnings("SpringJavaAutowiringInspection")
+	@Resource
+	private UserDAO userDAO;
 
-  @Override
-  public List<UserVO> queryUser(UserQuery query) {
+	@Override
+	public List<UserVO> queryUser(UserQuery query) {
 
-    List<User> users = userDAO.queryList(query);
+		List<User> users = userDAO.queryList(query);
 
-    return BeanUtil.dbToVo(users, UserVO.class, new BeanUtil.Callback<User, UserVO>() {
-      @Override
-      public void execute(User db, UserVO vo) {
-        vo.setStatusText(StatusEnum.getTextByIndex(db.getStatus()));
-        vo.setTypeText(UserTypeEnum.getTextByIndex(db.getType()));
-        vo.setGmtCreateText(DateUtil.parseDate2Str(db.getGmtCreate()));
-      }
-    });
-  }
+		return BeanUtil.dbToVo(users, UserVO.class, new BeanUtil.Callback<User, UserVO>() {
+			@Override
+			public void execute(User db, UserVO vo) {
+				vo.setStatusText(EnableOrDisableEnum.getTextByIndex(db.getStatus()));
+				vo.setTypeText(UserTypeEnum.getTextByIndex(db.getType()));
+				vo.setGmtCreateText(DateUtil.parseDate2Str(db.getGmtCreate()));
+			}
+		});
+	}
 
-  @Override
-  public User getUserById(Long id) {
-    return userDAO.getById(id);
-  }
+	@Override
+	public User getUserById(Long id) {
+		return userDAO.getById(id);
+	}
 
-  @Override
-  public void addUser(User user) {
-    LogUtils.newLogBean(MainFunctionEnum.USER_ADMIN, UserFunctionEnum.ADD_USER).addParameters("user", user);
+	@Override
+	public void addUser(User user) {
+		LogBean logBean = LogUtils.newLogBean(MainFunctionEnum.USER_ADMIN, UserFunctionEnum.ADD_USER);
+		logBean.addParameters("user", user);
 
-    userDAO.insert(user);
-    ServicePreconditions.checkArgument(user.getId() != null, UserMsgEnum.FAIL_BIZ_ADD_USER);
-  }
+		userDAO.insert(user);
+		ServicePreconditions.checkArgument(user.getId() != null, UserMsgEnum.FAIL_BIZ_ADD_USER);
+	}
 
-  @Override
-  public User login(String account, String password) {
-    LogUtils.newLogBean(MainFunctionEnum.USER_ADMIN, UserFunctionEnum.LOGIN).addParameters(
-        "account", account, "password", password);
+	@Override
+	public User login(String account, String password) {
+		LogBean logBean = LogUtils.newLogBean(MainFunctionEnum.USER_ADMIN, UserFunctionEnum.LOGIN);
+		logBean.addParameters("account", account, "password", password);
 
-    ServicePreconditions.checkArgument(StringUtils.isNotBlank(account));
-    ServicePreconditions.checkArgument(StringUtils.isNotBlank(password));
+		ServicePreconditions.checkArgument(StringUtils.isNotBlank(account), UserMsgEnum.FAIL_BIZ_ACCOUNT_IS_NULL);
+		ServicePreconditions.checkArgument(StringUtils.isNotBlank(password), UserMsgEnum.FAIL_BIZ_PASSWORD_IS_NULL);
 
-    User user = userDAO.getByAccount(account);
-    ServicePreconditions.checkArgument(user != null,UserMsgEnum.FAIL_BIZ_NO_USER);
-    ServicePreconditions.checkArgument(password.equals(user.getPassword()),UserMsgEnum.FAIL_BIZ_LOGIN);
+		User user = userDAO.getByAccountAndPassword(account, password);
+		ServicePreconditions.checkArgument(user != null, UserMsgEnum.FAIL_BIZ_USER_NOT_EXIST, account);
 
-    return user;
-  }
+		return user;
+	}
 }
