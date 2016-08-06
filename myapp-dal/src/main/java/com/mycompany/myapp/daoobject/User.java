@@ -1,5 +1,7 @@
 package com.mycompany.myapp.daoobject;
 
+import com.mycompany.myapp.base.BaseDO;
+
 import java.util.Date;
 
 public class User extends BaseDO {

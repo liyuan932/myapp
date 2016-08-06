@@ -38,8 +38,9 @@ public class MybatisMappingUtils {
    * main方法
    */
   public static void main(String[] args) throws Exception {
+   // MybatisMappingUtils.clear(new String[]{"operation_log"});
     MybatisMappingUtils.generate(new String[]{"operation_log"});
-  //  MybatisMappingUtils.clear(new String[]{"operation_log"});
+
   }
 
   /**
@@ -185,6 +186,7 @@ public class MybatisMappingUtils {
     writer.write("package " + projectPackageName + ".daoobject;\n\n");
     writer.write("import java.util.Date;\n");
 
+    writer.write("import " + projectPackageName + ".base.BaseDO;\n");
     writer.write("\npublic class " + className + " extends BaseDO {\n");
     writer.write("\n");
     for (PropertyInfo info : propertyInfos) {

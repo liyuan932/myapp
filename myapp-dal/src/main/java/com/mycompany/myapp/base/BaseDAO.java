@@ -1,10 +1,9 @@
 package com.mycompany.myapp.base;
 
-import java.util.List;
-
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
-import com.mycompany.myapp.daoobject.BaseDO;
+
+import java.util.List;
 
 /**
  * 基本DAO

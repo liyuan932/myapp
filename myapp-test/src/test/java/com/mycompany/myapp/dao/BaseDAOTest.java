@@ -3,7 +3,7 @@ package com.mycompany.myapp.dao;
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.google.common.collect.Lists;
 import com.mycompany.myapp.base.BaseDAO;
-import com.mycompany.myapp.daoobject.BaseDO;
+import com.mycompany.myapp.base.BaseDO;
 import com.mycompany.myapp.daoobject.OperationLog;
 import com.mycompany.myapp.daoobject.User;
 import org.apache.commons.lang3.RandomStringUtils;
