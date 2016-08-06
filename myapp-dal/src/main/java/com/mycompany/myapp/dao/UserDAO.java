@@ -1,5 +1,6 @@
 package com.mycompany.myapp.dao;
 
+import com.mycompany.myapp.base.BaseDAO;
 import com.mycompany.myapp.daoobject.User;
 
 import org.apache.ibatis.annotations.Param;

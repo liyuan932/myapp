@@ -132,6 +132,7 @@ public class MybatisMappingUtils {
     File file = new File(baseJavaDir + getProjectPathName(projectPackageName) + "/dao/" + className + "DAO.java");
     OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(file), "utf-8");
     writer.write("package " + projectPackageName + ".dao;\n\n");
+    writer.write("import " + projectPackageName + ".base.BaseDAO;\n");
     writer.write("import " + projectPackageName + ".daoobject." + className + ";\n");
     writer.write("\npublic interface " + className + "DAO extends BaseDAO<" + className + "> {\n");
     writer.write("}\n");
