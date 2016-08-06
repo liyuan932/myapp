@@ -38,8 +38,10 @@ public class MybatisMappingUtils {
    * main方法
    */
   public static void main(String[] args) throws Exception {
+    System.out.println(System.getProperty("user.dir"));
+
    // MybatisMappingUtils.clear(new String[]{"operation_log"});
-    MybatisMappingUtils.generate(new String[]{"operation_log"});
+   // MybatisMappingUtils.generate(new String[]{"operation_log"});
 
   }
 

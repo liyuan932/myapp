@@ -6,8 +6,12 @@ import com.mycompany.myapp.base.BaseDAO;
 import com.mycompany.myapp.base.BaseDO;
 import com.mycompany.myapp.daoobject.OperationLog;
 import com.mycompany.myapp.daoobject.User;
+import com.mycompany.myapp.utils.MybatisMappingUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.RandomUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.test.annotation.Rollback;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
@@ -15,6 +19,7 @@ import org.testng.annotations.Test;
 
 import javax.annotation.Resource;
 import java.beans.PropertyDescriptor;
+import java.io.File;
 import java.lang.reflect.Field;
 import java.util.Date;
 import java.util.List;
@@ -27,6 +32,39 @@ public class BaseDAOTest extends BaseTest {
   @Resource
   private OperationLogDAO operationLogDAO;
 
+  private static String projectPackageName;
+  private static String baseJavaDir;
+
+
+
+  @Test
+  public void testCURD() throws Exception {
+
+    ApplicationContext ctx = new ClassPathXmlApplicationContext("spring-mybatis.xml");
+
+    String curPackageName = MybatisMappingUtils.class.getPackage().getName();
+    projectPackageName = curPackageName.substring(0, curPackageName.lastIndexOf("."));
+
+    baseJavaDir = getProjectRoot() + "/myapp-dal/src/main/java/";
+    File file = new File(baseJavaDir + getProjectPathName(projectPackageName) + "/dao/");
+    if(file.isDirectory() && file.list() != null){
+      for (String filename : file.list()) {
+          String daoBeanName = StringUtils.uncapitalize(filename.substring(0,filename.indexOf(".")));
+        String doClzName = projectPackageName + ".daoobject." + filename.substring(0,filename.indexOf("DAO."));
+        CURD((BaseDAO) ctx.getBean(daoBeanName),Class.forName(doClzName));
+      }
+    }
+  }
+
+  private String getProjectPathName(String projectPackageName) {
+    return projectPackageName.replaceAll("\\.", "/");
+  }
+
+  private String getProjectRoot(){
+    String userDir = System.getProperty("user.dir");
+    return userDir.substring(0,userDir.lastIndexOf("\\"));
+  }
+
   @DataProvider(name = "data")
   public Object[][] data() {
     return new Object[][]{
@@ -38,6 +76,11 @@ public class BaseDAOTest extends BaseTest {
   @Rollback
   @Test(dataProvider = "data")
   public void testCURD(BaseDAO dao, Class<?> clz) throws Exception {
+    CURD(dao,clz);
+  }
+
+
+  private void CURD(BaseDAO dao, Class<?> clz) throws Exception {
     BaseDO db = initDB(clz);
     dao.insert(db);
 
@@ -68,7 +111,6 @@ public class BaseDAOTest extends BaseTest {
     Assert.assertEquals(dao.queryByIds(ids).size(), 10);
     Assert.assertEquals(dao.batchDelete(ids), 10);
   }
-
   private BaseDO initDB(Class<?> clz) throws Exception {
     BaseDO db = (BaseDO) clz.newInstance();
     for (Field f : clz.getDeclaredFields()) {
@@ -90,10 +132,6 @@ public class BaseDAOTest extends BaseTest {
       new PropertyDescriptor(f.getName(), clz).getWriteMethod().invoke(db, arg);
     }
     return db;
-  }
-
-  public static void main(String[] args) throws Exception {
-    System.out.println(new BaseDAOTest().initDB(User.class));
   }
 
   private List<Long> getIds(List<BaseDO> users) {
