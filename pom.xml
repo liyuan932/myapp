@@ -11,6 +11,7 @@
 		<module>myapp-dal</module>
 		<module>myapp-biz</module>
 		<module>myapp-web</module>
+		<module>myapp-test</module>
 	</modules>
 
 	<properties>

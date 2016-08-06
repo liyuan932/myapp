@@ -38,8 +38,8 @@ public class MybatisMappingUtils {
    * main方法
    */
   public static void main(String[] args) throws Exception {
-    //MybatisMappingUtils.generate(new String[]{"role"});
-    MybatisMappingUtils.clear(new String[]{"role"});
+    MybatisMappingUtils.generate(new String[]{"operation_log"});
+  //  MybatisMappingUtils.clear(new String[]{"operation_log"});
   }
 
   /**
@@ -358,8 +358,8 @@ public class MybatisMappingUtils {
         continue;
       }
 
-      if (!info.getColumn().equals("id")) {
-        batchInsertProperty.append("#{").append(info.getColumn()).append("},");
+      if (!info.getProperty().equals("id")) {
+        batchInsertProperty.append("#{").append(info.getProperty()).append("},");
       }
     }
     return batchInsertProperty.substring(0, batchInsertProperty.length() - 1);
@@ -373,8 +373,8 @@ public class MybatisMappingUtils {
         continue;
       }
 
-      if (!info.getColumn().equals("id")) {
-        batchInsertProperty.append("#{item.").append(info.getColumn()).append("},");
+      if (!info.getProperty().equals("id")) {
+        batchInsertProperty.append("#{item.").append(info.getProperty()).append("},");
       }
     }
     return batchInsertProperty.substring(0, batchInsertProperty.length() - 1);

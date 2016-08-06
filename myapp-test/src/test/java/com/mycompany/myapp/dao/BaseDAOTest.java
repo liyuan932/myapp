@@ -1,10 +1,10 @@
 package com.mycompany.myapp.dao;
 
-import com.mycompany.myapp.daoobject.BaseDO;
-import com.mycompany.myapp.daoobject.User;
-
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.google.common.collect.Lists;
+import com.mycompany.myapp.daoobject.BaseDO;
+import com.mycompany.myapp.daoobject.OperationLog;
+import com.mycompany.myapp.daoobject.User;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.RandomUtils;
 import org.springframework.test.annotation.Rollback;
@@ -12,22 +12,25 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import javax.annotation.Resource;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
 import java.util.Date;
 import java.util.List;
-import javax.annotation.Resource;
 
 @SuppressWarnings("SpringJavaAutowiringInspection")
-public class UserDAOTest extends BaseTest {
+public class BaseDAOTest extends BaseTest {
 
   @Resource
   private UserDAO userDAO;
+  @Resource
+  private OperationLogDAO operationLogDAO;
 
   @DataProvider(name = "data")
   public Object[][] data() {
     return new Object[][]{
-        {userDAO, User.class}
+        {userDAO, User.class},
+        {operationLogDAO, OperationLog.class}
     };
   }
 
@@ -89,7 +92,7 @@ public class UserDAOTest extends BaseTest {
   }
 
   public static void main(String[] args) throws Exception {
-    System.out.println(new UserDAOTest().initDB(User.class));
+    System.out.println(new BaseDAOTest().initDB(User.class));
   }
 
   private List<Long> getIds(List<BaseDO> users) {
