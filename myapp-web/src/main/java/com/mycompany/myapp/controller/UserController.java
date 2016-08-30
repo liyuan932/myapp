@@ -25,7 +25,7 @@ public class UserController extends BaseController {
   @ResponseBody
   public Object queryUser(UserQuery query) {
     try {
-      return success(userService.queryUser(query));
+      return success(userService.queryList(query));
     } catch (Exception ex) {
       return fail(ex);
     }
@@ -44,7 +44,7 @@ public class UserController extends BaseController {
       user.setUsername("test");
       user.setStatus(1);
       user.setType(1);
-      userService.addUser(user);
+      userService.add(user);
 
       return success();
     } catch (Exception ex) {
@@ -60,7 +60,7 @@ public class UserController extends BaseController {
   @ResponseBody
   public Object listUser(UserQuery query) {
     try {
-      return success(userService.queryUser(query));
+      return success(userService.queryList(query));
     } catch (Exception ex) {
       return fail(ex);
     }

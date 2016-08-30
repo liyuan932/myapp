@@ -1,4 +1,4 @@
-package com.mycompany.myapp.daoobject;
+package com.mycompany.myapp.base;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;

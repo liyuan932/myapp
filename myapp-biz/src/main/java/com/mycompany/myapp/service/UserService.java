@@ -8,11 +8,13 @@ import java.util.List;
 
 public interface UserService {
 
-  List<UserVO> queryUser(UserQuery query);
+  List<UserVO> queryList(UserQuery query);
 
-  User getUserById(Long id);
+  User getById(Long id);
 
-  void addUser(User user);
+  boolean add(User user);
+
+  boolean update(User user);
 
   User login(String username,String password);
 }

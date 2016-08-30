@@ -19,7 +19,7 @@ public class UserServiceTest extends BaseTest {
     user.setUsername("test");
     user.setStatus(1);
     user.setType(1);
-    userService.addUser(user);
+    userService.add(user);
 
     Assert.assertNotNull(user.getId());
   }

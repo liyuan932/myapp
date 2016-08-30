@@ -4,7 +4,6 @@ import com.mycompany.myapp.controller.BaseController;
 import com.mycompany.myapp.query.UserQuery;
 import com.mycompany.myapp.service.UserService;
 import com.mycompany.myapp.utils.excel.ExcelUtils;
-
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.apache.commons.io.FileUtils;
 import org.springframework.http.HttpHeaders;
@@ -17,15 +16,13 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics2D;
+import javax.annotation.Resource;
+import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.Map;
-import javax.annotation.Resource;
-import javax.imageio.ImageIO;
 
 @Controller
 @RequestMapping("/demo")
@@ -45,7 +42,7 @@ public class DemoController extends BaseController {
   @RequestMapping("/view1.do")
   public ModelAndView view1(UserQuery query) {
     ModelAndView mv = new ModelAndView("demo/view");
-    mv.addObject("users", userService.queryUser(query));
+    mv.addObject("users", userService.queryList(query));
     return mv;
   }
 
@@ -55,7 +52,7 @@ public class DemoController extends BaseController {
   @SuppressFBWarnings("EC_UNRELATED_TYPES_USING_POINTER_EQUALITY")
   @RequestMapping("/view2.do")
   public String view2(UserQuery query, Model model, ModelMap mm, Map<String, Object> map) {
-    model.addAttribute("users", userService.queryUser(query));
+    model.addAttribute("users", userService.queryList(query));
     System.out.println((model == mm) + "," + (model == map));  //true,true
     return "demo/view";
   }
@@ -66,7 +63,7 @@ public class DemoController extends BaseController {
   @RequestMapping("/stream.do")
   public ResponseEntity<byte[]> stream(UserQuery query) throws Exception {
 
-    File file = ExcelUtils.generateFile(userService.queryUser(query));
+    File file = ExcelUtils.generateFile(userService.queryList(query));
 
     HttpHeaders headers = new HttpHeaders();
     headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);

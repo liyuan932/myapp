@@ -45,8 +45,24 @@ public class LogBean {
    */
   private String stackTrace;
 
+  /**
+   * 花费时间
+   */
+  private String cost;
+
   public LogBean() {
 
+  }
+
+  /**
+   * 构造方法
+   *
+   * @param mainFunction  主要功能
+   * @param secondaryFunction 次级功能
+   */
+  public LogBean(String mainFunction, String secondaryFunction) {
+    this.mainFunction = mainFunction;
+    this.secondaryFunction = secondaryFunction;
   }
 
   /**
@@ -121,6 +137,14 @@ public class LogBean {
     this.msg = msg;
   }
 
+  public String getCost() {
+    return cost;
+  }
+
+  public void setCost(String cost) {
+    this.cost = cost;
+  }
+
   /**
    * 添加参数
    *
@@ -142,10 +166,6 @@ public class LogBean {
     return this;
   }
 
-  public void info(){
-    LogUtils.info();
-  }
-
   @Override
   public String toString() {
     StringBuffer sb = new StringBuffer();
@@ -156,6 +176,8 @@ public class LogBean {
     sb.append(StringUtils.trim(this.bid));
     sb.append("->");
     sb.append(StringUtils.trim(JSON.toJSONString(this.parameters)));
+    sb.append("->");
+    sb.append(StringUtils.trim(this.cost));
     sb.append("->");
     sb.append(StringUtils.trim(this.msg));
     sb.append("->");

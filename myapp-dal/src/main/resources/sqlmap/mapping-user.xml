@@ -164,6 +164,11 @@
 		</where>
 	</update>
 
+	<select id="getByAccount" resultMap="BaseResultMap">
+		select <include refid="baseColumn" /> from user
+		where account=#{account}
+	</select>
+
 	<select id="getByAccountAndPassword" resultMap="BaseResultMap">
 		select <include refid="baseColumn" /> from user
 		where account=#{account} and password=#{password}

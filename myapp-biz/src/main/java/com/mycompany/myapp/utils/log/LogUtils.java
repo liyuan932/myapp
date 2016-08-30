@@ -35,40 +35,40 @@ public class LogUtils {
   }
 
 
-  public static void debug() {
+  public static void debug(LogBean logBean) {
     log.debug(getLogBean().toString());
   }
 
-  public static void debug(Exception ex) {
-    processException(getLogBean(), ex);
-    log.debug(getLogBean().toString());
+  public static void debug(LogBean logBean,Exception ex) {
+    processException(logBean, ex);
+    log.debug(logBean.toString());
   }
 
-  public static void info() {
-    log.info(getLogBean().toString());
+  public static void info(LogBean logBean) {
+    log.info(logBean.toString());
   }
 
-  public static void info(Exception ex) {
-    processException(getLogBean(), ex);
-    log.info(getLogBean().toString());
+  public static void info(LogBean logBean, Exception ex) {
+    processException(logBean, ex);
+    log.info(logBean.toString());
   }
 
-  public static void warn() {
-    log.warn(getLogBean().toString());
+  public static void warn(LogBean logBean) {
+    log.warn(logBean.toString());
   }
 
-  public static void warn(Exception ex) {
-    processException(getLogBean(), ex);
-    log.warn(getLogBean().toString());
+  public static void warn(LogBean logBean, Exception ex) {
+    processException(logBean, ex);
+    log.warn(logBean.toString());
   }
 
-  public static void error() {
-    log.error(getLogBean().toString());
+  public static void error(LogBean logBean) {
+    log.error(logBean.toString());
   }
 
-  public static void error(Exception ex) {
-    processException(getLogBean(), ex);
-    log.error(getLogBean().toString());
+  public static void error(LogBean logBean, Exception ex) {
+    processException(logBean, ex);
+    log.error(logBean.toString());
   }
 
   private static void processException(LogBean logBean, Exception ex) {

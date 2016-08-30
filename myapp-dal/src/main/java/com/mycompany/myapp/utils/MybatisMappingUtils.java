@@ -38,8 +38,11 @@ public class MybatisMappingUtils {
    * main方法
    */
   public static void main(String[] args) throws Exception {
-    //MybatisMappingUtils.generate(new String[]{"role"});
-    MybatisMappingUtils.clear(new String[]{"role"});
+    System.out.println(System.getProperty("user.dir"));
+
+   // MybatisMappingUtils.clear(new String[]{"operation_log"});
+   // MybatisMappingUtils.generate(new String[]{"operation_log"});
+
   }
 
   /**
@@ -132,6 +135,7 @@ public class MybatisMappingUtils {
     File file = new File(baseJavaDir + getProjectPathName(projectPackageName) + "/dao/" + className + "DAO.java");
     OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(file), "utf-8");
     writer.write("package " + projectPackageName + ".dao;\n\n");
+    writer.write("import " + projectPackageName + ".base.BaseDAO;\n");
     writer.write("import " + projectPackageName + ".daoobject." + className + ";\n");
     writer.write("\npublic interface " + className + "DAO extends BaseDAO<" + className + "> {\n");
     writer.write("}\n");
@@ -184,6 +188,7 @@ public class MybatisMappingUtils {
     writer.write("package " + projectPackageName + ".daoobject;\n\n");
     writer.write("import java.util.Date;\n");
 
+    writer.write("import " + projectPackageName + ".base.BaseDO;\n");
     writer.write("\npublic class " + className + " extends BaseDO {\n");
     writer.write("\n");
     for (PropertyInfo info : propertyInfos) {
@@ -358,8 +363,8 @@ public class MybatisMappingUtils {
         continue;
       }
 
-      if (!info.getColumn().equals("id")) {
-        batchInsertProperty.append("#{").append(info.getColumn()).append("},");
+      if (!info.getProperty().equals("id")) {
+        batchInsertProperty.append("#{").append(info.getProperty()).append("},");
       }
     }
     return batchInsertProperty.substring(0, batchInsertProperty.length() - 1);
@@ -373,8 +378,8 @@ public class MybatisMappingUtils {
         continue;
       }
 
-      if (!info.getColumn().equals("id")) {
-        batchInsertProperty.append("#{item.").append(info.getColumn()).append("},");
+      if (!info.getProperty().equals("id")) {
+        batchInsertProperty.append("#{item.").append(info.getProperty()).append("},");
       }
     }
     return batchInsertProperty.substring(0, batchInsertProperty.length() - 1);
