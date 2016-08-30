@@ -17,16 +17,13 @@ public class LogUtils {
 
   public static LogBean newLogBean(MainFunctionEnum mainFunctionEnum, FunctionEnum functionEnum) {
     LogBean logBean = new LogBean(mainFunctionEnum, functionEnum);
-
-    if(threadLocal.get() == null){
-      threadLocal.set(logBean);
-    }
-
+    threadLocal.set(logBean);
     return logBean;
   }
 
   public static LogBean newLogBean(MainFunctionEnum mainFunctionEnum, FunctionEnum functionEnum, String msg) {
     LogBean logBean = new LogBean(mainFunctionEnum, functionEnum, msg);
+    threadLocal.set(logBean);
     return logBean;
   }
 
@@ -36,7 +33,7 @@ public class LogUtils {
 
 
   public static void debug(LogBean logBean) {
-    log.debug(getLogBean().toString());
+    log.debug(logBean.toString());
   }
 
   public static void debug(LogBean logBean,Exception ex) {

@@ -10,7 +10,7 @@ import com.mycompany.myapp.enums.msg.UserMsgEnum;
 import com.mycompany.myapp.query.UserQuery;
 import com.mycompany.myapp.service.UserService;
 import com.mycompany.myapp.service.common.BaseService;
-import com.mycompany.myapp.service.common.ServicePreconditions;
+import com.mycompany.myapp.service.common.BizCheck;
 import com.mycompany.myapp.utils.BeanUtil;
 import com.mycompany.myapp.utils.DateUtil;
 import com.mycompany.myapp.utils.log.LogBean;
@@ -62,7 +62,7 @@ public class UserServiceImpl extends BaseService implements UserService {
 		logBean.addParameters("user", user);
 
 		userDAO.insert(user);
-		ServicePreconditions.checkArgument(user.getId() != null, UserMsgEnum.FAIL_BIZ_ADD_USER);
+		BizCheck.checkArgument(user.getId() != null, UserMsgEnum.FAIL_BIZ_ADD_USER);
 
 		return true;
 	}
@@ -81,11 +81,11 @@ public class UserServiceImpl extends BaseService implements UserService {
 		LogBean logBean = LogUtils.newLogBean(MainFunctionEnum.USER_ADMIN, UserFunctionEnum.LOGIN);
 		logBean.addParameters("account", account, "password", password);
 
-		ServicePreconditions.checkArgument(StringUtils.isNotBlank(account), UserMsgEnum.FAIL_BIZ_ACCOUNT_IS_NULL);
-		ServicePreconditions.checkArgument(StringUtils.isNotBlank(password), UserMsgEnum.FAIL_BIZ_PASSWORD_IS_NULL);
+		BizCheck.checkArgument(StringUtils.isNotBlank(account), UserMsgEnum.FAIL_BIZ_ACCOUNT_IS_NULL);
+		BizCheck.checkArgument(StringUtils.isNotBlank(password), UserMsgEnum.FAIL_BIZ_PASSWORD_IS_NULL);
 
 		User user = userDAO.getByAccountAndPassword(account, password);
-		ServicePreconditions.checkArgument(user != null, UserMsgEnum.FAIL_BIZ_USER_NOT_EXIST, account);
+		BizCheck.checkArgument(user != null, UserMsgEnum.FAIL_BIZ_USER_NOT_EXIST, account);
 
 		return user;
 	}

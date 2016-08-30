@@ -2,7 +2,7 @@ package com.mycompany.myapp.service.common;
 
 import com.mycompany.myapp.enums.msg.BaseMsgEnum;
 
-public class ServicePreconditions {
+public class BizCheck {
 
   public static void checkArgument(boolean expression, BaseMsgEnum msgEnum) {
     if (!expression) {
