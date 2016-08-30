@@ -1,7 +1,7 @@
 package com.mycompany.myapp.utils.log;
 
-import com.mycompany.myapp.enums.msg.MainFunctionEnum;
-import com.mycompany.myapp.enums.msg.SecondaryFunctionEnum;
+import com.mycompany.myapp.enums.function.MainFunctionEnum;
+import com.mycompany.myapp.enums.function.FunctionEnum;
 
 import com.alibaba.fastjson.JSON;
 import com.google.common.base.MoreObjects;
@@ -53,11 +53,11 @@ public class LogBean {
    * 构造方法
    *
    * @param mainFunctionEnum      主要功能
-   * @param secondaryFunctionEnum 次级功能
+   * @param functionEnum 次级功能
    */
-  public LogBean(MainFunctionEnum mainFunctionEnum, SecondaryFunctionEnum secondaryFunctionEnum) {
+  public LogBean(MainFunctionEnum mainFunctionEnum, FunctionEnum functionEnum) {
     this.mainFunction = mainFunctionEnum.getMsg();
-    this.secondaryFunction = secondaryFunctionEnum.getMsg();
+    this.secondaryFunction = functionEnum.getMsg();
   }
 
 
@@ -65,11 +65,11 @@ public class LogBean {
    * 构造方法
    *
    * @param mainFunctionEnum      主要功能
-   * @param secondaryFunctionEnum 次级功能
+   * @param functionEnum 次级功能
    * @param msg                   错误信息
    */
-  public LogBean(MainFunctionEnum mainFunctionEnum, SecondaryFunctionEnum secondaryFunctionEnum, String msg) {
-    this(mainFunctionEnum, secondaryFunctionEnum);
+  public LogBean(MainFunctionEnum mainFunctionEnum, FunctionEnum functionEnum, String msg) {
+    this(mainFunctionEnum, functionEnum);
     this.msg = msg;
   }
 

@@ -1,8 +1,8 @@
 package com.mycompany.myapp.utils.log;
 
 
-import com.mycompany.myapp.enums.msg.MainFunctionEnum;
-import com.mycompany.myapp.enums.msg.SecondaryFunctionEnum;
+import com.mycompany.myapp.enums.function.MainFunctionEnum;
+import com.mycompany.myapp.enums.function.FunctionEnum;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -15,8 +15,8 @@ public class LogUtils {
 
   private static NamedThreadLocal<LogBean> threadLocal = new NamedThreadLocal<>("LogBean");
 
-  public static LogBean newLogBean(MainFunctionEnum mainFunctionEnum, SecondaryFunctionEnum secondaryFunctionEnum) {
-    LogBean logBean = new LogBean(mainFunctionEnum, secondaryFunctionEnum);
+  public static LogBean newLogBean(MainFunctionEnum mainFunctionEnum, FunctionEnum functionEnum) {
+    LogBean logBean = new LogBean(mainFunctionEnum, functionEnum);
 
     if(threadLocal.get() == null){
       threadLocal.set(logBean);
@@ -25,8 +25,8 @@ public class LogUtils {
     return logBean;
   }
 
-  public static LogBean newLogBean(MainFunctionEnum mainFunctionEnum, SecondaryFunctionEnum secondaryFunctionEnum, String msg) {
-    LogBean logBean = new LogBean(mainFunctionEnum, secondaryFunctionEnum, msg);
+  public static LogBean newLogBean(MainFunctionEnum mainFunctionEnum, FunctionEnum functionEnum, String msg) {
+    LogBean logBean = new LogBean(mainFunctionEnum, functionEnum, msg);
     return logBean;
   }
 

@@ -1,4 +1,4 @@
-package com.mycompany.myapp.enums.msg;
+package com.mycompany.myapp.enums.function;
 
 /**
  * 主功能枚举
@@ -6,10 +6,9 @@ package com.mycompany.myapp.enums.msg;
  * @author Administrator
  * @date 2016-05-07
  */
-public enum MainFunctionEnum {
+public enum MainFunctionEnum implements FunctionEnum {
 
-  USER_ADMIN("user admin"), //
-  LOGIN("user login");
+  USER_ADMIN("user admin");
 
   private String msg;
   MainFunctionEnum(String msg) {
