@@ -8,6 +8,6 @@ package com.mycompany.myapp.enums.function;
  */
 public interface FunctionEnum {
 
-  String getMsg();
+    String getMsg();
 }
 

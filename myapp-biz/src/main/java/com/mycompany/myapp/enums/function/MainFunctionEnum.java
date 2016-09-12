@@ -8,14 +8,15 @@ package com.mycompany.myapp.enums.function;
  */
 public enum MainFunctionEnum implements FunctionEnum {
 
-  USER_ADMIN("user admin");
+    USER_ADMIN("user admin");
 
-  private String msg;
-  MainFunctionEnum(String msg) {
-    this.msg = msg;
-  }
+    private String msg;
 
-  public String getMsg() {
-    return msg;
-  }
+    MainFunctionEnum(String msg) {
+        this.msg = msg;
+    }
+
+    public String getMsg() {
+        return msg;
+    }
 }

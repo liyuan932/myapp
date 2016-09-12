@@ -7,19 +7,19 @@ import java.util.List;
  */
 public interface Many2ManyDAO<T> {
 
-  int batchInsert(List<T> list);
+    int batchInsert(List<T> list);
 
-  List<T> queryList();
+    List<T> queryList();
 
-  List<T> queryByMainId(Long mainId);
+    List<T> queryByMainId(Long mainId);
 
-  List<T> queryByMainIds(List<Long> mainIds);
+    List<T> queryByMainIds(List<Long> mainIds);
 
-  List<T> queryBySecondaryId(Long secondaryId);
+    List<T> queryBySecondaryId(Long secondaryId);
 
-  List<T> queryBySecondaryIds(List<Long> secondaryIds);
+    List<T> queryBySecondaryIds(List<Long> secondaryIds);
 
-  int deleteByMainId(Long mainId);
+    int deleteByMainId(Long mainId);
 
-  int deleteBySecondaryId(Long secondaryId);
+    int deleteBySecondaryId(Long secondaryId);
 }

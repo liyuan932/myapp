@@ -9,15 +9,15 @@ import java.util.List;
  */
 public interface StatusDAO<T> extends BaseDAO<T> {
 
-  List<T> queryByStatus(int status);
+    List<T> queryByStatus(int status);
 
-  int updateStatus(@Param("id") Long id, @Param("status") int status);
+    int updateStatus(@Param("id") Long id, @Param("status") int status);
 
-  int deleteByStatus(int status);
+    int deleteByStatus(int status);
 
-  List<T> queryByStatuses(List<Integer> statuses);
+    List<T> queryByStatuses(List<Integer> statuses);
 
-  int batchUpdateStatus(@Param("list") List<Long> list, @Param("status") int status);
+    int batchUpdateStatus(@Param("list") List<Long> list, @Param("status") int status);
 
-  int batchDeleteByStatuses(List<Integer> statuses);
+    int batchDeleteByStatuses(List<Integer> statuses);
 }

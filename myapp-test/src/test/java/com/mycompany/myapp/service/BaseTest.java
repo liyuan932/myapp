@@ -13,13 +13,13 @@ import java.sql.SQLException;
 @TransactionConfiguration
 @ContextConfiguration("classpath:spring-bean.xml")
 public class BaseTest extends AbstractTransactionalTestNGSpringContextTests {
-	
-	@Resource
-	private DataSource dataSource;
-	
-	@Test
-	public void testDataSource() throws SQLException {
-		Assert.assertNotNull(dataSource);
-		System.out.println(dataSource.getConnection());
-	}
+
+    @Resource
+    private DataSource dataSource;
+
+    @Test
+    public void testDataSource() throws SQLException {
+        Assert.assertNotNull(dataSource);
+        System.out.println(dataSource.getConnection());
+    }
 }

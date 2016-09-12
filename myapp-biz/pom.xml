@@ -16,6 +16,10 @@
             <groupId>com.mycompany</groupId>
             <artifactId>myapp-dal</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.mycompany</groupId>
+            <artifactId>myapp-api</artifactId>
+        </dependency>
         <!-- ================================================= -->
         <!-- 测试框架 -->
         <!-- ================================================= -->

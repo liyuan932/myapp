@@ -8,20 +8,20 @@ package com.mycompany.myapp.enums.function;
  */
 public enum UserFunctionEnum implements FunctionEnum {
 
-  LOGIN("user login"), //
-  LOGOUT("user logout"), //
+    LOGIN("user login"), //
+    LOGOUT("user logout"), //
 
-  ADD_USER("add user"), //
-  UPDATE_USER("update user"), //
-  DELETE_USER("delete user");
+    ADD_USER("add user"), //
+    UPDATE_USER("update user"), //
+    DELETE_USER("delete user");
 
-  private String msg;
+    private String msg;
 
-  UserFunctionEnum(String msg) {
-    this.msg = msg;
-  }
+    UserFunctionEnum(String msg) {
+        this.msg = msg;
+    }
 
-  public String getMsg() {
-    return msg;
-  }
+    public String getMsg() {
+        return msg;
+    }
 }

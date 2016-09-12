@@ -5,13 +5,13 @@ package com.mycompany.myapp.enums.msg;
  */
 public interface BaseMsgEnum {
 
-  /**
-   * 获取错误代码
-   */
-  String getCode();
+    /**
+     * 获取错误代码
+     */
+    String getCode();
 
-  /**
-   * 获取错误信息
-   */
-  String getMsg();
+    /**
+     * 获取错误信息
+     */
+    String getMsg();
 }

@@ -17,13 +17,13 @@ import java.lang.annotation.Target;
 @Documented
 public @interface Title {
 
-  /**
-   * 标题说明
-   */
-  String value();
+    /**
+     * 标题说明
+     */
+    String value();
 
-  /**
-   * 单元格类型
-   */
-  int cellType() default Cell.CELL_TYPE_STRING;
+    /**
+     * 单元格类型
+     */
+    int cellType() default Cell.CELL_TYPE_STRING;
 }

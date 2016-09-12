@@ -13,8 +13,8 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface FileName {
-  /**
-   * 文件名
-   */
-  String value();
+    /**
+     * 文件名
+     */
+    String value();
 }

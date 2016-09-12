@@ -29,65 +29,65 @@ import java.util.List;
 @Service("userService")
 public class UserServiceImpl extends BaseService implements UserService {
 
-	@SuppressWarnings("SpringJavaAutowiringInspection")
-	@Resource
-	private UserDAO userDAO;
+    @SuppressWarnings("SpringJavaAutowiringInspection")
+    @Resource
+    private UserDAO userDAO;
 
-	@Override
-	public List<UserVO> queryList(UserQuery query) {
+    @Override
+    public List<UserVO> queryList(UserQuery query) {
 
-		List<User> users = userDAO.queryList(query);
+        List<User> users = userDAO.queryList(query);
 
-		return BeanUtil.dbToVo(users, UserVO.class, new BeanUtil.Callback<User, UserVO>() {
-			@Override
-			public void execute(User db, UserVO vo) {
-				vo.setStatusText(EnableOrDisableEnum.getTextByIndex(db.getStatus()));
-				vo.setTypeText(UserTypeEnum.getTextByIndex(db.getType()));
-				vo.setGmtCreateText(DateUtil.parseDate2Str(db.getGmtCreate()));
-			}
-		});
-	}
+        return BeanUtil.dbToVo(users, UserVO.class, new BeanUtil.Callback<User, UserVO>() {
+            @Override
+            public void execute(User db, UserVO vo) {
+                vo.setStatusText(EnableOrDisableEnum.getTextByIndex(db.getStatus()));
+                vo.setTypeText(UserTypeEnum.getTextByIndex(db.getType()));
+                vo.setGmtCreateText(DateUtil.parseDate2Str(db.getGmtCreate()));
+            }
+        });
+    }
 
-	@Cacheable(value="userCache")
-	@Override
-	public User getById(Long id) {
-		System.out.println("getById()");
-		return userDAO.getById(id);
-	}
+    @Cacheable(value = "userCache")
+    @Override
+    public User getById(Long id) {
+        System.out.println("getById()");
+        return userDAO.getById(id);
+    }
 
-	@Override
-	public User add(User user) {
-		System.out.println("add()");
-		LogBean logBean = LogUtils.newLogBean(MainFunctionEnum.USER_ADMIN, UserFunctionEnum.ADD_USER);
-		logBean.addParameters("user", user);
+    @Override
+    public User add(User user) {
+        System.out.println("add()");
+        LogBean logBean = LogUtils.newLogBean(MainFunctionEnum.USER_ADMIN, UserFunctionEnum.ADD_USER);
+        logBean.addParameters("user", user);
 
-		userDAO.insert(user);
-		BizCheck.checkArgument(user.getId() != null, UserMsgEnum.FAIL_BIZ_ADD_USER);
+        userDAO.insert(user);
+        BizCheck.checkArgument(user.getId() != null, UserMsgEnum.FAIL_BIZ_ADD_USER);
 
-		return user;
-	}
+        return user;
+    }
 
-	@Override
-	@CacheEvict(value="userCache",key="#user.getId()")
-	//@CachePut(value="userCache",key="#user.getId()")
-	public User update(User user) {
+    @Override
+    @CacheEvict(value = "userCache", key = "#user.getId()")
+    //@CachePut(value="userCache",key="#user.getId()")
+    public User update(User user) {
 
-		userDAO.update(user);
+        userDAO.update(user);
 
-		return user;
-	}
+        return user;
+    }
 
-	@Override
-	public User login(String account, String password) {
-		LogBean logBean = LogUtils.newLogBean(MainFunctionEnum.USER_ADMIN, UserFunctionEnum.LOGIN);
-		logBean.addParameters("account", account, "password", password);
+    @Override
+    public User login(String account, String password) {
+        LogBean logBean = LogUtils.newLogBean(MainFunctionEnum.USER_ADMIN, UserFunctionEnum.LOGIN);
+        logBean.addParameters("account", account, "password", password);
 
-		BizCheck.checkArgument(StringUtils.isNotBlank(account), UserMsgEnum.FAIL_BIZ_ACCOUNT_IS_NULL);
-		BizCheck.checkArgument(StringUtils.isNotBlank(password), UserMsgEnum.FAIL_BIZ_PASSWORD_IS_NULL);
+        BizCheck.checkArgument(StringUtils.isNotBlank(account), UserMsgEnum.FAIL_BIZ_ACCOUNT_IS_NULL);
+        BizCheck.checkArgument(StringUtils.isNotBlank(password), UserMsgEnum.FAIL_BIZ_PASSWORD_IS_NULL);
 
-		User user = userDAO.getByAccountAndPassword(account, password);
-		BizCheck.checkArgument(user != null, UserMsgEnum.FAIL_BIZ_USER_NOT_EXIST, account);
+        User user = userDAO.getByAccountAndPassword(account, password);
+        BizCheck.checkArgument(user != null, UserMsgEnum.FAIL_BIZ_USER_NOT_EXIST, account);
 
-		return user;
-	}
+        return user;
+    }
 }

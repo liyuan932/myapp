@@ -2,6 +2,7 @@ package com.mycompany.myapp.base;
 
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
+import com.mycompany.myapp.daoobject.BaseDO;
 
 import java.util.List;
 
@@ -10,23 +11,23 @@ import java.util.List;
  */
 public interface BaseDAO<T> {
 
-  void insert(T db);
+    void insert(T db);
 
-  int update(T db);
+    int update(T db);
 
-  int delete(Long id);
+    int delete(Long id);
 
-  T getById(Long id);
+    T getById(Long id);
 
-  int batchInsert(List<T> list);
+    int batchInsert(List<T> list);
 
-  int batchDelete(List<Long> ids);
+    int batchDelete(List<Long> ids);
 
-  List<T> queryByIds(List<Long> ids);
+    List<T> queryByIds(List<Long> ids);
 
-  List<T> queryList(BaseDO query);
+    List<T> queryList(BaseDO query);
 
-  int count(BaseDO query);
+    int count(BaseDO query);
 
-  PageList<T> queryPage(BaseDO query, PageBounds pb);
+    PageList<T> queryPage(BaseDO query, PageBounds pb);
 }

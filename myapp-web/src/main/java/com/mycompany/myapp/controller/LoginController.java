@@ -1,7 +1,6 @@
 package com.mycompany.myapp.controller;
 
 import com.mycompany.myapp.service.UserService;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -13,21 +12,21 @@ import javax.annotation.Resource;
 @RequestMapping("/")
 public class LoginController extends BaseController {
 
-  @Resource
-  private UserService userService;
+    @Resource
+    private UserService userService;
 
 
 
-  /**
-   *用户登录
-   */
-  @RequestMapping("/login")
-  @ResponseBody
-  public Object login(@RequestParam String account, String password) {
-    try {
-      return success(userService.login(account,password));
-    } catch (Exception ex) {
-      return fail(ex);
+    /**
+     * 用户登录
+     */
+    @RequestMapping("/login")
+    @ResponseBody
+    public Object login(@RequestParam String account, String password) {
+        try {
+            return success(userService.login(account, password));
+        } catch (Exception ex) {
+            return fail(ex);
+        }
     }
-  }
 }

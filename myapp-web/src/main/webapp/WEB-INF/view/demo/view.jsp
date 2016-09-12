@@ -9,7 +9,7 @@
         border-collapse: collapse;
     }
 
-    th,td {
+    th, td {
         border: 1px solid black;
         padding: 3px;
     }
@@ -30,18 +30,18 @@
     </tr>
 
     <c:forEach items="${users}" var="u">
-        <tr>
-            <td>${u.id}</td>
-            <td>${u.account}</td>
-            <td>${u.username}</td>
-            <td>${u.sex}</td>
-            <td>${u.age}</td>
-            <td>${u.mobile}</td>
-            <td>${u.address}</td>
-            <td>${u.typeText}</td>
-            <td>${u.statusText}</td>
-            <td>${u.gmtCreateText}</td>
-        </tr>
+    <tr>
+        <td>${u.id}</td>
+        <td>${u.account}</td>
+        <td>${u.username}</td>
+        <td>${u.sex}</td>
+        <td>${u.age}</td>
+        <td>${u.mobile}</td>
+        <td>${u.address}</td>
+        <td>${u.typeText}</td>
+        <td>${u.statusText}</td>
+        <td>${u.gmtCreateText}</td>
+    </tr>
     </c:forEach>
 </body>
 </html>

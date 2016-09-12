@@ -1,22 +1,20 @@
 package com.mycompany.myapp.enums.msg;
 
 public enum CommonMsgEnum implements BaseMsgEnum {
-  
-  FAIL_BIZ_DB_ERROR("数据库操作失败"),
-  FAIL_BIZ_PARAM_ERROR("业务参数缺失"),
-  FAIL_BIZ_SYSTEM_ERROR("后端系统异常");
 
-  private String msg;
+    FAIL_BIZ_DB_ERROR("数据库操作失败"), FAIL_BIZ_PARAM_ERROR("业务参数缺失"), FAIL_BIZ_SYSTEM_ERROR("后端系统异常");
 
-  CommonMsgEnum(String msg) {
-    this.msg = msg;
-  }
+    private String msg;
 
-  public String getCode() {
-    return this.name();
-  }
+    CommonMsgEnum(String msg) {
+        this.msg = msg;
+    }
 
-  public String getMsg() {
-    return msg;
-  }
+    public String getCode() {
+        return this.name();
+    }
+
+    public String getMsg() {
+        return msg;
+    }
 }
