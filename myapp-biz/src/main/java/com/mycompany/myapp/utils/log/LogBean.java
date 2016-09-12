@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Preconditions;
 import com.mycompany.myapp.enums.function.FunctionEnum;
-import com.mycompany.myapp.enums.function.MainFunctionEnum;
+import com.mycompany.myapp.enums.function.MainFuncEnum;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -17,17 +17,22 @@ public class LogBean {
     /**
      * 主流程功能点
      */
-    private String mainFunction;
+    private String mainFunc;
 
     /**
      * 具体功能点
      */
-    private String secondaryFunction;
+    private String specFunc;
 
     /**
-     * 参数 键值对
+     * 参数数据，保持输入与输出顺序一致
      */
-    private Map<String, Object> parameters = new LinkedHashMap<>();
+    private Map<String, Object> paramData = new LinkedHashMap<>();
+
+    /**
+     * 结果数据
+     */
+    private Map<String, Object> resultData = new LinkedHashMap<>();
 
     /**
      * 日志描述
@@ -49,6 +54,40 @@ public class LogBean {
      */
     private String cost;
 
+    /**
+     * 日志类型
+     */
+    private LogTypeEnum type = LogTypeEnum.AFTER;
+
+    /**
+     * 日志级别
+     */
+    private LogLevelEnum level = LogLevelEnum.INFO;
+
+    public LogTypeEnum getType() {
+        return type;
+    }
+
+    public void setType(LogTypeEnum type) {
+        this.type = type;
+    }
+
+    public LogLevelEnum getLevel() {
+        return level;
+    }
+
+    public void setLevel(LogLevelEnum level) {
+        this.level = level;
+    }
+
+    public Map<String, Object> getResultData() {
+        return resultData;
+    }
+
+    public void setResultData(Map<String, Object> resultData) {
+        this.resultData = resultData;
+    }
+
     public LogBean() {
 
     }
@@ -56,35 +95,35 @@ public class LogBean {
     /**
      * 构造方法
      *
-     * @param mainFunction      主要功能
-     * @param secondaryFunction 次级功能
+     * @param mainFunc      主要功能
+     * @param specFunc 次级功能
      */
-    public LogBean(String mainFunction, String secondaryFunction) {
-        this.mainFunction = mainFunction;
-        this.secondaryFunction = secondaryFunction;
+    public LogBean(String mainFunc, String specFunc) {
+        this.mainFunc = mainFunc;
+        this.specFunc = specFunc;
     }
 
     /**
      * 构造方法
      *
-     * @param mainFunctionEnum 主要功能
+     * @param mainFuncEnum 主要功能
      * @param functionEnum     次级功能
      */
-    public LogBean(MainFunctionEnum mainFunctionEnum, FunctionEnum functionEnum) {
-        this.mainFunction = mainFunctionEnum.getMsg();
-        this.secondaryFunction = functionEnum.getMsg();
+    public LogBean(MainFuncEnum mainFuncEnum, FunctionEnum functionEnum) {
+        this.mainFunc = mainFuncEnum.getMsg();
+        this.specFunc = functionEnum.getMsg();
     }
 
 
     /**
      * 构造方法
      *
-     * @param mainFunctionEnum 主要功能
+     * @param mainFuncEnum 主要功能
      * @param functionEnum     次级功能
      * @param msg              错误信息
      */
-    public LogBean(MainFunctionEnum mainFunctionEnum, FunctionEnum functionEnum, String msg) {
-        this(mainFunctionEnum, functionEnum);
+    public LogBean(MainFuncEnum mainFuncEnum, FunctionEnum functionEnum, String msg) {
+        this(mainFuncEnum, functionEnum);
         this.msg = msg;
     }
 
@@ -104,28 +143,28 @@ public class LogBean {
         this.stackTrace = stackTrace;
     }
 
-    public String getMainFunction() {
-        return mainFunction;
+    public String getMainFunc() {
+        return mainFunc;
     }
 
-    public void setMainFunction(String mainFunction) {
-        this.mainFunction = mainFunction;
+    public void setMainFunc(String mainFunc) {
+        this.mainFunc = mainFunc;
     }
 
-    public String getSecondaryFunction() {
-        return secondaryFunction;
+    public String getSpecFunc() {
+        return specFunc;
     }
 
-    public void setSecondaryFunction(String secondaryFunction) {
-        this.secondaryFunction = secondaryFunction;
+    public void setSpecFunc(String specFunc) {
+        this.specFunc = specFunc;
     }
 
-    public Map<String, Object> getParameters() {
-        return parameters;
+    public Map<String, Object> getParamData() {
+        return paramData;
     }
 
-    public void setParameters(Map<String, Object> parameters) {
-        this.parameters = parameters;
+    public void setParamData(Map<String, Object> paramData) {
+        this.paramData = paramData;
     }
 
     public String getMsg() {
@@ -145,11 +184,26 @@ public class LogBean {
     }
 
     /**
-     * 添加参数
+     * 添加参数数据
      *
      * @param pairs 必须以key-value对出现，key为String类型
      */
-    public LogBean addParameters(Object... pairs) {
+    public LogBean addParamData(Object... pairs) {
+        this.paramData.putAll(parseArray(pairs));
+        return this;
+    }
+    /**
+     * 添加结果数据
+     *
+     * @param pairs 必须以key-value对出现，key为String类型
+     */
+    public LogBean addResultData(Object... pairs) {
+        this.paramData.putAll(parseArray(pairs));
+        return this;
+    }
+
+
+    private Map<String, Object> parseArray(Object... pairs) {
 
         Preconditions.checkArgument(ArrayUtils.isNotEmpty(pairs));
         Preconditions.checkArgument(pairs.length % 2 == 0);
@@ -160,21 +214,19 @@ public class LogBean {
             Object value = MoreObjects.firstNonNull(pairs[i + 1], "");
             map.put(key, value);
         }
-
-        this.parameters.putAll(map);
-        return this;
+        return map;
     }
 
     @Override
     public String toString() {
         StringBuffer sb = new StringBuffer();
-        sb.append(StringUtils.trim(this.mainFunction));
+        sb.append(StringUtils.trim(this.mainFunc));
         sb.append("->");
-        sb.append(StringUtils.trim(this.secondaryFunction));
+        sb.append(StringUtils.trim(this.specFunc));
         sb.append("->");
         sb.append(StringUtils.trim(this.bid));
         sb.append("->");
-        sb.append(StringUtils.trim(JSON.toJSONString(this.parameters)));
+        sb.append(StringUtils.trim(JSON.toJSONString(this.paramData)));
         sb.append("->");
         sb.append(StringUtils.trim(this.cost));
         sb.append("->");

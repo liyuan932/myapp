@@ -6,13 +6,13 @@ package com.mycompany.myapp.enums.function;
  * @author Administrator
  * @date 2016-05-07
  */
-public enum MainFunctionEnum implements FunctionEnum {
+public enum MainFuncEnum implements FunctionEnum {
 
     USER_ADMIN("user admin");
 
     private String msg;
 
-    MainFunctionEnum(String msg) {
+    MainFuncEnum(String msg) {
         this.msg = msg;
     }
 

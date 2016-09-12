@@ -4,7 +4,7 @@ import com.mycompany.myapp.dao.UserDAO;
 import com.mycompany.myapp.daoobject.User;
 import com.mycompany.myapp.enums.category.EnableOrDisableEnum;
 import com.mycompany.myapp.enums.category.UserTypeEnum;
-import com.mycompany.myapp.enums.function.MainFunctionEnum;
+import com.mycompany.myapp.enums.function.MainFuncEnum;
 import com.mycompany.myapp.enums.function.UserFunctionEnum;
 import com.mycompany.myapp.enums.msg.UserMsgEnum;
 import com.mycompany.myapp.query.UserQuery;
@@ -58,8 +58,8 @@ public class UserServiceImpl extends BaseService implements UserService {
     @Override
     public User add(User user) {
         System.out.println("add()");
-        LogBean logBean = LogUtils.newLogBean(MainFunctionEnum.USER_ADMIN, UserFunctionEnum.ADD_USER);
-        logBean.addParameters("user", user);
+        LogBean logBean = LogUtils.newLogBean(MainFuncEnum.USER_ADMIN, UserFunctionEnum.ADD_USER);
+        logBean.addParamData("user", user);
 
         userDAO.insert(user);
         BizCheck.checkArgument(user.getId() != null, UserMsgEnum.FAIL_BIZ_ADD_USER);
@@ -79,8 +79,8 @@ public class UserServiceImpl extends BaseService implements UserService {
 
     @Override
     public User login(String account, String password) {
-        LogBean logBean = LogUtils.newLogBean(MainFunctionEnum.USER_ADMIN, UserFunctionEnum.LOGIN);
-        logBean.addParameters("account", account, "password", password);
+        LogBean logBean = LogUtils.newLogBean(MainFuncEnum.USER_ADMIN, UserFunctionEnum.LOGIN);
+        logBean.addParamData("account", account, "password", password);
 
         BizCheck.checkArgument(StringUtils.isNotBlank(account), UserMsgEnum.FAIL_BIZ_ACCOUNT_IS_NULL);
         BizCheck.checkArgument(StringUtils.isNotBlank(password), UserMsgEnum.FAIL_BIZ_PASSWORD_IS_NULL);

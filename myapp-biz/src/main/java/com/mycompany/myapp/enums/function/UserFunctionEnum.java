@@ -6,7 +6,7 @@ package com.mycompany.myapp.enums.function;
  * @author Administrator
  * @date 2016-05-07
  */
-public enum UserFunctionEnum implements FunctionEnum {
+public enum UserFunctionEnum implements SpecFuncEnum {
 
     LOGIN("user login"), //
     LOGOUT("user logout"), //

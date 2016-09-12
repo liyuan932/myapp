@@ -1,8 +1,8 @@
 package com.mycompany.myapp.utils.log;
 
 
-import com.mycompany.myapp.enums.function.FunctionEnum;
-import com.mycompany.myapp.enums.function.MainFunctionEnum;
+import com.mycompany.myapp.enums.function.MainFuncEnum;
+import com.mycompany.myapp.enums.function.SpecFuncEnum;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,14 +14,35 @@ public class LogUtils {
 
     private static NamedThreadLocal<LogBean> threadLocal = new NamedThreadLocal<>("LogBean");
 
-    public static LogBean newLogBean(MainFunctionEnum mainFunctionEnum, FunctionEnum functionEnum) {
-        LogBean logBean = new LogBean(mainFunctionEnum, functionEnum);
+    public static LogBean newLogBean(String mainFunc, String specFunc) {
+        LogBean logBean = new LogBean(mainFunc, specFunc);
         threadLocal.set(logBean);
         return logBean;
     }
 
-    public static LogBean newLogBean(MainFunctionEnum mainFunctionEnum, FunctionEnum functionEnum, String msg) {
-        LogBean logBean = new LogBean(mainFunctionEnum, functionEnum, msg);
+    public static LogBean newLogBean(MainFuncEnum mainFuncEnum, SpecFuncEnum specFuncEnum) {
+        LogBean logBean = new LogBean(mainFuncEnum, specFuncEnum);
+        threadLocal.set(logBean);
+        return logBean;
+    }
+
+    public static LogBean newLogBean(MainFuncEnum mainFuncEnum, SpecFuncEnum specFuncEnum,LogTypeEnum logTypeEnum) {
+        LogBean logBean = new LogBean(mainFuncEnum, specFuncEnum);
+        logBean.setType(logTypeEnum);
+        threadLocal.set(logBean);
+        return logBean;
+    }
+
+    public static LogBean newLogBean(MainFuncEnum mainFuncEnum, SpecFuncEnum specFuncEnum, String msg) {
+        LogBean logBean = new LogBean(mainFuncEnum, specFuncEnum, msg);
+        threadLocal.set(logBean);
+        return logBean;
+    }
+
+    public static LogBean newLogBean(MainFuncEnum mainFuncEnum, SpecFuncEnum specFuncEnum, LogTypeEnum logTypeEnum,
+        String msg) {
+        LogBean logBean = new LogBean(mainFuncEnum, specFuncEnum, msg);
+        logBean.setType(logTypeEnum);
         threadLocal.set(logBean);
         return logBean;
     }

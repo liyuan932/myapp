@@ -15,8 +15,6 @@ public class LoginController extends BaseController {
     @Resource
     private UserService userService;
 
-
-
     /**
      * 用户登录
      */
