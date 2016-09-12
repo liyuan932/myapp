@@ -48,32 +48,33 @@ public class UserServiceImpl extends BaseService implements UserService {
 		});
 	}
 
-	@Override
 	@Cacheable(value="userCache")
+	@Override
 	public User getById(Long id) {
-		System.out.println("real querying account... {}");
-
+		System.out.println("getById()");
 		return userDAO.getById(id);
 	}
 
 	@Override
-	public boolean add(User user) {
+	public User add(User user) {
+		System.out.println("add()");
 		LogBean logBean = LogUtils.newLogBean(MainFunctionEnum.USER_ADMIN, UserFunctionEnum.ADD_USER);
 		logBean.addParameters("user", user);
 
 		userDAO.insert(user);
 		BizCheck.checkArgument(user.getId() != null, UserMsgEnum.FAIL_BIZ_ADD_USER);
 
-		return true;
+		return user;
 	}
 
 	@Override
 	@CacheEvict(value="userCache",key="#user.getId()")
-	public boolean update(User user) {
+	//@CachePut(value="userCache",key="#user.getId()")
+	public User update(User user) {
 
 		userDAO.update(user);
 
-		return true;
+		return user;
 	}
 
 	@Override

@@ -12,9 +12,9 @@ public interface UserService {
 
   User getById(Long id);
 
-  boolean add(User user);
+  User add(User user);
 
-  boolean update(User user);
+  User update(User user);
 
   User login(String username,String password);
 }
