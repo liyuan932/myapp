@@ -1,7 +1,7 @@
 package com.mycompany.myapp.controller;
 
 import com.mycompany.myapp.enums.msg.CommonMsgEnum;
-import com.mycompany.myapp.service.common.ServiceException;
+import com.mycompany.myapp.service.common.BizException;
 import com.mycompany.myapp.vo.Result;
 
 import org.slf4j.Logger;
@@ -28,7 +28,7 @@ public class BaseController {
   public String exception(HttpServletRequest request, Exception ex) {
 
     request.setAttribute("ex", ex);
-    if (ex instanceof ServiceException) {
+    if (ex instanceof BizException) {
       return "error/error-business";
     } else if (ex instanceof DataAccessException) {
       log.error(CommonMsgEnum.FAIL_BIZ_DB_ERROR.getMsg(), ex);
@@ -59,8 +59,8 @@ public class BaseController {
   protected Result<?> fail(Exception ex) {
 
 
-    if (ex instanceof ServiceException) {
-      return fail(((ServiceException) ex).getCode(), ex.getMessage());
+    if (ex instanceof BizException) {
+      return fail(((BizException) ex).getCode(), ex.getMessage());
     } else if (ex instanceof DataAccessException) {
       return fail(CommonMsgEnum.FAIL_BIZ_DB_ERROR, ex);
     } else {

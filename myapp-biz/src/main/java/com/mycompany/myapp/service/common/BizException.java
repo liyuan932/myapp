@@ -2,7 +2,7 @@ package com.mycompany.myapp.service.common;
 
 import com.mycompany.myapp.enums.msg.BaseMsgEnum;
 
-public class ServiceException extends RuntimeException {
+public class BizException extends RuntimeException {
 
   private static final long serialVersionUID = 2515955074355075103L;
 
@@ -17,13 +17,13 @@ public class ServiceException extends RuntimeException {
     return msg;
   }
 
-  public ServiceException(String msg, String code) {
+  public BizException(String msg, String code) {
     super(msg);
     this.msg = msg;
     this.code = code;
   }
 
-  public ServiceException(BaseMsgEnum baseMsgEnum) {
+  public BizException(BaseMsgEnum baseMsgEnum) {
     this(baseMsgEnum.getMsg(), baseMsgEnum.getCode());
   }
 }

@@ -46,7 +46,7 @@ public class ServiceAspect {
         long cost = end - start;
         logBean.setCost(cost + "ms");
         logBean.setMsg(ex.getMessage());
-        if (ex instanceof ServiceException) {
+        if (ex instanceof BizException) {
           LogUtils.warn(logBean);
         } else{
           LogUtils.error(logBean,ex);
