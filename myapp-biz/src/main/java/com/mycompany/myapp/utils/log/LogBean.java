@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSON;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Preconditions;
 import com.mycompany.myapp.enums.function.FunctionEnum;
-import com.mycompany.myapp.enums.function.MainFuncEnum;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -17,12 +16,12 @@ public class LogBean {
     /**
      * 主流程功能点
      */
-    private String mainFunc;
+    private String module;
 
     /**
      * 具体功能点
      */
-    private String specFunc;
+    private String action;
 
     /**
      * 参数数据，保持输入与输出顺序一致
@@ -66,22 +65,22 @@ public class LogBean {
 
     }
 
-    public LogBean(String mainFunc) {
-        this.mainFunc = mainFunc;
+    public LogBean(String module) {
+        this.module = module;
     }
 
-    public LogBean(String mainFunc, String specFunc) {
-        this.mainFunc = mainFunc;
-        this.specFunc = specFunc;
+    public LogBean(String module, String action) {
+        this.module = module;
+        this.action = action;
     }
 
-    public LogBean(MainFuncEnum mainFuncEnum, FunctionEnum functionEnum) {
-        this.mainFunc = mainFuncEnum.getMsg();
-        this.specFunc = functionEnum.getMsg();
+    public LogBean(FunctionEnum module, FunctionEnum action) {
+        this.module = module.name();
+        this.action = action.name();
     }
 
-    public LogBean(MainFuncEnum mainFuncEnum, FunctionEnum functionEnum, String msg) {
-        this(mainFuncEnum, functionEnum);
+    public LogBean(FunctionEnum module, FunctionEnum action, String msg) {
+        this(module, action);
         this.msg = msg;
     }
 
@@ -101,20 +100,20 @@ public class LogBean {
         this.stackTrace = stackTrace;
     }
 
-    public String getMainFunc() {
-        return mainFunc;
+    public String getModule() {
+        return module;
     }
 
-    public void setMainFunc(String mainFunc) {
-        this.mainFunc = mainFunc;
+    public void setModule(String module) {
+        this.module = module;
     }
 
-    public String getSpecFunc() {
-        return specFunc;
+    public String getAction() {
+        return action;
     }
 
-    public void setSpecFunc(String specFunc) {
-        this.specFunc = specFunc;
+    public void setAction(String action) {
+        this.action = action;
     }
 
     public Map<String, Object> getParamData() {
@@ -178,9 +177,9 @@ public class LogBean {
     @Override
     public String toString() {
         StringBuffer sb = new StringBuffer();
-        sb.append(StringUtils.trim(this.mainFunc));
+        sb.append(StringUtils.trim(this.module));
         sb.append("->");
-        sb.append(StringUtils.trim(this.specFunc));
+        sb.append(StringUtils.trim(this.action));
         sb.append("->");
         sb.append(StringUtils.trim(this.msg));
         sb.append("->");

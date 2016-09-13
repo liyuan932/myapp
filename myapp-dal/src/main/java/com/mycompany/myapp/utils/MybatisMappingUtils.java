@@ -40,8 +40,8 @@ public class MybatisMappingUtils {
     public static void main(String[] args) throws Exception {
         System.out.println(System.getProperty("user.dir"));
 
-        // MybatisMappingUtils.clear(new String[]{"operation_log"});
-        // MybatisMappingUtils.generate(new String[]{"operation_log"});
+         //MybatisMappingUtils.clear(new String[]{"operation_log"});
+         MybatisMappingUtils.generate(new String[]{"operation_log"});
 
     }
 
@@ -126,8 +126,8 @@ public class MybatisMappingUtils {
             new File(baseJavaDir + getProjectPathName(projectPackageName) + "/query/" + className + "Query.java");
         OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(file), "utf-8");
         writer.write("package " + projectPackageName + ".query;\n\n");
-        writer.write("import " + projectPackageName + ".daoobject." + className + ";\n");
-        writer.write("\npublic class " + className + "Query extends " + className + " {\n");
+        writer.write("import " + projectPackageName + ".daoobject." + className + "DO;\n");
+        writer.write("\npublic class " + className + "Query extends " + className + "DO {\n");
         writer.write("}\n");
         writer.close();
     }
@@ -137,8 +137,8 @@ public class MybatisMappingUtils {
         OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(file), "utf-8");
         writer.write("package " + projectPackageName + ".dao;\n\n");
         writer.write("import " + projectPackageName + ".base.BaseDAO;\n");
-        writer.write("import " + projectPackageName + ".daoobject." + className + ";\n");
-        writer.write("\npublic interface " + className + "DAO extends BaseDAO<" + className + "> {\n");
+        writer.write("import " + projectPackageName + ".daoobject." + className + "DO;\n");
+        writer.write("\npublic interface " + className + "DAO extends BaseDAO<" + className + "DO> {\n");
         writer.write("}\n");
         writer.close();
     }
@@ -185,13 +185,13 @@ public class MybatisMappingUtils {
     private static void daoobjectGenerator(String className, List<PropertyInfo> propertyInfos) throws IOException {
 
         File file =
-            new File(baseJavaDir + getProjectPathName(projectPackageName) + "/daoobject/" + className + ".java");
+            new File(baseJavaDir + getProjectPathName(projectPackageName) + "/daoobject/" + className + "DO.java");
         OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(file), "utf-8");
         writer.write("package " + projectPackageName + ".daoobject;\n\n");
         writer.write("import java.util.Date;\n");
 
         writer.write("import " + projectPackageName + ".base.BaseDO;\n");
-        writer.write("\npublic class " + className + " extends BaseDO {\n");
+        writer.write("\npublic class " + className + "DO extends BaseDO {\n");
         writer.write("\n");
         for (PropertyInfo info : propertyInfos) {
             writer.write("\tprivate " + info.getType() + " " + info.getProperty() + "; //" + info.getComment() + " \n");
@@ -215,7 +215,7 @@ public class MybatisMappingUtils {
     private static String resultMap(String className, List<PropertyInfo> propertyInfos) {
 
         StringBuffer buff = new StringBuffer();
-        buff.append("\t<resultMap id=\"BaseResultMap\" type=\"" + className + "\">\n");
+        buff.append("\t<resultMap id=\"BaseResultMap\" type=\"" + className + "DO\">\n");
         for (PropertyInfo info : propertyInfos) {
             String property = info.getProperty();
             String column = info.getColumn();
@@ -472,7 +472,7 @@ public class MybatisMappingUtils {
         for (String tableName : tableNames) {
             String className = tableNameToClassName(tableName);
             Preconditions.checkState(
-                new File(baseJavaDir + getProjectPathName(projectPackageName) + "/daoobject/" + className + ".java")
+                new File(baseJavaDir + getProjectPathName(projectPackageName) + "/daoobject/" + className + "DO.java")
                     .delete());
             Preconditions.checkState(
                 new File(baseJavaDir + getProjectPathName(projectPackageName) + "/dao/" + className + "DAO.java")

@@ -2,7 +2,7 @@ package com.mycompany.myapp.service.common;
 
 import com.alibaba.fastjson.JSON;
 import com.mycompany.myapp.enums.msg.CommonMsgEnum;
-import com.mycompany.myapp.utils.log.Info;
+import com.mycompany.myapp.utils.log.OperationLog;
 import com.mycompany.myapp.utils.log.LogBean;
 import com.mycompany.myapp.utils.log.LogUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -30,7 +30,9 @@ public class ServiceAspect {
 
         //获取日志bean
         MethodSignature signature = (MethodSignature) pjp.getSignature();
-        Info info = signature.getMethod().getAnnotation(Info.class);
+        OperationLog operationLog = signature.getMethod().getAnnotation(OperationLog.class);
+        System.out.println(Arrays.toString(signature.getParameterNames()));
+        System.out.println(Arrays.toString(signature.getParameterTypes()));
         LogBean logBean = LogUtils.newLogBean(pjp.toString());
         logBean.addParamData("paramData", Arrays.toString(pjp.getArgs()));
         long start = System.currentTimeMillis();
@@ -46,7 +48,7 @@ public class ServiceAspect {
             if (cost > LONG_BUSINESS_WARN) {
                 LogUtils.warn(logBean);
             } else {
-                if(info != null){
+                if(operationLog != null){
                     LogUtils.info(logBean);
                 }
             }

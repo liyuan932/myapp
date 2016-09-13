@@ -1,6 +1,6 @@
 package com.mycompany.myapp.service;
 
-import com.mycompany.myapp.daoobject.User;
+import com.mycompany.myapp.daoobject.UserDO;
 import org.springframework.test.annotation.Rollback;
 import org.testng.annotations.Test;
 
@@ -14,8 +14,8 @@ public class UserServiceTest extends BaseTest {
     @Test
     @Rollback(false)
     public void getUserById() {
-        User user1 = userService.getById(284L);
+        UserDO user1 = userService.getById(284L);
         userService.update(user1);
-        User user2 = userService.getById(284L);
+        UserDO user2 = userService.getById(284L);
     }
 }

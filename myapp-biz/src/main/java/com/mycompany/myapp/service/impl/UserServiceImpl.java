@@ -1,11 +1,10 @@
 package com.mycompany.myapp.service.impl;
 
 import com.mycompany.myapp.dao.UserDAO;
-import com.mycompany.myapp.daoobject.User;
+import com.mycompany.myapp.daoobject.UserDO;
 import com.mycompany.myapp.enums.category.EnableOrDisableEnum;
 import com.mycompany.myapp.enums.category.UserTypeEnum;
-import com.mycompany.myapp.enums.function.MainFuncEnum;
-import com.mycompany.myapp.enums.function.UserFunctionEnum;
+import com.mycompany.myapp.enums.function.FunctionEnum;
 import com.mycompany.myapp.enums.msg.UserMsgEnum;
 import com.mycompany.myapp.query.UserQuery;
 import com.mycompany.myapp.service.UserService;
@@ -15,6 +14,7 @@ import com.mycompany.myapp.utils.BeanUtil;
 import com.mycompany.myapp.utils.DateUtil;
 import com.mycompany.myapp.utils.log.LogBean;
 import com.mycompany.myapp.utils.log.LogUtils;
+import com.mycompany.myapp.utils.log.OperationLog;
 import com.mycompany.myapp.vo.UserVO;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.cache.annotation.CacheEvict;
@@ -23,6 +23,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
+
+import static com.mycompany.myapp.enums.function.FunctionEnum.USER_LOGIN;
+import static com.mycompany.myapp.enums.function.FunctionEnum.USER_MODULE;
 
 @Transactional
 @Service("userService")
@@ -35,11 +38,11 @@ public class UserServiceImpl extends BaseService implements UserService {
     @Override
     public List<UserVO> queryList(UserQuery query) {
 
-        List<User> users = userDAO.queryList(query);
+        List<UserDO> dbList = userDAO.queryList(query);
 
-        return BeanUtil.dbToVo(users, UserVO.class, new BeanUtil.Callback<User, UserVO>() {
+        return BeanUtil.dbToVo(dbList, UserVO.class, new BeanUtil.Callback<UserDO, UserVO>() {
             @Override
-            public void execute(User db, UserVO vo) {
+            public void execute(UserDO db, UserVO vo) {
                 vo.setStatusText(EnableOrDisableEnum.getTextByIndex(db.getStatus()));
                 vo.setTypeText(UserTypeEnum.getTextByIndex(db.getType()));
                 vo.setGmtCreateText(DateUtil.parseDate2Str(db.getGmtCreate()));
@@ -49,45 +52,46 @@ public class UserServiceImpl extends BaseService implements UserService {
 
     //@Cacheable(value = "userCache")
     @Override
-    public User getById(Long id) {
+    public UserDO getById(Long id) {
         System.out.println("getById()");
         return userDAO.getById(id);
     }
 
     @Override
-    public User add(User user) {
+    public UserDO add(UserDO userDO) {
         System.out.println("add()");
-        LogBean logBean = LogUtils.newLogBean(MainFuncEnum.USER_ADMIN, UserFunctionEnum.ADD_USER);
-        logBean.addParamData("user", user);
+        LogBean logBean = LogUtils.newLogBean(FunctionEnum.DEFAULT, FunctionEnum.DEFAULT);
+        logBean.addParamData("user", userDO);
 
-        userDAO.insert(user);
-        BizCheck.checkArgument(user.getId() != null, UserMsgEnum.FAIL_BIZ_ADD_USER);
+        userDAO.insert(userDO);
+        BizCheck.checkArgument(userDO.getId() != null, UserMsgEnum.FAIL_BIZ_ADD_USER);
 
-        return user;
+        return userDO;
     }
 
     @Override
     @CacheEvict(value = "userCache", key = "#user.getId()")
     //@CachePut(value="userCache",key="#user.getId()")
-    public User update(User user) {
+    public UserDO update(UserDO userDO) {
 
-        userDAO.update(user);
+        userDAO.update(userDO);
 
-        return user;
+        return userDO;
     }
 
+    @OperationLog(module = USER_MODULE,action = USER_LOGIN,bizId = "account")
     @Override
-    public User login(String account, String password) {
-        LogBean logBean = LogUtils.newLogBean(MainFuncEnum.USER_ADMIN, UserFunctionEnum.LOGIN);
+    public UserDO login(String account, String password) {
+        LogBean logBean = LogUtils.newLogBean(FunctionEnum.DEFAULT, FunctionEnum.DEFAULT);
         logBean.addParamData("account", account, "password", password);
 
         BizCheck.checkArgument(StringUtils.isNotBlank(account), UserMsgEnum.FAIL_BIZ_ACCOUNT_IS_NULL);
         BizCheck.checkArgument(StringUtils.isNotBlank(password), UserMsgEnum.FAIL_BIZ_PASSWORD_IS_NULL);
 
-        User user = userDAO.getByAccountAndPassword(account, password);
-        BizCheck.checkArgument(user != null, UserMsgEnum.FAIL_BIZ_USER_NOT_EXIST, account);
+        UserDO userDO = userDAO.getByAccountAndPassword(account, password);
+        BizCheck.checkArgument(userDO != null, UserMsgEnum.FAIL_BIZ_USER_NOT_EXIST, account);
 
-        return user;
+        return userDO;
     }
 
     @Override

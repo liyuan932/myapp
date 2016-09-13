@@ -6,8 +6,9 @@ package com.mycompany.myapp.enums.function;
  * @author Administrator
  * @date 2016-05-07
  */
-public interface FunctionEnum {
-
-    String getMsg();
+public enum FunctionEnum {
+    DEFAULT,          //
+    USER_MODULE,USER_LOGIN,USER_LOGOUT,          //
+    ;
 }
 

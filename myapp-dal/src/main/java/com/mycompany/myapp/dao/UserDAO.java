@@ -1,12 +1,12 @@
 package com.mycompany.myapp.dao;
 
 import com.mycompany.myapp.base.BaseDAO;
-import com.mycompany.myapp.daoobject.User;
+import com.mycompany.myapp.daoobject.UserDO;
 import org.apache.ibatis.annotations.Param;
 
-public interface UserDAO extends BaseDAO<User> {
+public interface UserDAO extends BaseDAO<UserDO> {
 
-    User getByAccount(String account);
+    UserDO getByAccount(String account);
 
-    User getByAccountAndPassword(@Param("account") String account, @Param("password") String password);
+    UserDO getByAccountAndPassword(@Param("account") String account, @Param("password") String password);
 }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.mycompany.myapp.dao.UserDAO">
-    <resultMap id="BaseResultMap" type="User">
+    <resultMap id="BaseResultMap" type="UserDO">
         <id column="id" property="id"/>
         <result column="account" property="account"/>
         <result column="password" property="password"/>
@@ -66,7 +66,7 @@
     </sql>
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id">
-        insert into user (account,password,username,sex,age,mobile,address,type,status,gmt_create,gmt_modified) values
+        insert into USER (account,password,username,sex,age,mobile,address,type,status,gmt_create,gmt_modified) values
         (#{account},#{password},#{username},#{sex},#{age},#{mobile},#{address},#{type},#{status},now(),now())
     </insert>
 

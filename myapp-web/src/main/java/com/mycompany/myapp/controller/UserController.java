@@ -1,7 +1,7 @@
 package com.mycompany.myapp.controller;
 
 
-import com.mycompany.myapp.daoobject.User;
+import com.mycompany.myapp.daoobject.UserDO;
 import com.mycompany.myapp.query.UserQuery;
 import com.mycompany.myapp.service.UserService;
 import org.springframework.stereotype.Controller;
@@ -37,7 +37,7 @@ public class UserController extends BaseController {
     @ResponseBody
     public Object addUser() {
         try {
-            User user = new User();
+            UserDO user = new UserDO();
             user.setAccount("test");
             user.setPassword("1234");
             user.setUsername("test");

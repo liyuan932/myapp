@@ -1,8 +1,7 @@
 package com.mycompany.myapp.utils.log;
 
 
-import com.mycompany.myapp.enums.function.MainFuncEnum;
-import com.mycompany.myapp.enums.function.SpecFuncEnum;
+import com.mycompany.myapp.enums.function.FunctionEnum;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,16 +14,12 @@ public class LogUtils {
         return new LogBean(mainFunc);
     }
 
-    public static LogBean newLogBean(String mainFunc, String specFunc) {
-        return new LogBean(mainFunc, specFunc);
+    public static LogBean newLogBean(String module, String action) {
+        return new LogBean(module, action);
     }
 
-    public static LogBean newLogBean(MainFuncEnum mainFuncEnum, SpecFuncEnum specFuncEnum) {
-        return newLogBean(mainFuncEnum.getMsg(),specFuncEnum.getMsg());
-    }
-
-    public static LogBean newLogBean(MainFuncEnum mainFuncEnum, SpecFuncEnum specFuncEnum, String msg) {
-        return new LogBean(mainFuncEnum, specFuncEnum, msg);
+    public static LogBean newLogBean(FunctionEnum module, FunctionEnum action) {
+        return new LogBean(module, action);
     }
 
     public static void debug(LogBean logBean) {

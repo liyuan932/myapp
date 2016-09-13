@@ -2,7 +2,8 @@ package com.mycompany.myapp.daoobject;
 
 import java.util.Date;
 
-public class User extends BaseDO {
+public class UserDO extends BaseDO {
+    private static final long serialVersionUID = 5278692757224772882L;
 
     private Long id; //主键
     private String account; //账号

@@ -1,6 +1,6 @@
 package com.mycompany.myapp.service;
 
-import com.mycompany.myapp.daoobject.User;
+import com.mycompany.myapp.daoobject.UserDO;
 import com.mycompany.myapp.query.UserQuery;
 import com.mycompany.myapp.vo.UserVO;
 
@@ -10,13 +10,13 @@ public interface UserService {
 
     List<UserVO> queryList(UserQuery query);
 
-    User getById(Long id);
+    UserDO getById(Long id);
 
-    User add(User user);
+    UserDO add(UserDO userDO);
 
-    User update(User user);
+    UserDO update(UserDO userDO);
 
-    User login(String username, String password);
+    UserDO login(String username, String password);
 
     void logout(String account);
 }

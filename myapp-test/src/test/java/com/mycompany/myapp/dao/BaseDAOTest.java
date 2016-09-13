@@ -4,8 +4,8 @@ import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.google.common.collect.Lists;
 import com.mycompany.myapp.base.BaseDAO;
 import com.mycompany.myapp.daoobject.BaseDO;
-import com.mycompany.myapp.daoobject.OperationLog;
-import com.mycompany.myapp.daoobject.User;
+import com.mycompany.myapp.daoobject.OperationLogDO;
+import com.mycompany.myapp.daoobject.UserDO;
 import com.mycompany.myapp.utils.MybatisMappingUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.RandomUtils;
@@ -21,6 +21,7 @@ import javax.annotation.Resource;
 import java.beans.PropertyDescriptor;
 import java.io.File;
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.Date;
 import java.util.List;
 
@@ -35,8 +36,6 @@ public class BaseDAOTest extends BaseTest {
     private static String projectPackageName;
     private static String baseJavaDir;
 
-
-
     @Test
     public void testCURD() throws Exception {
 
@@ -50,7 +49,8 @@ public class BaseDAOTest extends BaseTest {
         if (file.isDirectory() && file.list() != null) {
             for (String filename : file.list()) {
                 String daoBeanName = StringUtils.uncapitalize(filename.substring(0, filename.indexOf(".")));
-                String doClzName = projectPackageName + ".daoobject." + filename.substring(0, filename.indexOf("DAO."));
+                String doClzName = projectPackageName + ".daoobject." + filename.substring(0, filename.indexOf("DAO"
+                    + "."))+"DO";
                 CURD((BaseDAO) ctx.getBean(daoBeanName), Class.forName(doClzName));
             }
         }
@@ -67,7 +67,7 @@ public class BaseDAOTest extends BaseTest {
 
     @DataProvider(name = "data")
     public Object[][] data() {
-        return new Object[][] {{userDAO, User.class}, {operationLogDAO, OperationLog.class}};
+        return new Object[][] {{userDAO, UserDO.class}, {operationLogDAO, OperationLogDO.class}};
     }
 
     @Rollback
@@ -112,6 +112,10 @@ public class BaseDAOTest extends BaseTest {
     private BaseDO initDB(Class<?> clz) throws Exception {
         BaseDO db = (BaseDO) clz.newInstance();
         for (Field f : clz.getDeclaredFields()) {
+
+            if(Modifier.isStatic(f.getModifiers())){
+                continue;
+            }
 
             Object arg = null;
             Class<?> type = f.getType();
