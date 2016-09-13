@@ -3,7 +3,8 @@ package com.mycompany.myapp.utils.log;
 import com.alibaba.fastjson.JSON;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Preconditions;
-import com.mycompany.myapp.enums.function.FunctionEnum;
+import com.mycompany.myapp.enums.function.ActionEnum;
+import com.mycompany.myapp.enums.function.ModuleEnum;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -74,12 +75,12 @@ public class LogBean {
         this.action = action;
     }
 
-    public LogBean(FunctionEnum module, FunctionEnum action) {
+    public LogBean(ModuleEnum module, ActionEnum action) {
         this.module = module.name();
         this.action = action.name();
     }
 
-    public LogBean(FunctionEnum module, FunctionEnum action, String msg) {
+    public LogBean(ModuleEnum module, ActionEnum action, String msg) {
         this(module, action);
         this.msg = msg;
     }

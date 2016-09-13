@@ -1,7 +1,8 @@
 package com.mycompany.myapp.utils.log;
 
 
-import com.mycompany.myapp.enums.function.FunctionEnum;
+import com.mycompany.myapp.enums.function.ActionEnum;
+import com.mycompany.myapp.enums.function.ModuleEnum;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +19,7 @@ public class LogUtils {
         return new LogBean(module, action);
     }
 
-    public static LogBean newLogBean(FunctionEnum module, FunctionEnum action) {
+    public static LogBean newLogBean(ModuleEnum module, ActionEnum action) {
         return new LogBean(module, action);
     }
 

@@ -4,18 +4,19 @@ import java.util.Date;
 
 public class OperationLogDO extends BaseDO {
 
-	private static final long serialVersionUID = 5046992692844779984L;
-	private Long id; //主键
+	private Long id; //主键 
 	private Date gmtCreate; //创建时间 
 	private Date gmtModified; //修改时间 
 	private Long operatorId; //操作人 
-	private Integer operatorType; // 
-	private Integer module; //主模块 
-	private Integer action; //行为 
-	private Long sourceId; //来源id 
+	private Integer operatorType; //操作类型 
+	private String module; //主模块 
+	private String action; //行为 
+	private Long bizId; //业务id 
+	private String bizCode; //业务code 
 	private String msg; //描述 
 	private String paramData; //参数数据 
 	private String resultData; //结果数据 
+	private Long cost; //消耗时间 
 
 	public Long getId() {
 		return id;
@@ -57,28 +58,36 @@ public class OperationLogDO extends BaseDO {
 		this.operatorType = operatorType;
 	}
 
-	public Integer getModule() {
+	public String getModule() {
 		return module;
 	}
 
-	public void setModule(Integer module) {
+	public void setModule(String module) {
 		this.module = module;
 	}
 
-	public Integer getAction() {
+	public String getAction() {
 		return action;
 	}
 
-	public void setAction(Integer action) {
+	public void setAction(String action) {
 		this.action = action;
 	}
 
-	public Long getSourceId() {
-		return sourceId;
+	public Long getBizId() {
+		return bizId;
 	}
 
-	public void setSourceId(Long sourceId) {
-		this.sourceId = sourceId;
+	public void setBizId(Long bizId) {
+		this.bizId = bizId;
+	}
+
+	public String getBizCode() {
+		return bizCode;
+	}
+
+	public void setBizCode(String bizCode) {
+		this.bizCode = bizCode;
 	}
 
 	public String getMsg() {
@@ -103,6 +112,14 @@ public class OperationLogDO extends BaseDO {
 
 	public void setResultData(String resultData) {
 		this.resultData = resultData;
+	}
+
+	public Long getCost() {
+		return cost;
+	}
+
+	public void setCost(Long cost) {
+		this.cost = cost;
 	}
 
 }

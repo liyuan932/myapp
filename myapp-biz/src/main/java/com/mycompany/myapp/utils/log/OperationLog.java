@@ -1,6 +1,8 @@
 package com.mycompany.myapp.utils.log;
 
-import com.mycompany.myapp.enums.function.FunctionEnum;
+import com.mycompany.myapp.enums.category.OperationTypeEnum;
+import com.mycompany.myapp.enums.function.ActionEnum;
+import com.mycompany.myapp.enums.function.ModuleEnum;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
@@ -18,12 +20,15 @@ public @interface OperationLog {
 
     boolean value() default true;
 
-    FunctionEnum module() default FunctionEnum.DEFAULT;
+    ModuleEnum module() default ModuleEnum.DEFAULT;
 
-    FunctionEnum action() default FunctionEnum.DEFAULT;
+    ActionEnum action() default ActionEnum.DEFAULT;
 
-    String bizId() default "";
+    OperationTypeEnum operatorType() default OperationTypeEnum.BASIC_DATA;
+
+    String sourceId() default "";
+
+    String sourceCode() default "";
 
     LogLocationEnum location() default LogLocationEnum.DB;
-
 }

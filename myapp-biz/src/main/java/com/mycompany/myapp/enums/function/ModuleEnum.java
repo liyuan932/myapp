@@ -6,9 +6,9 @@ package com.mycompany.myapp.enums.function;
  * @author Administrator
  * @date 2016-05-07
  */
-public enum FunctionEnum {
+public enum ModuleEnum {
     DEFAULT,          //
-    USER_MODULE,USER_LOGIN,USER_LOGOUT,          //
+    USER_MODULE,          //
     ;
 }
 

@@ -4,7 +4,8 @@ import com.mycompany.myapp.dao.UserDAO;
 import com.mycompany.myapp.daoobject.UserDO;
 import com.mycompany.myapp.enums.category.EnableOrDisableEnum;
 import com.mycompany.myapp.enums.category.UserTypeEnum;
-import com.mycompany.myapp.enums.function.FunctionEnum;
+import com.mycompany.myapp.enums.function.ActionEnum;
+import com.mycompany.myapp.enums.function.ModuleEnum;
 import com.mycompany.myapp.enums.msg.UserMsgEnum;
 import com.mycompany.myapp.query.UserQuery;
 import com.mycompany.myapp.service.UserService;
@@ -24,8 +25,8 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.util.List;
 
-import static com.mycompany.myapp.enums.function.FunctionEnum.USER_LOGIN;
-import static com.mycompany.myapp.enums.function.FunctionEnum.USER_MODULE;
+import static com.mycompany.myapp.enums.function.ActionEnum.USER_LOGIN;
+import static com.mycompany.myapp.enums.function.ModuleEnum.USER_MODULE;
 
 @Transactional
 @Service("userService")
@@ -60,7 +61,7 @@ public class UserServiceImpl extends BaseService implements UserService {
     @Override
     public UserDO add(UserDO userDO) {
         System.out.println("add()");
-        LogBean logBean = LogUtils.newLogBean(FunctionEnum.DEFAULT, FunctionEnum.DEFAULT);
+        LogBean logBean = LogUtils.newLogBean(ModuleEnum.DEFAULT, ActionEnum.DEFAULT);
         logBean.addParamData("user", userDO);
 
         userDAO.insert(userDO);
@@ -79,10 +80,10 @@ public class UserServiceImpl extends BaseService implements UserService {
         return userDO;
     }
 
-    @OperationLog(module = USER_MODULE,action = USER_LOGIN,bizId = "account")
+    @OperationLog(module = USER_MODULE,action = USER_LOGIN,sourceId = "#account")
     @Override
     public UserDO login(String account, String password) {
-        LogBean logBean = LogUtils.newLogBean(FunctionEnum.DEFAULT, FunctionEnum.DEFAULT);
+        LogBean logBean = LogUtils.newLogBean(ModuleEnum.DEFAULT, ActionEnum.DEFAULT);
         logBean.addParamData("account", account, "password", password);
 
         BizCheck.checkArgument(StringUtils.isNotBlank(account), UserMsgEnum.FAIL_BIZ_ACCOUNT_IS_NULL);

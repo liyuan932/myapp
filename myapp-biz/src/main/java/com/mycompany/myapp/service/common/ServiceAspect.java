@@ -1,10 +1,11 @@
 package com.mycompany.myapp.service.common;
 
 import com.alibaba.fastjson.JSON;
+import com.mycompany.myapp.daoobject.OperationLogDO;
 import com.mycompany.myapp.enums.msg.CommonMsgEnum;
-import com.mycompany.myapp.utils.log.OperationLog;
 import com.mycompany.myapp.utils.log.LogBean;
 import com.mycompany.myapp.utils.log.LogUtils;
+import com.mycompany.myapp.utils.log.OperationLog;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -13,7 +14,8 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Component;
 
-import java.util.Arrays;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 @Aspect
 @Component
@@ -30,25 +32,39 @@ public class ServiceAspect {
 
         //获取日志bean
         MethodSignature signature = (MethodSignature) pjp.getSignature();
-        OperationLog operationLog = signature.getMethod().getAnnotation(OperationLog.class);
-        System.out.println(Arrays.toString(signature.getParameterNames()));
-        System.out.println(Arrays.toString(signature.getParameterTypes()));
-        LogBean logBean = LogUtils.newLogBean(pjp.toString());
-        logBean.addParamData("paramData", Arrays.toString(pjp.getArgs()));
+        OperationLog ann = signature.getMethod().getAnnotation(OperationLog.class);
+        OperationLogDO operationLogDO = null;
+        if(ann != null){
+            operationLogDO = new OperationLogDO();
+            operationLogDO.setModule(ann.module().name());
+            operationLogDO.setAction(ann.module().name());
+            //operationLogDO.setOperatorId(getUserId());
+            operationLogDO.setOperatorType(ann.operatorType().getIndex());
+
+            Map<String, Object> paramData = new LinkedHashMap<>();
+            for (int i = 0; i < signature.getParameterNames().length; i++) {
+                paramData.put(signature.getParameterNames()[i],pjp.getArgs()[i]);
+            }
+
+            operationLogDO.setParamData(JSON.toJSONString(paramData));
+        }
+
+        LogBean logBean = null;
         long start = System.currentTimeMillis();
         try {
             //执行业务逻辑
             Object result = pjp.proceed();
-            logBean.addResultData("resultData", JSON.toJSON(result));
+
+            operationLogDO.setResultData(JSON.toJSONString(result));
 
             //获取执行时间
             long end = System.currentTimeMillis();
             long cost = end - start;
-            logBean.setCost(cost + "ms");
+            operationLogDO.setCost(cost);
             if (cost > LONG_BUSINESS_WARN) {
                 LogUtils.warn(logBean);
             } else {
-                if(operationLog != null){
+                if(ann != null){
                     LogUtils.info(logBean);
                 }
             }
