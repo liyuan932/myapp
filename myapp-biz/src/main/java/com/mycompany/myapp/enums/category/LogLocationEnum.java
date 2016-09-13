@@ -7,15 +7,21 @@ package com.mycompany.myapp.enums.category;
  * @date 2016-09-13
  */
 public enum LogLocationEnum {
-    DB(1),FILE(2);
+    DB(1,"数据库"),FILE(2,"文件");
 
-    private int index;
+    private Integer index;
+    private String text;
 
-    LogLocationEnum(int index) {
+    LogLocationEnum(Integer index, String text) {
         this.index = index;
+        this.text = text;
     }
 
-    public int getIndex() {
+    public Integer getIndex() {
         return index;
+    }
+
+    public String getText() {
+        return text;
     }
 }

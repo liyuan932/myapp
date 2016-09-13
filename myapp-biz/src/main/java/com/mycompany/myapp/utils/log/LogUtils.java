@@ -5,7 +5,6 @@ import com.mycompany.myapp.daoobject.OperationLogDO;
 import com.mycompany.myapp.enums.category.LogLocationEnum;
 import com.mycompany.myapp.enums.function.ActionEnum;
 import com.mycompany.myapp.enums.function.ModuleEnum;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -44,23 +43,8 @@ public class LogUtils {
     }
 
     public static void error(LogBean logBean, Exception ex) {
-        processException(logBean, ex);
+        //setStackTrace(logBean, ex);
         log.error(logBean.toString());
     }
 
-    private static void processException(LogBean logBean, Exception ex) {
-        if (ex != null) {
-            if (StringUtils.isBlank(logBean.getMsg())) {
-                logBean.setMsg(ex.getMessage());
-            }
-
-            StringBuilder trackTrace = new StringBuilder();
-            StackTraceElement[] trace = ex.getStackTrace();
-            for (int i = 0; i < trace.length; i++) {
-                StackTraceElement traceElement = trace[i];
-                trackTrace.append(traceElement.toString()).append("@&");
-            }
-            logBean.setStackTrace(trackTrace.toString());
-        }
-    }
 }

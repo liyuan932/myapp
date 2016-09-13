@@ -1,12 +1,11 @@
 package com.mycompany.myapp.service.common;
 
 import com.alibaba.fastjson.JSON;
-import com.mycompany.myapp.dao.OperationLogDAO;
 import com.mycompany.myapp.daoobject.OperationLogDO;
-import com.mycompany.myapp.enums.msg.CommonMsgEnum;
-import com.mycompany.myapp.utils.log.LogBean;
+import com.mycompany.myapp.enums.category.LogLevelEnum;
 import com.mycompany.myapp.enums.category.LogLocationEnum;
-import com.mycompany.myapp.utils.log.LogUtils;
+import com.mycompany.myapp.enums.msg.CommonMsgEnum;
+import com.mycompany.myapp.service.OperationLogService;
 import com.mycompany.myapp.utils.log.OperationLog;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -25,7 +24,7 @@ import java.util.Map;
 public class ServiceAspect {
 
     @Resource
-    private OperationLogDAO operationLogDAO;
+    private OperationLogService operationLogService;
 
     @Pointcut("execution(public *  com.mycompany.myapp.service.impl.*.*(..))")
     public void aspect() {
@@ -34,14 +33,12 @@ public class ServiceAspect {
     @Around("aspect()")
     public Object around(ProceedingJoinPoint pjp) throws Throwable {
 
-        //获取日志bean
         MethodSignature signature = (MethodSignature) pjp.getSignature();
         OperationLog ann = signature.getMethod().getAnnotation(OperationLog.class);
         OperationLogDO operationLogDO = new OperationLogDO();
         if(ann != null){
             operationLogDO.setModule(ann.module().name());
             operationLogDO.setAction(ann.module().name());
-            //operationLogDO.setOperatorId(getUserId());
             operationLogDO.setOperatorType(ann.operatorType().getIndex());
             operationLogDO.setLocation(ann.location().getIndex());
         }{
@@ -50,44 +47,55 @@ public class ServiceAspect {
             operationLogDO.setLocation(LogLocationEnum.FILE.getIndex());
         }
 
-        Map<String, Object> paramData = new LinkedHashMap<>();
-        for (int i = 0; i < signature.getParameterNames().length; i++) {
-            paramData.put(signature.getParameterNames()[i],pjp.getArgs()[i]);
-        }
+        operationLogDO.setOperatorId(-1L);
+        operationLogDO.setParamData(getParamData(pjp, signature));
 
-        operationLogDO.setParamData(JSON.toJSONString(paramData));
-
-        LogBean logBean = null;
         long start = System.currentTimeMillis();
         try {
             //执行业务逻辑
             Object result = pjp.proceed();
 
-            //获取执行结果及执行时间
+            //输出日志
+            operationLogDO.setLevel(LogLevelEnum.INFO.getIndex());
             operationLogDO.setResultData(JSON.toJSONString(result));
             operationLogDO.setCost(System.currentTimeMillis() - start);
-
-            if(operationLogDO.getLocation() == LogLocationEnum.DB.getIndex()){
-                operationLogDAO.insert(operationLogDO);
-            }else{
-
-            }
+            operationLogService.output(operationLogDO);
 
             return result;
         } catch (BizException bex) {
-            logBean.setMsg(bex.getMsg());
-            LogUtils.warn(logBean);
+            operationLogDO.setMsg(bex.getMsg());
+            operationLogDO.setLevel(LogLevelEnum.WARN.getIndex());
+            operationLogService.output(operationLogDO);
             throw bex;
         } catch (Exception ex) {
             if (ex instanceof DataAccessException) {
-                logBean.setMsg(CommonMsgEnum.FAIL_BIZ_DB_ERROR.getMsg() + "-" + ex.getMessage());
+                operationLogDO.setMsg(CommonMsgEnum.FAIL_BIZ_DB_ERROR.getMsg() + "-" + ex.getMessage());
             } else if (ex instanceof IllegalArgumentException) {
-                logBean.setMsg(CommonMsgEnum.FAIL_BIZ_PARAM_ERROR + "-" + ex.getMessage());
+                operationLogDO.setMsg(CommonMsgEnum.FAIL_BIZ_PARAM_ERROR + "-" + ex.getMessage());
             } else {
-                logBean.setMsg(CommonMsgEnum.FAIL_BIZ_SYSTEM_ERROR + "-" + ex.getMessage());
+                operationLogDO.setMsg(CommonMsgEnum.FAIL_BIZ_SYSTEM_ERROR + "-" + ex.getMessage());
             }
-            LogUtils.error(logBean, ex);
+            operationLogDO.setStackTrace(getStackTrace(ex));
+            operationLogService.output(operationLogDO);
             throw ex;
         }
+    }
+
+    private String getParamData(ProceedingJoinPoint pjp, MethodSignature signature) {
+        Map<String, Object> paramData = new LinkedHashMap<>();
+        for (int i = 0; i < signature.getParameterNames().length; i++) {
+            paramData.put(signature.getParameterNames()[i],pjp.getArgs()[i]);
+        }
+        return JSON.toJSONString(paramData);
+    }
+
+    private String getStackTrace(Exception ex) {
+        StringBuilder trackTrace = new StringBuilder();
+        StackTraceElement[] trace = ex.getStackTrace();
+        for (int i = 0; i < trace.length; i++) {
+            StackTraceElement traceElement = trace[i];
+            trackTrace.append(traceElement.toString()).append("@&");
+        }
+        return trackTrace.toString();
     }
 }

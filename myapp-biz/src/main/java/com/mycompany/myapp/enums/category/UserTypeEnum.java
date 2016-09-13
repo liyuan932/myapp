@@ -6,15 +6,15 @@ package com.mycompany.myapp.enums.category;
 public enum UserTypeEnum {
     NORMAL(1, "普通用户"), ADMIN(2, "管理员");
 
-    private int index;
+    private Integer index;
     private String text;
 
-    UserTypeEnum(int index, String text) {
+    UserTypeEnum(Integer index, String text) {
         this.index = index;
         this.text = text;
     }
 
-    public int getIndex() {
+    public Integer getIndex() {
         return index;
     }
 
@@ -25,9 +25,9 @@ public enum UserTypeEnum {
     /**
      * 根据索引获取用户类型文本
      */
-    public static String getTextByIndex(int index) {
+    public static String getTextByIndex(Integer index) {
         for (UserTypeEnum e : UserTypeEnum.values()) {
-            if (e.getIndex() == index) {
+            if (e.getIndex().equals(index)) {
                 return e.getText();
             }
         }

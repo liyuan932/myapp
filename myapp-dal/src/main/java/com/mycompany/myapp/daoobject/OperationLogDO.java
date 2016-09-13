@@ -18,6 +18,8 @@ public class OperationLogDO extends BaseDO {
 	private String resultData; //结果数据 
 	private Long cost; //消耗时间 
 	private Integer location; //存储类型 
+	private Integer level; //日志级别 
+	private String stackTrace; //错误堆栈 
 
 	public Long getId() {
 		return id;
@@ -129,6 +131,22 @@ public class OperationLogDO extends BaseDO {
 
 	public void setLocation(Integer location) {
 		this.location = location;
+	}
+
+	public Integer getLevel() {
+		return level;
+	}
+
+	public void setLevel(Integer level) {
+		this.level = level;
+	}
+
+	public String getStackTrace() {
+		return stackTrace;
+	}
+
+	public void setStackTrace(String stackTrace) {
+		this.stackTrace = stackTrace;
 	}
 
 }

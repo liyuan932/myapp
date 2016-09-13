@@ -6,15 +6,15 @@ package com.mycompany.myapp.enums.category;
 public enum LogOperationTypeEnum {
     BASIC_DATA(1, "基础数据"), BIZ_DATA(2, "业务数据");
 
-    private int index;
+    private Integer index;
     private String text;
 
-    LogOperationTypeEnum(int index, String text) {
+    LogOperationTypeEnum(Integer index, String text) {
         this.index = index;
         this.text = text;
     }
 
-    public int getIndex() {
+    public Integer getIndex() {
         return index;
     }
 
@@ -22,12 +22,9 @@ public enum LogOperationTypeEnum {
         return text;
     }
 
-    /**
-     * 根据索引获取状态文本
-     */
-    public static String getTextByIndex(int index) {
+    public static String getTextByIndex(Integer index) {
         for (LogOperationTypeEnum e : LogOperationTypeEnum.values()) {
-            if (e.getIndex() == index) {
+            if (e.getIndex().equals(index)) {
                 return e.getText();
             }
         }

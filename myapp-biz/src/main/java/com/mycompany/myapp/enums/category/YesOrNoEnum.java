@@ -6,15 +6,15 @@ package com.mycompany.myapp.enums.category;
 public enum YesOrNoEnum {
     Yes(1, "是"), NO(0, "否");
 
-    private int index;
+    private Integer index;
     private String text;
 
-    YesOrNoEnum(int index, String text) {
+    YesOrNoEnum(Integer index, String text) {
         this.index = index;
         this.text = text;
     }
 
-    public int getIndex() {
+    public Integer getIndex() {
         return index;
     }
 
@@ -22,12 +22,9 @@ public enum YesOrNoEnum {
         return text;
     }
 
-    /**
-     * 根据索引获取状态文本
-     */
-    public static String getTextByIndex(int index) {
+    public static String getTextByIndex(Integer index) {
         for (YesOrNoEnum e : YesOrNoEnum.values()) {
-            if (e.getIndex() == index) {
+            if (e.getIndex().equals(index)) {
                 return e.getText();
             }
         }
