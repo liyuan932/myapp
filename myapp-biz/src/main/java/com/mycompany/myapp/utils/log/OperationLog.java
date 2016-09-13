@@ -1,6 +1,7 @@
 package com.mycompany.myapp.utils.log;
 
-import com.mycompany.myapp.enums.category.OperationTypeEnum;
+import com.mycompany.myapp.enums.category.LogLocationEnum;
+import com.mycompany.myapp.enums.category.LogOperationTypeEnum;
 import com.mycompany.myapp.enums.function.ActionEnum;
 import com.mycompany.myapp.enums.function.ModuleEnum;
 
@@ -24,7 +25,7 @@ public @interface OperationLog {
 
     ActionEnum action() default ActionEnum.DEFAULT;
 
-    OperationTypeEnum operatorType() default OperationTypeEnum.BASIC_DATA;
+    LogOperationTypeEnum operatorType() default LogOperationTypeEnum.BASIC_DATA;
 
     String sourceId() default "";
 

@@ -1,6 +1,8 @@
 package com.mycompany.myapp.utils.log;
 
 
+import com.mycompany.myapp.daoobject.OperationLogDO;
+import com.mycompany.myapp.enums.category.LogLocationEnum;
 import com.mycompany.myapp.enums.function.ActionEnum;
 import com.mycompany.myapp.enums.function.ModuleEnum;
 import org.apache.commons.lang3.StringUtils;
@@ -30,6 +32,12 @@ public class LogUtils {
     public static void info(LogBean logBean) {
         log.info(logBean.toString());
     }
+    public static void info(OperationLogDO operationLogDO) {
+        if(operationLogDO.getLocation() == LogLocationEnum.DB.getIndex()){
+
+        }
+    }
+
 
     public static void warn(LogBean logBean) {
         log.warn(logBean.toString());

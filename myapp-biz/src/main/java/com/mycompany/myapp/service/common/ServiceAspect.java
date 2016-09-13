@@ -1,9 +1,11 @@
 package com.mycompany.myapp.service.common;
 
 import com.alibaba.fastjson.JSON;
+import com.mycompany.myapp.dao.OperationLogDAO;
 import com.mycompany.myapp.daoobject.OperationLogDO;
 import com.mycompany.myapp.enums.msg.CommonMsgEnum;
 import com.mycompany.myapp.utils.log.LogBean;
+import com.mycompany.myapp.enums.category.LogLocationEnum;
 import com.mycompany.myapp.utils.log.LogUtils;
 import com.mycompany.myapp.utils.log.OperationLog;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -14,6 +16,7 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -21,7 +24,8 @@ import java.util.Map;
 @Component
 public class ServiceAspect {
 
-    private final static long LONG_BUSINESS_WARN = 3000;
+    @Resource
+    private OperationLogDAO operationLogDAO;
 
     @Pointcut("execution(public *  com.mycompany.myapp.service.impl.*.*(..))")
     public void aspect() {
@@ -33,21 +37,25 @@ public class ServiceAspect {
         //获取日志bean
         MethodSignature signature = (MethodSignature) pjp.getSignature();
         OperationLog ann = signature.getMethod().getAnnotation(OperationLog.class);
-        OperationLogDO operationLogDO = null;
+        OperationLogDO operationLogDO = new OperationLogDO();
         if(ann != null){
-            operationLogDO = new OperationLogDO();
             operationLogDO.setModule(ann.module().name());
             operationLogDO.setAction(ann.module().name());
             //operationLogDO.setOperatorId(getUserId());
             operationLogDO.setOperatorType(ann.operatorType().getIndex());
-
-            Map<String, Object> paramData = new LinkedHashMap<>();
-            for (int i = 0; i < signature.getParameterNames().length; i++) {
-                paramData.put(signature.getParameterNames()[i],pjp.getArgs()[i]);
-            }
-
-            operationLogDO.setParamData(JSON.toJSONString(paramData));
+            operationLogDO.setLocation(ann.location().getIndex());
+        }{
+            operationLogDO.setModule(signature.getDeclaringTypeName());
+            operationLogDO.setAction(signature.getName());
+            operationLogDO.setLocation(LogLocationEnum.FILE.getIndex());
         }
+
+        Map<String, Object> paramData = new LinkedHashMap<>();
+        for (int i = 0; i < signature.getParameterNames().length; i++) {
+            paramData.put(signature.getParameterNames()[i],pjp.getArgs()[i]);
+        }
+
+        operationLogDO.setParamData(JSON.toJSONString(paramData));
 
         LogBean logBean = null;
         long start = System.currentTimeMillis();
@@ -55,18 +63,14 @@ public class ServiceAspect {
             //执行业务逻辑
             Object result = pjp.proceed();
 
+            //获取执行结果及执行时间
             operationLogDO.setResultData(JSON.toJSONString(result));
+            operationLogDO.setCost(System.currentTimeMillis() - start);
 
-            //获取执行时间
-            long end = System.currentTimeMillis();
-            long cost = end - start;
-            operationLogDO.setCost(cost);
-            if (cost > LONG_BUSINESS_WARN) {
-                LogUtils.warn(logBean);
-            } else {
-                if(ann != null){
-                    LogUtils.info(logBean);
-                }
+            if(operationLogDO.getLocation() == LogLocationEnum.DB.getIndex()){
+                operationLogDAO.insert(operationLogDO);
+            }else{
+
             }
 
             return result;

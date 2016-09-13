@@ -1,6 +1,7 @@
 package com.mycompany.myapp.daoobject;
 
 import java.util.Date;
+import com.mycompany.myapp.base.BaseDO;
 
 public class OperationLogDO extends BaseDO {
 
@@ -17,6 +18,7 @@ public class OperationLogDO extends BaseDO {
 	private String paramData; //参数数据 
 	private String resultData; //结果数据 
 	private Long cost; //消耗时间 
+	private Integer location; //存储类型 
 
 	public Long getId() {
 		return id;
@@ -120,6 +122,14 @@ public class OperationLogDO extends BaseDO {
 
 	public void setCost(Long cost) {
 		this.cost = cost;
+	}
+
+	public Integer getLocation() {
+		return location;
+	}
+
+	public void setLocation(Integer location) {
+		this.location = location;
 	}
 
 }

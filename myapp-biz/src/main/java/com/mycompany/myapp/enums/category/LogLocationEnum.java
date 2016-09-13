@@ -1,4 +1,4 @@
-package com.mycompany.myapp.utils.log;
+package com.mycompany.myapp.enums.category;
 
 /**
  * 日志存储位置

@@ -15,10 +15,11 @@
 		<result column="param_data" property="paramData"/>
 		<result column="result_data" property="resultData"/>
 		<result column="cost" property="cost"/>
+		<result column="location" property="location"/>
 	</resultMap>
 
 	<sql id="baseColumn">
-		id,gmt_create,gmt_modified,operator_id,operator_type,module,action,biz_id,biz_code,msg,param_data,result_data,cost
+		id,gmt_create,gmt_modified,operator_id,operator_type,module,action,biz_id,biz_code,msg,param_data,result_data,cost,location
 	</sql>
 
 	<sql id="queryParams">
@@ -62,6 +63,9 @@
 			<if test="cost !=null">
 				and cost=#{cost}
 			</if>
+			<if test="location !=null">
+				and location=#{location}
+			</if>
 		</where>
 	</sql>
 
@@ -69,20 +73,20 @@
 	</sql>
 
 	<insert id="insert" useGeneratedKeys="true" keyProperty="id">
-		insert into operation_log (gmt_create,gmt_modified,operator_id,operator_type,module,action,biz_id,biz_code,msg,param_data,result_data,cost) values
-		(now(),now(),#{operatorId},#{operatorType},#{module},#{action},#{bizId},#{bizCode},#{msg},#{paramData},#{resultData},#{cost})
+		insert into operation_log (gmt_create,gmt_modified,operator_id,operator_type,module,action,biz_id,biz_code,msg,param_data,result_data,cost,location) values
+		(now(),now(),#{operatorId},#{operatorType},#{module},#{action},#{bizId},#{bizCode},#{msg},#{paramData},#{resultData},#{cost},#{location})
 	</insert>
 
 	<insert id="batchInsert">
-		insert into operation_log (gmt_create,gmt_modified,operator_id,operator_type,module,action,biz_id,biz_code,msg,param_data,result_data,cost) values
+		insert into operation_log (gmt_create,gmt_modified,operator_id,operator_type,module,action,biz_id,biz_code,msg,param_data,result_data,cost,location) values
 		<foreach collection="list" item="item" separator=",">
-			(now(),now(),#{item.operatorId},#{item.operatorType},#{item.module},#{item.action},#{item.bizId},#{item.bizCode},#{item.msg},#{item.paramData},#{item.resultData},#{item.cost})
+			(now(),now(),#{item.operatorId},#{item.operatorType},#{item.module},#{item.action},#{item.bizId},#{item.bizCode},#{item.msg},#{item.paramData},#{item.resultData},#{item.cost},#{item.location})
 		</foreach>
 	</insert>
 
 	<update id="update">
 		update operation_log
-		set gmt_create=#{gmtCreate},gmt_modified=now(),operator_id=#{operatorId},operator_type=#{operatorType},module=#{module},action=#{action},biz_id=#{bizId},biz_code=#{bizCode},msg=#{msg},param_data=#{paramData},result_data=#{resultData},cost=#{cost}
+		set gmt_create=#{gmtCreate},gmt_modified=now(),operator_id=#{operatorId},operator_type=#{operatorType},module=#{module},action=#{action},biz_id=#{bizId},biz_code=#{bizCode},msg=#{msg},param_data=#{paramData},result_data=#{resultData},cost=#{cost},location=#{location}
 		where id = #{id}
 	</update>
 
