@@ -189,8 +189,6 @@ public class MybatisMappingUtils {
         OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(file), "utf-8");
         writer.write("package " + projectPackageName + ".daoobject;\n\n");
         writer.write("import java.util.Date;\n");
-
-        writer.write("import " + projectPackageName + ".base.BaseDO;\n");
         writer.write("\npublic class " + className + "DO extends BaseDO {\n");
         writer.write("\n");
         for (PropertyInfo info : propertyInfos) {

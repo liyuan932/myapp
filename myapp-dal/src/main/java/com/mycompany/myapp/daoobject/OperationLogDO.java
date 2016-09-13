@@ -1,7 +1,6 @@
 package com.mycompany.myapp.daoobject;
 
 import java.util.Date;
-import com.mycompany.myapp.base.BaseDO;
 
 public class OperationLogDO extends BaseDO {
 
