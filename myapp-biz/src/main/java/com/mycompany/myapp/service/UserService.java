@@ -17,4 +17,6 @@ public interface UserService {
     User update(User user);
 
     User login(String username, String password);
+
+    void logout(String account);
 }

@@ -3,7 +3,6 @@ package com.mycompany.myapp.controller;
 import com.mycompany.myapp.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
@@ -20,9 +19,23 @@ public class LoginController extends BaseController {
      */
     @RequestMapping("/login")
     @ResponseBody
-    public Object login(@RequestParam String account, String password) {
+    public Object login(String account, String password) {
         try {
             return success(userService.login(account, password));
+        } catch (Exception ex) {
+            return fail(ex);
+        }
+    }
+
+    /**
+     * 用户登出
+     */
+    @RequestMapping("/logout")
+    @ResponseBody
+    public Object logout(String account) {
+        try {
+            userService.logout(account);
+            return success();
         } catch (Exception ex) {
             return fail(ex);
         }

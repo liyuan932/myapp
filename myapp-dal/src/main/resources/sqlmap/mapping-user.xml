@@ -17,8 +17,8 @@
     </resultMap>
 
     <sql id="baseColumn">
-		id,account,password,username,sex,age,mobile,address,type,status,gmt_create,gmt_modified
-	</sql>
+        id,account,password,username,sex,age,mobile,address,type,status,gmt_create,gmt_modified
+    </sql>
 
     <sql id="queryParams">
         <where>
@@ -66,9 +66,9 @@
     </sql>
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id">
-		insert into user (account,password,username,sex,age,mobile,address,type,status,gmt_create,gmt_modified) values
-		(#{account},#{password},#{username},#{sex},#{age},#{mobile},#{address},#{type},#{status},now(),now())
-	</insert>
+        insert into user (account,password,username,sex,age,mobile,address,type,status,gmt_create,gmt_modified) values
+        (#{account},#{password},#{username},#{sex},#{age},#{mobile},#{address},#{type},#{status},now(),now())
+    </insert>
 
     <insert id="batchInsert">
         insert into user (account,password,username,sex,age,mobile,address,type,status,gmt_create,gmt_modified) values
@@ -78,10 +78,10 @@
     </insert>
 
     <update id="update">
-		update user
-		set account=#{account},password=#{password},username=#{username},sex=#{sex},age=#{age},mobile=#{mobile},address=#{address},type=#{type},status=#{status},gmt_create=#{gmtCreate},gmt_modified=now()
-		where id = #{id}
-	</update>
+        update user
+        set account=#{account},password=#{password},username=#{username},sex=#{sex},age=#{age},mobile=#{mobile},address=#{address},type=#{type},status=#{status},gmt_create=#{gmtCreate},gmt_modified=now()
+        where id = #{id}
+    </update>
 
     <delete id="delete">
         delete from user where id = #{id}
@@ -151,9 +151,9 @@
     </select>
 
     <update id="updateStatus">
-		update user set status=#{status}
-		where id=#{id}
-	</update>
+        update user set status=#{status}
+        where id=#{id}
+    </update>
 
     <update id="batchUpdateStatus">
         update user set status=#{status}

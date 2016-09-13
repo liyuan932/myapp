@@ -18,7 +18,6 @@ import com.mycompany.myapp.utils.log.LogUtils;
 import com.mycompany.myapp.vo.UserVO;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -48,7 +47,7 @@ public class UserServiceImpl extends BaseService implements UserService {
         });
     }
 
-    @Cacheable(value = "userCache")
+    //@Cacheable(value = "userCache")
     @Override
     public User getById(Long id) {
         System.out.println("getById()");
@@ -89,5 +88,12 @@ public class UserServiceImpl extends BaseService implements UserService {
         BizCheck.checkArgument(user != null, UserMsgEnum.FAIL_BIZ_USER_NOT_EXIST, account);
 
         return user;
+    }
+
+    @Override
+    public void logout(String account) {
+//        LogBean logBean = LogUtils.newLogBean(MainFuncEnum.USER_ADMIN, UserFunctionEnum.LOGOUT);
+//        logBean.addParamData("account", account);
+//        BizCheck.checkArgument(StringUtils.isNotBlank(account), UserMsgEnum.FAIL_BIZ_ACCOUNT_IS_NULL);
     }
 }

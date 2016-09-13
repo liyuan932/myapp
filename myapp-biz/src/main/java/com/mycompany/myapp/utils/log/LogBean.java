@@ -54,32 +54,6 @@ public class LogBean {
      */
     private String cost;
 
-    /**
-     * 日志类型
-     */
-    private LogTypeEnum type = LogTypeEnum.AFTER;
-
-    /**
-     * 日志级别
-     */
-    private LogLevelEnum level = LogLevelEnum.INFO;
-
-    public LogTypeEnum getType() {
-        return type;
-    }
-
-    public void setType(LogTypeEnum type) {
-        this.type = type;
-    }
-
-    public LogLevelEnum getLevel() {
-        return level;
-    }
-
-    public void setLevel(LogLevelEnum level) {
-        this.level = level;
-    }
-
     public Map<String, Object> getResultData() {
         return resultData;
     }
@@ -92,36 +66,20 @@ public class LogBean {
 
     }
 
-    /**
-     * 构造方法
-     *
-     * @param mainFunc      主要功能
-     * @param specFunc 次级功能
-     */
+    public LogBean(String mainFunc) {
+        this.mainFunc = mainFunc;
+    }
+
     public LogBean(String mainFunc, String specFunc) {
         this.mainFunc = mainFunc;
         this.specFunc = specFunc;
     }
 
-    /**
-     * 构造方法
-     *
-     * @param mainFuncEnum 主要功能
-     * @param functionEnum     次级功能
-     */
     public LogBean(MainFuncEnum mainFuncEnum, FunctionEnum functionEnum) {
         this.mainFunc = mainFuncEnum.getMsg();
         this.specFunc = functionEnum.getMsg();
     }
 
-
-    /**
-     * 构造方法
-     *
-     * @param mainFuncEnum 主要功能
-     * @param functionEnum     次级功能
-     * @param msg              错误信息
-     */
     public LogBean(MainFuncEnum mainFuncEnum, FunctionEnum functionEnum, String msg) {
         this(mainFuncEnum, functionEnum);
         this.msg = msg;
@@ -224,13 +182,15 @@ public class LogBean {
         sb.append("->");
         sb.append(StringUtils.trim(this.specFunc));
         sb.append("->");
-        sb.append(StringUtils.trim(this.bid));
+        sb.append(StringUtils.trim(this.msg));
         sb.append("->");
         sb.append(StringUtils.trim(JSON.toJSONString(this.paramData)));
         sb.append("->");
-        sb.append(StringUtils.trim(this.cost));
+        sb.append(StringUtils.trim(JSON.toJSONString(this.resultData)));
         sb.append("->");
-        sb.append(StringUtils.trim(this.msg));
+        sb.append(StringUtils.trim(this.bid));
+        sb.append("->");
+        sb.append(StringUtils.trim(this.cost));
         sb.append("->");
         sb.append(this.stackTrace);
         return sb.toString();

@@ -16,8 +16,8 @@
     </resultMap>
 
     <sql id="baseColumn">
-		id,gmt_create,gmt_modified,operator_id,operation_type,source_id,source_code,source_type,status,status_text,remark
-	</sql>
+        id,gmt_create,gmt_modified,operator_id,operation_type,source_id,source_code,source_type,status,status_text,remark
+    </sql>
 
     <sql id="queryParams">
         <where>
@@ -61,9 +61,9 @@
     </sql>
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id">
-		insert into operation_log (gmt_create,gmt_modified,operator_id,operation_type,source_id,source_code,source_type,status,status_text,remark) values
-		(now(),now(),#{operatorId},#{operationType},#{sourceId},#{sourceCode},#{sourceType},#{status},#{statusText},#{remark})
-	</insert>
+        insert into operation_log (gmt_create,gmt_modified,operator_id,operation_type,source_id,source_code,source_type,status,status_text,remark) values
+        (now(),now(),#{operatorId},#{operationType},#{sourceId},#{sourceCode},#{sourceType},#{status},#{statusText},#{remark})
+    </insert>
 
     <insert id="batchInsert">
         insert into operation_log (gmt_create,gmt_modified,operator_id,operation_type,source_id,source_code,source_type,status,status_text,remark)
@@ -74,10 +74,10 @@
     </insert>
 
     <update id="update">
-		update operation_log
-		set gmt_create=#{gmtCreate},gmt_modified=now(),operator_id=#{operatorId},operation_type=#{operationType},source_id=#{sourceId},source_code=#{sourceCode},source_type=#{sourceType},status=#{status},status_text=#{statusText},remark=#{remark}
-		where id = #{id}
-	</update>
+        update operation_log
+        set gmt_create=#{gmtCreate},gmt_modified=now(),operator_id=#{operatorId},operation_type=#{operationType},source_id=#{sourceId},source_code=#{sourceCode},source_type=#{sourceType},status=#{status},status_text=#{statusText},remark=#{remark}
+        where id = #{id}
+    </update>
 
     <delete id="delete">
         delete from operation_log where id = #{id}

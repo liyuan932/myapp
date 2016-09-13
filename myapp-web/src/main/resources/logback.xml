@@ -11,8 +11,8 @@
         </filter>
         <encoder>
             <pattern><![CDATA[
-				%d{HH:mm:ss}  %-5level %logger{35} - %msg%n
-			]]></pattern>
+                %d{HH:mm:ss}  %-5level %logger{35} - %m%n
+            ]]></pattern>
             <charset>GBK</charset>
         </encoder>
     </appender>
@@ -28,8 +28,8 @@
         </filter>
         <encoder>
             <pattern><![CDATA[
-				%d{HH:mm:ss}  %-5level %logger{35} - %msg%n
-			]]></pattern>
+                %d{HH:mm:ss}  %-5level %logger{35} - %m%n
+            ]]></pattern>
             <charset>GBK</charset>
         </encoder>
     </appender>
@@ -38,7 +38,7 @@
     <appender name="PROJECT" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${user.dir}/logs/myapp.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${user.dir}/logs/myapp%d{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>${user.dir}/logs/myapp%d{yyyyMMdd}.log</fileNamePattern>
             <maxHistory>30</maxHistory>
         </rollingPolicy>
         <encoder>
@@ -51,12 +51,12 @@
     <appender name="OPERATION" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${user.dir}/logs/operation.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${user.dir}/logs/operation%d{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>${user.dir}/logs/operation%d{yyyyMMdd}.log</fileNamePattern>
             <maxHistory>30</maxHistory>
         </rollingPolicy>
         <encoder>
             <pattern><![CDATA[
-			%n%-4r->%d{yyyy-MM-dd HH:mm:ss}->%-5level->%m%n
+            %n%d{yyyy-MM-dd HH:mm:ss}->%-5level->%m%n
             ]]></pattern>
         </encoder>
     </appender>
