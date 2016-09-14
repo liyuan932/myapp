@@ -20,7 +20,6 @@ import com.mycompany.myapp.vo.UserVO;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -28,7 +27,7 @@ import java.util.List;
 import static com.mycompany.myapp.enums.function.ActionEnum.USER_LOGIN;
 import static com.mycompany.myapp.enums.function.ModuleEnum.USER_MODULE;
 
-@Transactional
+//@Transactional
 @Service("userService")
 public class UserServiceImpl extends BaseService implements UserService {
 

@@ -3,7 +3,6 @@ package com.mycompany.myapp.service.common;
 import com.alibaba.fastjson.JSON;
 import com.mycompany.myapp.daoobject.OperationLogDO;
 import com.mycompany.myapp.enums.category.LogLevelEnum;
-import com.mycompany.myapp.enums.category.LogLocationEnum;
 import com.mycompany.myapp.enums.msg.CommonMsgEnum;
 import com.mycompany.myapp.service.OperationLogService;
 import com.mycompany.myapp.utils.log.OperationLog;
@@ -35,50 +34,64 @@ public class ServiceAspect {
 
         MethodSignature signature = (MethodSignature) pjp.getSignature();
         OperationLog ann = signature.getMethod().getAnnotation(OperationLog.class);
-        OperationLogDO operationLogDO = new OperationLogDO();
-        if(ann != null){
+        boolean isEnable = ann != null;
+
+        //执行前初始化日志
+        OperationLogDO operationLogDO = null;
+        if(isEnable){
+            operationLogDO = new OperationLogDO();
             operationLogDO.setModule(ann.module().name());
             operationLogDO.setAction(ann.module().name());
             operationLogDO.setOperatorType(ann.operatorType().getIndex());
             operationLogDO.setLocation(ann.location().getIndex());
-        }{
-            operationLogDO.setModule(signature.getDeclaringTypeName());
-            operationLogDO.setAction(signature.getName());
-            operationLogDO.setLocation(LogLocationEnum.FILE.getIndex());
+            operationLogDO.setOperatorId(-1L);
+            operationLogDO.setParamData(getParamData(pjp, signature));
         }
-
-        operationLogDO.setOperatorId(-1L);
-        operationLogDO.setParamData(getParamData(pjp, signature));
 
         long start = System.currentTimeMillis();
         try {
             //执行业务逻辑
             Object result = pjp.proceed();
 
-            //输出日志
-            operationLogDO.setLevel(LogLevelEnum.INFO.getIndex());
-            operationLogDO.setResultData(JSON.toJSONString(result));
-            operationLogDO.setCost(System.currentTimeMillis() - start);
-            operationLogService.output(operationLogDO);
+            //执行后输出日志
+            if(isEnable){
+                operationLogDO.setLevel(LogLevelEnum.INFO.getIndex());
+                operationLogDO.setResultData(JSON.toJSONString(result));
+                operationLogDO.setCost(System.currentTimeMillis() - start);
+                operationLogService.output(operationLogDO);
+            }
+
 
             return result;
-        } catch (BizException bex) {
-            operationLogDO.setMsg(bex.getMsg());
-            operationLogDO.setLevel(LogLevelEnum.WARN.getIndex());
-            operationLogService.output(operationLogDO);
-            throw bex;
         } catch (Exception ex) {
-            if (ex instanceof DataAccessException) {
-                operationLogDO.setMsg(CommonMsgEnum.FAIL_BIZ_DB_ERROR.getMsg() + "-" + ex.getMessage());
-            } else if (ex instanceof IllegalArgumentException) {
-                operationLogDO.setMsg(CommonMsgEnum.FAIL_BIZ_PARAM_ERROR + "-" + ex.getMessage());
-            } else {
-                operationLogDO.setMsg(CommonMsgEnum.FAIL_BIZ_SYSTEM_ERROR + "-" + ex.getMessage());
+            if(ex instanceof BizException){
+                if(isEnable){
+                    operationLogDO.setMsg(((BizException)ex).getMsg());
+                    operationLogDO.setLevel(LogLevelEnum.WARN.getIndex());
+                    operationLogService.output(operationLogDO);
+                }
+                throw ex;
+            }else{
+                if(isEnable){
+                    if (ex instanceof DataAccessException) {
+                        operationLogDO.setMsg(CommonMsgEnum.FAIL_BIZ_DB_ERROR.getMsg() + "-" + ex.getMessage());
+                    } else if (ex instanceof IllegalArgumentException) {
+                        operationLogDO.setMsg(CommonMsgEnum.FAIL_BIZ_PARAM_ERROR + "-" + ex.getMessage());
+                    } else {
+                        operationLogDO.setMsg(CommonMsgEnum.FAIL_BIZ_SYSTEM_ERROR + "-" + ex.getMessage());
+                    }
+                    operationLogDO.setStackTrace(getStackTrace(ex));
+                    operationLogService.output(operationLogDO);
+                }
+
+                throw ex;
             }
-            operationLogDO.setStackTrace(getStackTrace(ex));
-            operationLogService.output(operationLogDO);
-            throw ex;
+
         }
+    }
+
+    private boolean isEnableOperationLog(OperationLog ann){
+        return ann != null;
     }
 
     private String getParamData(ProceedingJoinPoint pjp, MethodSignature signature) {
