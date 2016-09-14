@@ -1,5 +1,4 @@
 DROP TABLE IF EXISTS `user`;
-
 CREATE TABLE `user` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
   `account` varchar(32) NOT NULL COMMENT '账号',
@@ -18,6 +17,28 @@ CREATE TABLE `user` (
   KEY `index_account_password` (`account`,`password`),
   KEY `index_gmt_modified` (`gmt_modified`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户信息表';
+
+DROP TABLE IF EXISTS `operation_log`;
+CREATE TABLE `operation_log` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `gmt_create` datetime DEFAULT NULL COMMENT '创建时间',
+  `gmt_modified` datetime DEFAULT NULL COMMENT '修改时间',
+  `operator_id` bigint(20) DEFAULT NULL COMMENT '操作人',
+  `operator_type` int(11) DEFAULT NULL COMMENT '操作类型',
+  `module` int(11) DEFAULT NULL COMMENT '主模块',
+  `action` int(11) DEFAULT NULL COMMENT '行为',
+  `biz_id` bigint(20) DEFAULT NULL COMMENT '业务id',
+  `biz_code` varchar(64) DEFAULT NULL COMMENT '业务code',
+  `msg` varchar(128) DEFAULT NULL COMMENT '描述',
+  `param_data` varchar(2048) DEFAULT NULL COMMENT '参数数据',
+  `result_data` varchar(2048) DEFAULT NULL COMMENT '结果数据',
+  `cost` bigint(11) DEFAULT NULL COMMENT '消耗时间',
+  `location` int(11) DEFAULT NULL COMMENT '存储类型',
+  `level` int(11) DEFAULT NULL COMMENT '日志级别',
+  `stack_trace` text COMMENT '错误堆栈',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=89 DEFAULT CHARSET=utf8;
+
 
 INSERT INTO test.user (account, password, username, sex, age, mobile, address, type, status, gmt_create, gmt_modified)
 VALUES ('liyuan', '1234', '李远', 1, 27, '18758595684', '浙江杭州', 1, 1, '2016-05-02 14:11:19', '2016-05-02 14:11:41');
