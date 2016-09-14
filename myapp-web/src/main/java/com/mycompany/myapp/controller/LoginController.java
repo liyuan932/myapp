@@ -1,12 +1,15 @@
 package com.mycompany.myapp.controller;
 
-import com.mycompany.mapp.dto.LoginDTO;
+import com.mycompany.myapp.daoobject.UserDO;
 import com.mycompany.myapp.service.UserService;
+import com.mycompany.myapp.utils.CookieUtils;
+import com.mycompany.myapp.utils.TokenUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 
 @Controller
 @RequestMapping("/")
@@ -20,23 +23,12 @@ public class LoginController extends BaseController {
      */
     @RequestMapping("/login")
     @ResponseBody
-    public Object login(String account, String password) {
+    public Object login(HttpServletResponse res,String account, String password) {
         try {
-            return success(userService.login(account, password));
-        } catch (Exception ex) {
-            return fail(ex);
-        }
-    }
+            UserDO login = userService.login(account, password);
+            CookieUtils.add(res,"token", TokenUtil.generateToken(login.getId(),login.getAccount()));
 
-    @RequestMapping("/login2")
-    @ResponseBody
-    public Object login2(String account, String password) {
-        try {
-            LoginDTO dto = new LoginDTO();
-            dto.setAccount(account);
-            dto.setPassword(password);
-            userService.login(dto);
-            return success();
+            return success(login);
         } catch (Exception ex) {
             return fail(ex);
         }

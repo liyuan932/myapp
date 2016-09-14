@@ -1,6 +1,5 @@
 package com.mycompany.myapp.service.impl;
 
-import com.mycompany.mapp.dto.LoginDTO;
 import com.mycompany.myapp.dao.UserDAO;
 import com.mycompany.myapp.daoobject.UserDO;
 import com.mycompany.myapp.enums.category.EnableOrDisableEnum;
@@ -91,17 +90,6 @@ public class UserServiceImpl extends BaseService implements UserService {
         BizCheck.checkArgument(userDO != null, UserMsgEnum.FAIL_BIZ_USER_NOT_EXIST, account);
 
         return userDO;
-    }
-    @OperationLog(module = USER,action = USER_LOGIN, bizCodeExp = "#dto.getAccount()")
-    @Override
-    public void login(LoginDTO dto) {
-        String account = dto.getAccount();
-        String password = dto.getPassword();
-        BizCheck.checkArgument(StringUtils.isNotBlank(account), UserMsgEnum.FAIL_BIZ_ACCOUNT_IS_NULL);
-        BizCheck.checkArgument(StringUtils.isNotBlank(password), UserMsgEnum.FAIL_BIZ_PASSWORD_IS_NULL);
-
-        UserDO userDO = userDAO.getByAccountAndPassword(account, password);
-        BizCheck.checkArgument(userDO != null, UserMsgEnum.FAIL_BIZ_USER_NOT_EXIST, account);
     }
 
     @Override

@@ -30,4 +30,6 @@ public @interface OperationLog {
     String bizCodeExp() default "";
 
     LogLocationEnum location() default LogLocationEnum.DB;
+
+    long operatorId() default -1;
 }

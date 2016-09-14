@@ -46,7 +46,7 @@ public class ServiceAspect {
             operationLogDO.setAction(ann.action().getIndex());
             operationLogDO.setOperatorType(ann.operatorType().getIndex());
             operationLogDO.setLocation(ann.location().getIndex());
-            operationLogDO.setOperatorId(-1L);
+            operationLogDO.setOperatorId(ann.operatorId());
             operationLogDO.setParamData(getParamData(pjp, signature));
         }
 

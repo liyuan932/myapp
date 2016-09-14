@@ -2,34 +2,25 @@ package com.mycompany.myapp.controller;
 
 import com.mycompany.myapp.enums.msg.CommonMsgEnum;
 import com.mycompany.myapp.service.common.BizException;
+import com.mycompany.myapp.utils.CookieUtils;
+import com.mycompany.myapp.utils.TokenUtil;
 import com.mycompany.myapp.vo.BaseResult;
 import org.springframework.dao.DataAccessException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 public class BaseController {
     @Resource
-    protected HttpServletRequest request;
-    @Resource
-    protected HttpSession session;
+    protected HttpServletRequest req;
 
-    /**
-     * 异常处理
-     */
-    @ExceptionHandler
-    public String exception(HttpServletRequest request, Exception ex) {
+    public Long getUserId(){
+        return TokenUtil.getUid(CookieUtils.getName(req, "token"));
+    }
 
-        request.setAttribute("ex", ex);
-        if (ex instanceof BizException) {
-            return "error/error-business";
-        } else if (ex instanceof DataAccessException) {
-            return "error/error-db";
-        } else {
-            return "error/error";
-        }
+    public String getAccount(){
+        return TokenUtil.getAccount(CookieUtils.getName(req, "token"));
     }
 
     protected <T> BaseResult<T> success(T model) {
@@ -57,4 +48,20 @@ public class BaseController {
             return fail(CommonMsgEnum.FAIL_BIZ_SYSTEM_ERROR, ex);
         }
     }
+    /**
+     * 异常处理
+     */
+    @ExceptionHandler
+    public String exception(HttpServletRequest request, Exception ex) {
+
+        request.setAttribute("ex", ex);
+        if (ex instanceof BizException) {
+            return "error/error-business";
+        } else if (ex instanceof DataAccessException) {
+            return "error/error-db";
+        } else {
+            return "error/error";
+        }
+    }
+
 }

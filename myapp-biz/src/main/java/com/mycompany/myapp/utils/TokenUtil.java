@@ -10,7 +10,7 @@ public class TokenUtil {
 
     private static final Logger log = LoggerFactory.getLogger(TokenUtil.class);
 
-    public static String generateToken(String userId,String account) {
+    public static String generateToken(Long userId,String account) {
         try {
             return DES3Util.encrypt(userId + "_" + account);
         } catch (Exception e) {
@@ -42,7 +42,7 @@ public class TokenUtil {
     }
 
     public static void main(String[] args) throws Exception {
-        String token = generateToken("10000", "liyuan");
+        String token = generateToken(10000L, "liyuan");
         System.out.println(token);
         System.out.println(DES3Util.decrypt(token));
         System.out.println(getUid(token));
