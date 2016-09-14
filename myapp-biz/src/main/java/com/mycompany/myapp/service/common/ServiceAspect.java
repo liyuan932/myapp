@@ -6,6 +6,8 @@ import com.mycompany.myapp.enums.category.LogLevelEnum;
 import com.mycompany.myapp.enums.msg.CommonMsgEnum;
 import com.mycompany.myapp.service.OperationLogService;
 import com.mycompany.myapp.utils.log.OperationLog;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -17,6 +19,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Objects;
 
 @Aspect
 @Component
@@ -37,11 +40,10 @@ public class ServiceAspect {
         boolean isEnable = ann != null;
 
         //执行前初始化日志
-        OperationLogDO operationLogDO = null;
+        OperationLogDO operationLogDO =  new OperationLogDO();
         if(isEnable){
-            operationLogDO = new OperationLogDO();
-            operationLogDO.setModule(ann.module().name());
-            operationLogDO.setAction(ann.module().name());
+            operationLogDO.setModule(ann.module().getIndex());
+            operationLogDO.setAction(ann.action().getIndex());
             operationLogDO.setOperatorType(ann.operatorType().getIndex());
             operationLogDO.setLocation(ann.location().getIndex());
             operationLogDO.setOperatorId(-1L);
@@ -55,12 +57,14 @@ public class ServiceAspect {
 
             //执行后输出日志
             if(isEnable){
+                operationLogDO.setMsg(ann.action().getText());
+                operationLogDO.setBizId(NumberUtils.toLong(parseExpress(pjp,ann.bizIdExp(),result)));
+                operationLogDO.setBizCode(parseExpress(pjp,ann.bizCodeExp(),result));
                 operationLogDO.setLevel(LogLevelEnum.INFO.getIndex());
                 operationLogDO.setResultData(JSON.toJSONString(result));
                 operationLogDO.setCost(System.currentTimeMillis() - start);
                 operationLogService.output(operationLogDO);
             }
-
 
             return result;
         } catch (Exception ex) {
@@ -76,22 +80,61 @@ public class ServiceAspect {
                     if (ex instanceof DataAccessException) {
                         operationLogDO.setMsg(CommonMsgEnum.FAIL_BIZ_DB_ERROR.getMsg() + "-" + ex.getMessage());
                     } else if (ex instanceof IllegalArgumentException) {
-                        operationLogDO.setMsg(CommonMsgEnum.FAIL_BIZ_PARAM_ERROR + "-" + ex.getMessage());
+                        operationLogDO.setMsg(CommonMsgEnum.FAIL_BIZ_PARAM_ERROR.getMsg() + "-" + ex.getMessage());
                     } else {
-                        operationLogDO.setMsg(CommonMsgEnum.FAIL_BIZ_SYSTEM_ERROR + "-" + ex.getMessage());
+                        operationLogDO.setMsg(CommonMsgEnum.FAIL_BIZ_SYSTEM_ERROR.getMsg() + "-" + ex.getMessage());
                     }
+                    operationLogDO.setLevel(LogLevelEnum.ERROR.getIndex());
                     operationLogDO.setStackTrace(getStackTrace(ex));
                     operationLogService.output(operationLogDO);
                 }
 
                 throw ex;
             }
-
         }
     }
 
-    private boolean isEnableOperationLog(OperationLog ann){
-        return ann != null;
+    private String parseExpress(ProceedingJoinPoint pjp,String exp,Object result) throws Exception {
+
+        if(StringUtils.isBlank(exp)){
+            return null;
+        }
+        MethodSignature signature = (MethodSignature) pjp.getSignature();
+
+        if(StringUtils.startsWith(exp,"#")){  //从参数中获取
+            exp = exp.substring(1);
+            if(StringUtils.indexOf(exp,".") == -1){
+                for (int i = 0; i < signature.getParameterNames().length; i++) {
+                    if(signature.getParameterNames()[i].equals(exp)){
+                        return Objects.toString(pjp.getArgs()[i],null);
+                    }
+                }
+            }else{  //从参数对象的字段中获取
+                String paramName = exp.substring(0,StringUtils.indexOf(exp,"."));
+                String methodName = exp.substring(StringUtils.indexOf(exp,".")+1,StringUtils.indexOf(exp,"("));
+                for (int i = 0; i < signature.getParameterNames().length; i++) {
+                    if(signature.getParameterNames()[i].equals(paramName)){
+                        Class clz = signature.getParameterTypes()[i];
+                        return  Objects.toString(clz.getDeclaredMethod(methodName).invoke( pjp.getArgs()[i]),null);
+                    }
+                }
+            }
+        }else if(StringUtils.startsWith(exp,"$")){  //从结果中获取
+            Class returnType = signature.getReturnType();
+            exp = exp.substring(1);
+            if(StringUtils.indexOf(exp,".") == -1) {
+                return  Objects.toString(result,null);
+            }else{
+                String methodName = exp.substring(StringUtils.indexOf(exp,".")+1,StringUtils.indexOf(exp,"("));
+                return  Objects.toString(returnType.getDeclaredMethod(methodName).invoke(result),null);
+            }
+        }
+
+        return null;
+    }
+
+    private Long getBizId(ProceedingJoinPoint pjp,OperationLog ann) {
+        return null;
     }
 
     private String getParamData(ProceedingJoinPoint pjp, MethodSignature signature) {

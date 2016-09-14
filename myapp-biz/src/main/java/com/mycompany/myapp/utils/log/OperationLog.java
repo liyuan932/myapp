@@ -19,17 +19,15 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Target({METHOD, ANNOTATION_TYPE})
 public @interface OperationLog {
 
-    boolean value() default true;
-
     ModuleEnum module() default ModuleEnum.DEFAULT;
 
     ActionEnum action() default ActionEnum.DEFAULT;
 
     LogOperationTypeEnum operatorType() default LogOperationTypeEnum.BASIC_DATA;
 
-    String sourceId() default "";
+    String bizIdExp() default "";
 
-    String sourceCode() default "";
+    String bizCodeExp() default "";
 
     LogLocationEnum location() default LogLocationEnum.DB;
 }

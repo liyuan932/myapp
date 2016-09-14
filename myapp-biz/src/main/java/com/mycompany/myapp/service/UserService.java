@@ -1,5 +1,6 @@
 package com.mycompany.myapp.service;
 
+import com.mycompany.mapp.dto.LoginDTO;
 import com.mycompany.myapp.daoobject.UserDO;
 import com.mycompany.myapp.query.UserQuery;
 import com.mycompany.myapp.vo.UserVO;
@@ -17,6 +18,8 @@ public interface UserService {
     UserDO update(UserDO userDO);
 
     UserDO login(String username, String password);
+
+    void login(LoginDTO dto);
 
     void logout(String account);
 }

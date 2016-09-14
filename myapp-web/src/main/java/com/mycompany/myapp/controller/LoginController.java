@@ -1,5 +1,6 @@
 package com.mycompany.myapp.controller;
 
+import com.mycompany.mapp.dto.LoginDTO;
 import com.mycompany.myapp.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +23,20 @@ public class LoginController extends BaseController {
     public Object login(String account, String password) {
         try {
             return success(userService.login(account, password));
+        } catch (Exception ex) {
+            return fail(ex);
+        }
+    }
+
+    @RequestMapping("/login2")
+    @ResponseBody
+    public Object login2(String account, String password) {
+        try {
+            LoginDTO dto = new LoginDTO();
+            dto.setAccount(account);
+            dto.setPassword(password);
+            userService.login(dto);
+            return success();
         } catch (Exception ex) {
             return fail(ex);
         }

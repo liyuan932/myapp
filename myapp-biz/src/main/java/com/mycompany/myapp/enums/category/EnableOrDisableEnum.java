@@ -5,15 +5,16 @@ package com.mycompany.myapp.enums.category;
  */
 public enum EnableOrDisableEnum {
     ENABLE(1, "启用"), DISABLE(0, "禁用");
-    private int index;
+
+    private Integer index;
     private String text;
 
-    EnableOrDisableEnum(int index, String text) {
+    EnableOrDisableEnum(Integer index, String text) {
         this.index = index;
         this.text = text;
     }
 
-    public int getIndex() {
+    public Integer getIndex() {
         return index;
     }
 
@@ -24,9 +25,9 @@ public enum EnableOrDisableEnum {
     /**
      * 根据索引获取状态文本
      */
-    public static String getTextByIndex(int index) {
+    public static String getTextByIndex(Integer index) {
         for (EnableOrDisableEnum e : EnableOrDisableEnum.values()) {
-            if (e.getIndex() == index) {
+            if (e.getIndex().equals(index)) {
                 return e.getText();
             }
         }

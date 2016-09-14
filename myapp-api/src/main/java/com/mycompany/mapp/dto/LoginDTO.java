@@ -6,15 +6,15 @@ package com.mycompany.mapp.dto;
  */
 public class LoginDTO extends BaseDTO {
 
-    private String username;
+    private String account;
     private String password;
 
-    public String getUsername() {
-        return username;
+    public String getAccount() {
+        return account;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setAccount(String account) {
+        this.account = account;
     }
 
     public String getPassword() {

@@ -9,8 +9,8 @@ public class OperationLogDO extends BaseDO {
 	private Date gmtModified; //修改时间 
 	private Long operatorId; //操作人 
 	private Integer operatorType; //操作类型 
-	private String module; //主模块 
-	private String action; //行为 
+	private Integer module; //主模块 
+	private Integer action; //行为 
 	private Long bizId; //业务id 
 	private String bizCode; //业务code 
 	private String msg; //描述 
@@ -61,19 +61,19 @@ public class OperationLogDO extends BaseDO {
 		this.operatorType = operatorType;
 	}
 
-	public String getModule() {
+	public Integer getModule() {
 		return module;
 	}
 
-	public void setModule(String module) {
+	public void setModule(Integer module) {
 		this.module = module;
 	}
 
-	public String getAction() {
+	public Integer getAction() {
 		return action;
 	}
 
-	public void setAction(String action) {
+	public void setAction(Integer action) {
 		this.action = action;
 	}
 

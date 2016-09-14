@@ -1,5 +1,6 @@
 package com.mycompany.myapp.service.impl;
 
+import com.mycompany.mapp.dto.LoginDTO;
 import com.mycompany.myapp.dao.UserDAO;
 import com.mycompany.myapp.daoobject.UserDO;
 import com.mycompany.myapp.enums.category.EnableOrDisableEnum;
@@ -20,14 +21,15 @@ import com.mycompany.myapp.vo.UserVO;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
 
 import static com.mycompany.myapp.enums.function.ActionEnum.USER_LOGIN;
-import static com.mycompany.myapp.enums.function.ModuleEnum.USER_MODULE;
+import static com.mycompany.myapp.enums.function.ModuleEnum.USER;
 
-//@Transactional
+@Transactional(rollbackFor = Exception.class)
 @Service("userService")
 public class UserServiceImpl extends BaseService implements UserService {
 
@@ -79,12 +81,9 @@ public class UserServiceImpl extends BaseService implements UserService {
         return userDO;
     }
 
-    @OperationLog(module = USER_MODULE,action = USER_LOGIN,sourceId = "#account")
+    @OperationLog(module = USER,action = USER_LOGIN, bizCodeExp = "#account",bizIdExp = "$user.getId()")
     @Override
-    public UserDO login(String account, String password) {
-        LogBean logBean = LogUtils.newLogBean(ModuleEnum.DEFAULT, ActionEnum.DEFAULT);
-        logBean.addParamData("account", account, "password", password);
-
+    public UserDO login(String account, String password){
         BizCheck.checkArgument(StringUtils.isNotBlank(account), UserMsgEnum.FAIL_BIZ_ACCOUNT_IS_NULL);
         BizCheck.checkArgument(StringUtils.isNotBlank(password), UserMsgEnum.FAIL_BIZ_PASSWORD_IS_NULL);
 
@@ -92,6 +91,17 @@ public class UserServiceImpl extends BaseService implements UserService {
         BizCheck.checkArgument(userDO != null, UserMsgEnum.FAIL_BIZ_USER_NOT_EXIST, account);
 
         return userDO;
+    }
+    @OperationLog(module = USER,action = USER_LOGIN, bizCodeExp = "#dto.getAccount()")
+    @Override
+    public void login(LoginDTO dto) {
+        String account = dto.getAccount();
+        String password = dto.getPassword();
+        BizCheck.checkArgument(StringUtils.isNotBlank(account), UserMsgEnum.FAIL_BIZ_ACCOUNT_IS_NULL);
+        BizCheck.checkArgument(StringUtils.isNotBlank(password), UserMsgEnum.FAIL_BIZ_PASSWORD_IS_NULL);
+
+        UserDO userDO = userDAO.getByAccountAndPassword(account, password);
+        BizCheck.checkArgument(userDO != null, UserMsgEnum.FAIL_BIZ_USER_NOT_EXIST, account);
     }
 
     @Override

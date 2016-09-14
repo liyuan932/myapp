@@ -27,7 +27,7 @@ public class UserAPIImpl extends CommonService implements UserAPI {
     public BaseResult<LoginResult> login(LoginDTO dto) {
 
         try {
-            return success(BeanUtil.dbToVo(userService.login(dto.getUsername(), dto.getPassword()), LoginResult.class));
+            return success(BeanUtil.dbToVo(userService.login(dto.getAccount(), dto.getPassword()), LoginResult.class));
         } catch (BizException bex) {
             return fail(bex.getCode(), bex.getMsg());
         } catch (Exception ex) {
