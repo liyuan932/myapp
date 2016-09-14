@@ -37,7 +37,7 @@ CREATE TABLE `operation_log` (
   `level` int(11) DEFAULT NULL COMMENT '日志级别',
   `stack_trace` text COMMENT '错误堆栈',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=89 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8  COMMENT='操作日志表';
 
 
 INSERT INTO test.user (account, password, username, sex, age, mobile, address, type, status, gmt_create, gmt_modified)
