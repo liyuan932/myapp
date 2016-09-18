@@ -134,9 +134,6 @@ public class ServiceAspect {
         return exp;
     }
 
-    private Long getBizId(ProceedingJoinPoint pjp, OperationLog ann) {
-        return null;
-    }
 
     private String getParamData(ProceedingJoinPoint pjp, MethodSignature signature) {
         Map<String, Object> paramData = new LinkedHashMap<>();
