@@ -1,5 +1,6 @@
 package com.mycompany.myapp.interceptor;
 
+import com.mycompany.myapp.utils.CookieUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
@@ -20,7 +21,8 @@ public class LoginHandlerInterceptor extends HandlerInterceptorAdapter {
             return true;
         }
 
-        if (request.getSession().getAttribute("login") == null) {
+        String token = CookieUtils.getName(request, "token");
+        if (token == null) {
             response.sendRedirect(loginUri);
         }
 

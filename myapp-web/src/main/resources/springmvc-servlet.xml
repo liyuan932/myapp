@@ -34,6 +34,7 @@
 
     <!--拦截器 -->
     <mvc:interceptors>
+        <bean class="com.mycompany.myapp.interceptor.LoginHandlerInterceptor"/>
         <bean class="com.mycompany.myapp.interceptor.TimeCostHandlerInterceptor"/>
     </mvc:interceptors>
 
