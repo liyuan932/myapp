@@ -3,17 +3,29 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:util="http://www.springframework.org/schema/util"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
       http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
       http://www.springframework.org/schema/context
       http://www.springframework.org/schema/context/spring-context-4.0.xsd
       http://www.springframework.org/schema/tx
-      http://www.springframework.org/schema/tx/spring-tx.xsd">
+      http://www.springframework.org/schema/tx/spring-tx.xsd
+      http://www.springframework.org/schema/util
+      http://www.springframework.org/schema/util/spring-util.xsd">
 
     <!-- JDBC属性 -->
-    <context:property-placeholder location="classpath:jdbc.properties"/>
+    <context:property-placeholder location="classpath:jdbc.properties" ignore-resource-not-found="true"
+                                  ignore-unresolvable="true" properties-ref="defaultConfiguration"/>
 
-    <!-- DBCP数据源 -->
+    <!--JDBC默认配置-->
+    <util:properties id="defaultConfiguration">
+        <prop key="jdbc.driverClassName">com.mysql.jdbc.Driver</prop>
+        <prop key="jdbc.url">jdbc:mysql://localhost:3306/test?useUnicode=true&amp;characterEncoding=utf8&amp;autoReconnect=true&amp;failOverReadOnly=true</prop>
+        <prop key="jdbc.username">root</prop>
+        <prop key="jdbc.password">1234</prop>
+    </util:properties>
+
+   <!-- DBCP数据源 -->
     <bean id="dataSource" destroy-method="close" class="org.apache.commons.dbcp.BasicDataSource">
         <property name="driverClassName" value="${jdbc.driverClassName}"/>
         <property name="url" value="${jdbc.url}"/>
