@@ -4,6 +4,7 @@
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:tx="http://www.springframework.org/schema/tx"
        xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:p="http://www.springframework.org/schema/p"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
       http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
       http://www.springframework.org/schema/context
@@ -15,7 +16,7 @@
 
     <!-- JDBC属性 -->
     <context:property-placeholder location="classpath:jdbc.properties" ignore-resource-not-found="true"
-                                  ignore-unresolvable="true" properties-ref="defaultConfiguration"/>
+                                  ignore-unresolvable="true" properties-ref="defaultConfiguration" />
 
     <!--JDBC默认配置-->
     <util:properties id="defaultConfiguration">
@@ -26,12 +27,12 @@
     </util:properties>
 
    <!-- DBCP数据源 -->
-    <bean id="dataSource" destroy-method="close" class="org.apache.commons.dbcp.BasicDataSource">
-        <property name="driverClassName" value="${jdbc.driverClassName}"/>
-        <property name="url" value="${jdbc.url}"/>
-        <property name="username" value="${jdbc.username}"/>
-        <property name="password" value="${jdbc.password}"/>
-    </bean>
+    <bean id="dataSource" destroy-method="close" class="org.apache.commons.dbcp.BasicDataSource"
+          p:driverClassName="${jdbc.driverClassName}"
+          p:url="${jdbc.url}"
+          p:username="${jdbc.username}"
+          p:password="${jdbc.password}"
+    />
 
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="dataSource"/>

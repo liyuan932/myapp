@@ -304,6 +304,11 @@
                 <artifactId>commons-codec</artifactId>
                 <version>1.10</version>
             </dependency>
+            <dependency>
+                <groupId>org.jasypt</groupId>
+                <artifactId>jasypt</artifactId>
+                <version>1.9.2</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
