@@ -41,19 +41,19 @@ public @interface OperationLog {
      * $ 取返回对象的值
      * $.getId()  取返回对象的getId()方法的值
      */
-    String bizIdExp() default "";
+    String bizId() default "";
 
     /**
      * 业务code表达式
      * 规则同bizIdExp
      */
-    String bizCodeExp() default "";
+    String bizCode() default "";
 
     /**
      * 操作人id表达式
      * 规则同bizIdExp
      */
-    String operatorExp() default "";
+    String operator() default "";
 
     /**
      * 日志存储位置
@@ -68,7 +68,7 @@ public @interface OperationLog {
     /**
      * 是否记录warn日志
      */
-    boolean isRecordWarn() default false;
+    boolean isRecordWarn() default true;
 
     /**
      * 日志描述

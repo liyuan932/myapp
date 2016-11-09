@@ -16,7 +16,7 @@
 
     <!-- JDBC属性 -->
     <context:property-placeholder location="classpath:jdbc.properties" ignore-resource-not-found="true"
-                                  ignore-unresolvable="true" properties-ref="defaultConfiguration" />
+                                  ignore-unresolvable="true" properties-ref="defaultConfiguration"/>
 
     <!--JDBC默认配置-->
     <util:properties id="defaultConfiguration">
@@ -26,7 +26,7 @@
         <prop key="jdbc.password">1234</prop>
     </util:properties>
 
-   <!-- DBCP数据源 -->
+    <!-- DBCP数据源 -->
     <bean id="dataSource" destroy-method="close" class="org.apache.commons.dbcp.BasicDataSource"
           p:driverClassName="${jdbc.driverClassName}"
           p:url="${jdbc.url}"
@@ -34,29 +34,24 @@
           p:password="${jdbc.password}"
     />
 
-    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-        <property name="dataSource" ref="dataSource"/>
-        <!-- 配置mybatis配置文件的位置 -->
-        <property name="mapperLocations" value="classpath*:sqlmap/mapping-*.xml"/>
-        <property name="typeAliasesPackage" value="com.mycompany.myapp.daoobject"/>
-        <property name="plugins">
-            <array>
-                <bean class="com.github.miemiedev.mybatis.paginator.OffsetLimitInterceptor">
-                    <property name="dialectClass" value="com.github.miemiedev.mybatis.paginator.dialect.MySQLDialect"/>
-                </bean>
-            </array>
-        </property>
-    </bean>
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean"
+          p:dataSource-ref="dataSource"
+          p:mapperLocations="classpath*:sqlmap/mapping-*.xml"
+          p:typeAliasesPackage="com.mycompany.myapp.daoobject"
+          p:plugins-ref="mybatisPlugins"/>
 
-    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-        <property name="basePackage" value="com.mycompany.myapp.dao"/>
-        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
-    </bean>
+    <util:list id="mybatisPlugins">
+        <bean class="com.github.miemiedev.mybatis.paginator.OffsetLimitInterceptor"
+              p:dialectClass="com.github.miemiedev.mybatis.paginator.dialect.MySQLDialect"/>
+    </util:list>
+
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer"
+          p:basePackage="com.mycompany.myapp.dao"
+          p:sqlSessionFactory-ref="sqlSessionFactory"/>
 
     <!--事务管理 -->
-    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-        <property name="dataSource" ref="dataSource"/>
-    </bean>
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager"
+          p:dataSource-ref="dataSource"/>
 
     <!-- 注册事务注解  -->
     <tx:annotation-driven transaction-manager="transactionManager"/>

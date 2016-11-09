@@ -80,8 +80,7 @@ public class UserServiceImpl extends BaseService implements UserService {
         return userDO;
     }
 
-    @OperationLog(module = USER,action = USER_LOGIN, bizCodeExp = "#account",bizIdExp = "$.getId()",operatorExp =
-        "$.getId()",isRecordWarn = true)
+    @OperationLog(module = USER,action = USER_LOGIN, bizCode = "#account", bizId = "$.getId()", operator = "$.getId()")
     @Override
     public UserDO login(String account, String password){
         BizCheck.checkArgument(StringUtils.isNotBlank(account), UserMsgEnum.FAIL_BIZ_ACCOUNT_IS_NULL);

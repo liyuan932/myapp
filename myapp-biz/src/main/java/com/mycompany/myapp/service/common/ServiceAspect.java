@@ -58,9 +58,9 @@ public class ServiceAspect {
 
             //执行后输出日志
             if (isEnable && ann.isRecordInfo()) {
-                operationLogDO.setBizId(NumberUtils.toLong(parseExpress(pjp, ann.bizIdExp(), result)));
-                operationLogDO.setBizCode(parseExpress(pjp, ann.bizCodeExp(), result));
-                operationLogDO.setOperatorId(NumberUtils.toLong(parseExpress(pjp, ann.bizIdExp(), result)));
+                operationLogDO.setBizId(NumberUtils.toLong(parseExpress(pjp, ann.bizId(), result)));
+                operationLogDO.setBizCode(parseExpress(pjp, ann.bizCode(), result));
+                operationLogDO.setOperatorId(NumberUtils.toLong(parseExpress(pjp, ann.bizId(), result)));
                 operationLogDO.setLevel(LogLevelEnum.INFO.getIndex());
                 operationLogDO.setResultData(JSON.toJSONString(result));
                 operationLogDO.setCost(System.currentTimeMillis() - start);
