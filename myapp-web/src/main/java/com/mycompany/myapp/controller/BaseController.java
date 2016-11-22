@@ -43,9 +43,9 @@ public class BaseController {
         if (ex instanceof BizException) {
             return fail(((BizException) ex).getCode(), ex.getMessage());
         } else if (ex instanceof DataAccessException) {
-            return fail(CommonMsgEnum.FAIL_BIZ_DB_ERROR, ex);
+            return fail(CommonMsgEnum.DB_ERROR, ex);
         } else {
-            return fail(CommonMsgEnum.FAIL_BIZ_SYSTEM_ERROR, ex);
+            return fail(CommonMsgEnum.SYSTEM_ERROR, ex);
         }
     }
     /**

@@ -31,7 +31,7 @@ public class UserAPIImpl extends CommonService implements UserAPI {
         } catch (BizException bex) {
             return fail(bex.getCode(), bex.getMsg());
         } catch (Exception ex) {
-            return fail(CommonMsgEnum.FAIL_BIZ_SYSTEM_ERROR);
+            return fail(CommonMsgEnum.SYSTEM_ERROR);
         }
     }
 }

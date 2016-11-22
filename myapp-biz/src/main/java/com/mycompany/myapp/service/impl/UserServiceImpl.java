@@ -13,20 +13,14 @@ import com.mycompany.myapp.service.common.BaseService;
 import com.mycompany.myapp.service.common.BizCheck;
 import com.mycompany.myapp.utils.BeanUtil;
 import com.mycompany.myapp.utils.DateUtil;
-import com.mycompany.myapp.utils.log.LogBean;
-import com.mycompany.myapp.utils.log.LogUtils;
 import com.mycompany.myapp.utils.log.OperationLog;
 import com.mycompany.myapp.vo.UserVO;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
-
-import static com.mycompany.myapp.enums.function.ActionEnum.USER_LOGIN;
-import static com.mycompany.myapp.enums.function.ModuleEnum.USER;
 
 @Transactional(rollbackFor = Exception.class)
 @Service("userService")
@@ -51,7 +45,6 @@ public class UserServiceImpl extends BaseService implements UserService {
         });
     }
 
-    //@Cacheable(value = "userCache")
     @Override
     public UserDO getById(Long id) {
         System.out.println("getById()");
@@ -60,19 +53,13 @@ public class UserServiceImpl extends BaseService implements UserService {
 
     @Override
     public UserDO add(UserDO userDO) {
-        System.out.println("add()");
-        LogBean logBean = LogUtils.newLogBean(ModuleEnum.DEFAULT, ActionEnum.DEFAULT);
-        logBean.addParamData("user", userDO);
-
         userDAO.insert(userDO);
-        BizCheck.checkArgument(userDO.getId() != null, UserMsgEnum.FAIL_BIZ_ADD_USER);
+        BizCheck.checkParam(userDO.getId() != null, UserMsgEnum.ADD_USER_ERROR);
 
         return userDO;
     }
 
     @Override
-    @CacheEvict(value = "userCache", key = "#user.getId()")
-    //@CachePut(value="userCache",key="#user.getId()")
     public UserDO update(UserDO userDO) {
 
         userDAO.update(userDO);
@@ -80,22 +67,20 @@ public class UserServiceImpl extends BaseService implements UserService {
         return userDO;
     }
 
-    @OperationLog(module = USER,action = USER_LOGIN, bizCode = "#account", bizId = "$.getId()", operator = "$.getId()")
+    @OperationLog(module = ModuleEnum.USER,action = ActionEnum.USER_LOGIN, bizCode = "#account", bizId = "$.getId()",
+        operator = "$.getId()")
     @Override
     public UserDO login(String account, String password){
-        BizCheck.checkArgument(StringUtils.isNotBlank(account), UserMsgEnum.FAIL_BIZ_ACCOUNT_IS_NULL);
-        BizCheck.checkArgument(StringUtils.isNotBlank(password), UserMsgEnum.FAIL_BIZ_PASSWORD_IS_NULL);
+        BizCheck.checkParam(StringUtils.isNotBlank(account), "登录账户不能为空");
+        BizCheck.checkParam(StringUtils.isNotBlank(password), "登录密码不能为空");
 
         UserDO userDO = userDAO.getByAccountAndPassword(account, password);
-        BizCheck.checkArgument(userDO != null, UserMsgEnum.FAIL_BIZ_USER_NOT_EXIST, account);
+        BizCheck.checkParam(userDO != null, UserMsgEnum.ACCOUNT_OR_PASSWORD_ERROR, account);
 
         return userDO;
     }
 
     @Override
     public void logout(String account) {
-//        LogBean logBean = LogUtils.newLogBean(MainFuncEnum.USER_ADMIN, UserFunctionEnum.LOGOUT);
-//        logBean.addParamData("account", account);
-//        BizCheck.checkArgument(StringUtils.isNotBlank(account), UserMsgEnum.FAIL_BIZ_ACCOUNT_IS_NULL);
     }
 }

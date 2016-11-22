@@ -4,7 +4,7 @@ package com.mycompany.myapp.enums.category;
  * 状态枚举
  */
 public enum LogOperationTypeEnum {
-    BASIC_DATA(1, "基础数据"), BIZ_DATA(2, "业务数据");
+    BASIC_DATA(1, "基础数据"), biz_data(2, "业务数据");
 
     private Integer index;
     private String text;

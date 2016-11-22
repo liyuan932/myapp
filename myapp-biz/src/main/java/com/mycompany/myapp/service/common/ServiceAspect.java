@@ -68,30 +68,28 @@ public class ServiceAspect {
             }
 
             return result;
-        } catch (Exception ex) {
-            if (ex instanceof BizException) {
-                if (isEnable && ann.isRecordWarn()) {
-                    operationLogDO.setMsg(((BizException) ex).getMsg());
-                    operationLogDO.setLevel(LogLevelEnum.WARN.getIndex());
-                    operationLogService.output(operationLogDO);
-                }
-                throw ex;
-            } else {
-                if (isEnable) {
-                    if (ex instanceof DataAccessException) {
-                        operationLogDO.setMsg(CommonMsgEnum.FAIL_BIZ_DB_ERROR.getMsg() + "-" + ex.getMessage());
-                    } else if (ex instanceof IllegalArgumentException) {
-                        operationLogDO.setMsg(CommonMsgEnum.FAIL_BIZ_PARAM_ERROR.getMsg() + "-" + ex.getMessage());
-                    } else {
-                        operationLogDO.setMsg(CommonMsgEnum.FAIL_BIZ_SYSTEM_ERROR.getMsg() + "-" + ex.getMessage());
-                    }
-                    operationLogDO.setLevel(LogLevelEnum.ERROR.getIndex());
-                    operationLogDO.setStackTrace(getStackTrace(ex));
-                    operationLogService.output(operationLogDO);
-                }
-
-                throw ex;
+        }catch (BizException bex){
+            if (isEnable && ann.isRecordWarn()) {
+                operationLogDO.setMsg(bex.getMsg());
+                operationLogDO.setLevel(LogLevelEnum.WARN.getIndex());
+                operationLogService.output(operationLogDO);
             }
+            throw bex;
+        } catch (Exception ex) {
+            if (isEnable) {
+                if (ex instanceof DataAccessException) {
+                    operationLogDO.setMsg(CommonMsgEnum.DB_ERROR.getMsg() + "-" + ex.getMessage());
+                } else if (ex instanceof IllegalArgumentException) {
+                    operationLogDO.setMsg(CommonMsgEnum.PARAM_ERROR.getMsg() + "-" + ex.getMessage());
+                } else {
+                    operationLogDO.setMsg(CommonMsgEnum.SYSTEM_ERROR.getMsg() + "-" + ex.getMessage());
+                }
+                operationLogDO.setLevel(LogLevelEnum.ERROR.getIndex());
+                operationLogDO.setStackTrace(getStackTrace(ex));
+                operationLogService.output(operationLogDO);
+            }
+
+            throw ex;
         }
     }
 
