@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <group>
+        <property name="devMode" defaultValue="true" description="开发环境" />
+        <property name="work" defaultValue="." description="工作目录" />
+        <property name="loggingCharset" defaultValue="UTF-8" description="日志文件编码"/>
+        <property name="loggingLevel" defaultValue="WARN" description="日志输出级别"/>
+        <property name="loggingRoot" defaultValue="${work}/logs" description="日志文件目录"/>
+    </group>
+    <script>
+        <generate template="web.xml" destfile="WEB-INF/web.xml" charset="UTF-8"/>
+        <generate template="logback.xml" destfile="WEB-INF/logback.xml" charset="UTF-8"/>
+    </script>
+</config>

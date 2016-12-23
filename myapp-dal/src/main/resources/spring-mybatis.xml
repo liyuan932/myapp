@@ -15,7 +15,7 @@
       http://www.springframework.org/schema/util/spring-util.xsd">
 
     <!-- 属性配置 -->
-    <context:property-placeholder location="classpath*:db.properties"/>
+    <context:property-placeholder location="classpath:db.properties"/>
 
     <!-- DBCP数据源 -->
     <bean id="dataSource" destroy-method="close" class="org.apache.commons.dbcp.BasicDataSource"

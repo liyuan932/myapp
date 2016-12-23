@@ -11,7 +11,7 @@ import javax.sql.DataSource;
 import java.sql.SQLException;
 
 @TransactionConfiguration
-@ContextConfiguration("classpath:spring-bean.xml")
+@ContextConfiguration("classpath:WEB-INF/spring-bean.xml")
 public class BaseTest extends AbstractTransactionalTestNGSpringContextTests {
 
     @Resource

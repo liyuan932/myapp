@@ -411,4 +411,19 @@
 
         <finalName>myapp-all</finalName>
     </build>
+
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <properties>
+                <autoconfig.properties>antx-dev.properties</autoconfig.properties>
+            </properties>
+        </profile>
+        <profile>
+            <id>pro</id>
+            <properties>
+                <autoconfig.properties>antx-pro.properties</autoconfig.properties>
+            </properties>
+        </profile>
+    </profiles>
 </project>

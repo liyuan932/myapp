@@ -53,6 +53,26 @@
         </dependency>
     </dependencies>
     <build>
+        <plugins>
+            <plugin>
+                <groupId>com.alibaba.citrus.tool</groupId>
+                <artifactId>autoconfig-maven-plugin</artifactId>
+                <version>1.2</version>
+                <configuration>
+                    <exploding>true</exploding>
+                    <!--默认路径：${user.home}/antx.properties-->
+                    <userProperties>${user.dir}/${autoconfig.properties}</userProperties>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>autoconfig</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
         <finalName>myapp-web</finalName>
     </build>
 </project>

@@ -69,7 +69,7 @@ public class MybatisMappingUtils {
             typeMap.put("timestamp", "Date");
 
             Properties pro = new Properties();
-            InputStream in = MybatisMappingUtils.class.getClassLoader().getResourceAsStream("db.properties");
+            InputStream in = MybatisMappingUtils.class.getClassLoader().getResourceAsStream("META-INF/db.properties");
             pro.load(in);
             driverClassName = pro.getProperty("jdbc.driverClassName");
             url = pro.getProperty("jdbc.url");
