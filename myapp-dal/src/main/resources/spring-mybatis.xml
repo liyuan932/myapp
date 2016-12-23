@@ -14,24 +14,15 @@
       http://www.springframework.org/schema/util
       http://www.springframework.org/schema/util/spring-util.xsd">
 
-    <!-- JDBC属性 -->
-    <context:property-placeholder location="classpath:jdbc.properties" ignore-resource-not-found="true"
-                                  ignore-unresolvable="true" properties-ref="defaultConfiguration"/>
-
-    <!--JDBC默认配置-->
-    <util:properties id="defaultConfiguration">
-        <prop key="jdbc.driverClassName">com.mysql.jdbc.Driver</prop>
-        <prop key="jdbc.url">jdbc:mysql://localhost:3306/test?useUnicode=true&amp;characterEncoding=utf8&amp;autoReconnect=true&amp;failOverReadOnly=true</prop>
-        <prop key="jdbc.username">root</prop>
-        <prop key="jdbc.password">1234</prop>
-    </util:properties>
+    <!-- 属性配置 -->
+    <context:property-placeholder location="classpath*:db.properties"/>
 
     <!-- DBCP数据源 -->
     <bean id="dataSource" destroy-method="close" class="org.apache.commons.dbcp.BasicDataSource"
-          p:driverClassName="${jdbc.driverClassName}"
-          p:url="${jdbc.url}"
-          p:username="${jdbc.username}"
-          p:password="${jdbc.password}"
+          p:driverClassName="com.mysql.jdbc.Driver"
+          p:url="jdbc:mysql://localhost:3306/test?useUnicode=true&amp;characterEncoding=utf8&amp;autoReconnect=true&amp;failOverReadOnly=true"
+          p:username="root"
+          p:password="1234"
     />
 
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean"

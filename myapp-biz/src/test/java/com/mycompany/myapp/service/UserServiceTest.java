@@ -13,9 +13,9 @@ public class UserServiceTest extends BaseTest {
     @Test
     public void addUser() {
         UserDO user = new UserDO();
-        user.setAccount("test");
+        user.setAccount("test1");
         user.setPassword("1234");
-        user.setUsername("test");
+        user.setUsername("test1");
         user.setStatus(1);
         user.setType(1);
         userService.add(user);

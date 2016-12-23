@@ -14,29 +14,36 @@ public class LoginHandlerInterceptor extends HandlerInterceptorAdapter {
 
         String uri = request.getRequestURI();
 
-        String suffixs = ".js|.css|.ico|.png|.jpg|.bmp";
-        String loginUri = "/login";
+        String suffixes = ".js|.css|.ico|.png|.jpg|.bmp|.json";
+        String ignores = "/,/index";
 
-        if (excludeUrl(uri, suffixs) || uri.equals(loginUri)) {
+        if (containSuffix(uri, suffixes) || containIgnore(uri,ignores)) {
             return true;
         }
 
         String token = CookieUtils.getName(request, "token");
         if (token == null) {
-            response.sendRedirect(loginUri);
+            response.sendRedirect("/");
         }
 
         return true;
     }
 
-    private boolean excludeUrl(String uri, String excludes) {
-
-        for (String suffix : StringUtils.split(excludes, "\\|")) {
+    private boolean containSuffix(String uri, String suffixes) {
+        for (String suffix : StringUtils.split(suffixes, "\\|")) {
             if (uri.endsWith(suffix)) {
                 return true;
             }
         }
+        return false;
+    }
 
+    private boolean containIgnore(String uri, String ignores) {
+        for (String ignore : StringUtils.split(ignores, ",")) {
+            if (uri.equals(ignore)) {
+                return true;
+            }
+        }
         return false;
     }
 }
