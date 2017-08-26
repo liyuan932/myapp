@@ -40,8 +40,8 @@ public class MybatisMappingUtils {
     public static void main(String[] args) throws Exception {
         System.out.println(System.getProperty("user.dir"));
 
-         MybatisMappingUtils.clear(new String[]{"operation_log"});
-         MybatisMappingUtils.generate(new String[]{"operation_log"});
+         //MybatisMappingUtils.clear(new String[]{"basic_warehouse"});
+         MybatisMappingUtils.generate(new String[]{"basic_warehouse"});
 
     }
 
@@ -69,7 +69,7 @@ public class MybatisMappingUtils {
             typeMap.put("timestamp", "Date");
 
             Properties pro = new Properties();
-            InputStream in = MybatisMappingUtils.class.getClassLoader().getResourceAsStream("META-INF/db.properties");
+            InputStream in = MybatisMappingUtils.class.getClassLoader().getResourceAsStream("db.properties");
             pro.load(in);
             driverClassName = pro.getProperty("jdbc.driverClassName");
             url = pro.getProperty("jdbc.url");

@@ -53,6 +53,7 @@
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/WEB-INF/view/"/>
         <property name="suffix" value=".jsp"/>
+        <property name="exposeContextBeansAsAttributes" value="true" />
     </bean>
 
     <!-- 对静态资源文件的处理方案-->

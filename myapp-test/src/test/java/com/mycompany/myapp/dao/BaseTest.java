@@ -22,4 +22,10 @@ public class BaseTest extends AbstractTransactionalTestNGSpringContextTests {
         Assert.assertNotNull(dataSource);
         System.out.println(dataSource.getConnection());
     }
+
+    public static void main(String[] args) {
+        Integer a = 273;
+        Integer b = 273;
+        System.out.println(a == b);
+    }
 }

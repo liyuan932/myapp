@@ -1,0 +1,5 @@
+com\mycompany\mapp\result\LoginResult.class
+com\mycompany\mapp\api\UserAPI.class
+com\mycompany\mapp\result\BaseResult.class
+com\mycompany\mapp\dto\BaseDTO.class
+com\mycompany\mapp\dto\LoginDTO.class

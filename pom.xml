@@ -19,7 +19,7 @@
         <myapp.version>1.0.0-SNAPSHOT</myapp.version>
         <java.version>1.8</java.version>
         <java.encoding>UTF-8</java.encoding>
-        <spring.version>4.0.2.RELEASE</spring.version>
+        <spring.version>4.3.5.RELEASE</spring.version>
         <quartz.version>2.2.3</quartz.version>
         <jackson.version>2.1.0</jackson.version>
         <mybatis.version>3.3.0</mybatis.version>
@@ -55,7 +55,7 @@
             <dependency>
                 <groupId>org.testng</groupId>
                 <artifactId>testng</artifactId>
-                <version>6.9.6</version>
+                <version>6.9.10</version>
                 <scope>test</scope>
             </dependency>
             <!-- ================================================= -->
@@ -413,12 +413,19 @@
     </build>
 
     <profiles>
+        <!-- 使用说明：mvn clean package -Ppro -->
+        <!-- 开发环境 -->
         <profile>
             <id>dev</id>
             <properties>
                 <autoconfig.properties>antx-dev.properties</autoconfig.properties>
             </properties>
+            <activation>
+                <!--默认激活-->
+                <activeByDefault>true</activeByDefault>
+            </activation>
         </profile>
+        <!-- 生产环境 -->
         <profile>
             <id>pro</id>
             <properties>
